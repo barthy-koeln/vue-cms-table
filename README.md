@@ -3,12 +3,14 @@
 This bundle provides Vue.js components suitable to build typical Content Management System tables.
 With regard to responsiveness and flexibility, the "table" is however constructed using bootstrap rows and columns.
 
+<br><br>
 ## Installing
 
 ```bash
 yarn add barthy-koeln/vue-cms-table
 ```
 
+<br><br>
 ## Usage Example
 
 The example below displays a table that has three rows: "Name", "Created At", and "Actions".
@@ -82,6 +84,7 @@ More information about the configuration and column options can be found further
 </script>
 ```
 
+<br><br>
 ## Component Props
 
 The `entity-table` component takes the following props:
@@ -96,6 +99,7 @@ The `entity-table` component takes the following props:
 | `filters`           | `Object` | `{}`                    | Object of filters for the search, following the structure `{name: 'value'}`.            |
 | `defaultOrdering`   | `Array`  | `[]`                    | Array like `['name', 'order']`, where `order` is one of `asc` or `desc`.                |
 
+<br><br>
 ## Column Types
 
 Define columns as simple objects following a specific schema.
