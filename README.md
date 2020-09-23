@@ -88,13 +88,13 @@ The `entity-table` component takes the following props:
 
 | Name                | Type   | Required/Default        | Description                                                                             |
 |---------------------|--------|-------------------------|-----------------------------------------------------------------------------------------|
-| `searchPath`        | String | Required                | URL/Path for the `GET` request that returns the data.                                   |
-| `columns`           | Array  | Required                | Array of column configurations. See below for details.                                  |
-| `entityKey`         | String | Required                | Key of a uniquely identifying property in the entity data. Typically `id` or `slug`.    |
-| `searchLabel`       | String | `'Search'`              | Title of the search form                                                                |
-| `searchPlaceholder` | String | `'Type here to search'` | Placeholder of the default search field.                                                |
-| `filters`           | Object | `{}`                    | Object of filters for the search, following the structure `{name: 'value'}`.            |
-| `defaultOrdering`   | Array  | `[]`                    | Array like `['name', 'order']`, where `order` is one of `asc` or `desc`.                |
+| `searchPath`        | `String` | Required                | URL/Path for the `GET` request that returns the data.                                   |
+| `columns`           | `Array`  | Required                | Array of column configurations. See below for details.                                  |
+| `entityKey`         | `String` | Required                | Key of a uniquely identifying property in the entity data. Typically `id` or `slug`.    |
+| `searchLabel`       | `String` | `'Search'`              | Title of the search form                                                                |
+| `searchPlaceholder` | `String` | `'Type here to search'` | Placeholder of the default search field.                                                |
+| `filters`           | `Object` | `{}`                    | Object of filters for the search, following the structure `{name: 'value'}`.            |
+| `defaultOrdering`   | `Array`  | `[]`                    | Array like `['name', 'order']`, where `order` is one of `asc` or `desc`.                |
 
 ## Column Types
 
@@ -121,9 +121,9 @@ Every column configuration has common options:
 
 | Name                | Type   | Required/Default        | Description                                          |
 |---------------------|--------|-------------------------|------------------------------------------------------|
-| `type`              | String | Required                | Column type, one of the types defined below.         |
-| `title`             | String | Required                | Titles that shows in the table header.               |
-| `classes`           | Array  | `[]`                    | Additional classes for both header and data columns. |
+| `type`              | `String` | Required                | Column type, one of the types defined below.         |
+| `title`             | `String` | Required                | Titles that shows in the table header.               |
+| `classes`           | `Array`  | `[]`                    | Additional classes for both header and data columns. |
 
 ### Replacements
 
@@ -149,7 +149,7 @@ Displays an icon based on the true/false evaluation of the property.
 
 | Name                | Type   | Required/Default        | Description                                                             |
 |---------------------|--------|-------------------------|-------------------------------------------------------------------------|
-| `name`              | String | Required                | Entity property name, which is converted to a boolean value using `!!`. |
+| `name`              | `String` | Required                | Entity property name, which is converted to a boolean value using `!!`. |
 
 ### String Column
 
@@ -159,7 +159,7 @@ Displays a string.
 
 | Name                | Type   | Required/Default        | Description           |
 |---------------------|--------|-------------------------|-----------------------|
-| `name`              | String | Required                | Entity property name. |
+| `name`              | `String` | Required                | Entity property name. |
 
 ### Link Column
 
@@ -169,9 +169,9 @@ Displays an entity property and wraps it in a link.
 
 | Name                | Type   | Required/Default        | Description                                         |
 |---------------------|--------|-------------------------|-----------------------------------------------------|
-| `name`              | String | Required                | Entity property name.                               |
-| `path`              | String | Required                | Path/URL template.                                  |
-| `replacements`      | Array  | `{}`                    | [See replacements.](#replacements)                  |
+| `name`              | `String` | Required                | Entity property name.                               |
+| `path`              | `String` | Required                | Path/URL template.                                  |
+| `replacements`      | `Array`  | `{}`                    | [See replacements.](#replacements)                  |
 
 The column will then replace `__ID__` with the value of `entity['id']`.
 
@@ -183,8 +183,8 @@ Displays a concatenated string from multiple property values.
 
 | Name                | Type   | Required/Default        | Description                                              |
 |---------------------|--------|-------------------------|----------------------------------------------------------|
-| `names`             | String | Required                | Entity property names.                                   |
-| `separator`         | String | Required                | Separator between the property values. Can contain HTML. |
+| `names`             | `String` | Required                | Entity property names.                                   |
+| `separator`         | `String` | Required                | Separator between the property values. Can contain HTML. |
 
 ### Map Column
 
@@ -192,10 +192,15 @@ Displays a concatenated string from multiple property values.
 
 Displays a string mapped by a property value.
 
-| Name                | Type   | Required/Default        | Description                                                                                       |
-|---------------------|--------|-------------------------|---------------------------------------------------------------------------------------------------|
-| `name`              | String | Required                | Entity property name.                                                                             |
-| `map`               | Map    | Required                | Map that has entity property values as keys and strings. String to be displayed can contain HTML. |
+<details>
+    <summary>Options</summary>
+    
+    | Name                | Type   | Required/Default        | Description                                                                                       |
+    |---------------------|--------|-------------------------|---------------------------------------------------------------------------------------------------|
+    | `name`              | `String` | Required                | Entity property name.                                                                             |
+    | `map`               | `Map`    | Required                | Map that has entity property values as keys and strings. String to be displayed can contain HTML. |
+    
+</details>
 
 **Example**
 
@@ -221,8 +226,8 @@ Displays a formatted date.
 
 | Name                | Type                | Required/Default        | Description                                                                                      |
 |---------------------|---------------------|-------------------------|--------------------------------------------------------------------------------------------------|
-| `name`              | String              | Required                | Entity property name. Will be parsed by `new Date()`.                                             |
-| `formatter`         | Intl.DateTimeFormat | `new Intl.DateTimeFormat(navigator.language, {year: 'numeric', month: '2-digit', day: '2-digit'})` | Formats the Date.     |
+| `name`              | `String`              | Required                | Entity property name. Will be parsed by `new Date()`.                                             |
+| `formatter`         | `Intl.DateTimeFormat` | `new Intl.DateTimeFormat(navigator.language, {year: 'numeric', month: '2-digit', day: '2-digit'})` | Formats the Date.     |
 
 ### Image Column
 
@@ -232,10 +237,10 @@ Displays an image.
 
 | Name                | Type   | Required/Default          | Description                                                             |
 |---------------------|--------|---------------------------|-------------------------------------------------------------------------|
-| `name`              | String | Required                  | Entity property name.                                                   |
-| `path`              | String | Required                  | Path/URL template.                                                      |
-| `replacements`      | Array  | `{}`                      | [See replacements.](#replacements)                                      |
-| `fallback`          | String | `undefined` / no fallback | In case the image property under `name` is empty, use a fallback image. |
+| `name`              | `String` | Required                  | Entity property name.                                                   |
+| `path`              | `String` | Required                  | Path/URL template.                                                      |
+| `replacements`      | `Array`  | `{}`                      | [See replacements.](#replacements)                                      |
+| `fallback`          | `String` | `undefined` / no fallback | In case the image property under `name` is empty, use a fallback image. |
 
 ### Input Column
 
