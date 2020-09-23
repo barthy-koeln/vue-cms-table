@@ -18,6 +18,9 @@ This expects, that a `GET` request to `/admin/api/some-entity/search` returns an
 
 More information about the configuration and column options can be found further down this document. 
 
+<details>
+    <summary>Show Example Code</summary>
+
 ```vue
 <template>
     <div class="page">
@@ -83,6 +86,8 @@ More information about the configuration and column options can be found further
   }
 </script>
 ```
+
+</details>
 
 <br><br>
 ## Component Props
