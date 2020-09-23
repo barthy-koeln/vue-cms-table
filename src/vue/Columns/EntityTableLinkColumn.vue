@@ -1,15 +1,15 @@
 <template v-once
           functional
 >
-  <a :href="$options.methods.replaceAll(props.field['path'], props.field['replacements'], props.entity)"
+  <a :href="$options.methods.replaceAll(props.column['path'], props.column['replacements'], props.entity)"
      target="_blank"
   >
-    {{ props.entity[props.field['name']] }}
+    {{ props.entity[props.column['name']] }}
   </a>
 </template>
 
 <script>
-  import { replacementMixin } from '../../utils/ReplacementMixin.js'
+  import {replacementMixin} from '../../utils/ReplacementMixin.js'
 
   export default {
     name: 'EntityTableLinkColumn',
@@ -19,12 +19,12 @@
     ],
 
     props: {
-      field: {
-        type: Object,
+      column:  {
+        type:     Object,
         required: true
       },
       entity: {
-        type: Object,
+        type:     Object,
         required: true
       }
     }

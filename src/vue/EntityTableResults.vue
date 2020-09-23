@@ -14,14 +14,14 @@
       <div :key="entity[entityKey]"
            class="row entity"
       >
-        <template v-for="field in fields">
-          <div :class="[field['type'], ...field['classes']]"
+        <template v-for="column in columns">
+          <div :class="[column['type'], ...column['classes']]"
                class="col"
           >
-            <component :is="columnComponent(field['type'])"
-                       :key="field['title']"
+            <component :is="`entity-table-${column['type']}-column`"
+                       :key="column['title']"
                        :entity="entity"
-                       :field="field"
+                       :column="column"
             />
           </div>
         </template>
@@ -31,15 +31,15 @@
 </template>
 
 <script>
-  import { CCardBody, CSpinner }   from '@coreui/vue'
+  import {CCardBody, CSpinner}     from '@coreui/vue'
   import EntityTableImageColumn    from './Columns/EntityTableImageColumn.vue'
   import EntityTableDateColumn     from './Columns/EntityTableDateColumn.vue'
   import EntityTableBooleanColumn  from './Columns/EntityTableBooleanColumn.vue'
   import EntityTableStringColumn   from './Columns/EntityTableStringColumn.vue'
   import EntityTableCompoundColumn from './Columns/EntityTableCompoundColumn.vue'
-  import EntityTableLinkColumn     from './Columns/EntityTableLinkColumn.vue'
-  import EntityTableActionColumn   from './Columns/EntityTableActionColumn.vue'
-  import EntityTableToggleColumn   from './Columns/EntityTableToggleColumn.vue'
+  import EntityTableLinkColumn   from './Columns/EntityTableLinkColumn.vue'
+  import EntityTableActionsColumn from './Columns/EntityTableActionsColumn.vue'
+  import EntityTableToggleColumn from './Columns/EntityTableToggleColumn.vue'
   import EntityTableMapColumn      from './Columns/EntityTableMapColumn.vue'
   import EntityTableInputColumn    from './Columns/EntityTableInputColumn.vue'
 
@@ -48,77 +48,55 @@
 
     components: {
       CCardBody,
-      CSpinner
+      CSpinner,
+      EntityTableImageColumn,
+      EntityTableDateColumn,
+      EntityTableBooleanColumn,
+      EntityTableStringColumn,
+      EntityTableCompoundColumn,
+      EntityTableLinkColumn,
+      EntityTableActionsColumn,
+      EntityTableToggleColumn,
+      EntityTableMapColumn,
+      EntityTableInputColumn
     },
 
     props: {
       loading: {
-        type: Boolean,
+        type:     Boolean,
         required: true
       },
 
-      fields: {
-        type: Array,
+      columns: {
+        type:     Array,
         required: true
       },
 
       entities: {
-        type: Array,
+        type:     Array,
         required: true
       },
 
       entityKey: {
-        type: String,
+        type:     String,
         required: true
-      }
-    },
+      },
 
-    data () {
-      return {
-        dateFormatter: null
-      }
-    },
-
-    created () {
-      // TODO configurable
-      this.dateFormatter = new Intl.DateTimeFormat(
-          'de-DE',
-          {
-            year: 'numeric',
-            month: '2-digit',
-            day: '2-digit'
-          }
-      )
-    },
-
-    methods: {
-      // TODO simplify
-      columnComponent (type) {
-        switch (type) {
-          case 'image':
-            return EntityTableImageColumn
-          case 'date':
-            return EntityTableDateColumn
-          case 'boolean':
-            return EntityTableBooleanColumn
-          case 'toggle':
-            return EntityTableToggleColumn
-          case 'compound':
-            return EntityTableCompoundColumn
-          case 'actions':
-            return EntityTableActionColumn
-          case 'link':
-            return EntityTableLinkColumn
-          case 'map':
-            return EntityTableMapColumn
-          case'input':
-            return EntityTableInputColumn
-          case 'string':
-          default:
-            return EntityTableStringColumn
+      defaultDateFormatter: {
+        type: Intl.DateTimeFormat,
+        required: false,
+        default() {
+          return new Intl.DateTimeFormat(
+              navigator.language,
+              {
+                year:  'numeric',
+                month: '2-digit',
+                day:   '2-digit'
+              }
+          )
         }
       }
-    }
+    },
   }
 </script>
 

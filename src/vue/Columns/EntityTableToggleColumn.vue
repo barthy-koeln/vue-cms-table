@@ -9,8 +9,8 @@
 </template>
 
 <script>
-  import { CSwitch }          from '@coreui/vue'
-  import { replacementMixin } from '../../utils/ReplacementMixin.js'
+  import {CSwitch}          from '@coreui/vue'
+  import {replacementMixin} from '../../utils/ReplacementMixin.js'
 
   export default {
     name: 'EntityTableToggleColumn',
@@ -24,12 +24,12 @@
     },
 
     props: {
-      field: {
-        type: Object,
+      column:  {
+        type:     Object,
         required: true
       },
       entity: {
-        type: Object,
+        type:     Object,
         required: true
       }
     },
@@ -41,25 +41,30 @@
     },
 
     mounted () {
-      this.checked = this.entity[this.field['name']]
+      this.checked = this.entity[this.column['name']]
     },
 
     methods: {
       async toggleChecked (checked) {
-        const url = this.replaceAll(this.field['action'], this.field['replacements'], this.entity)
-
-        const response = await fetch(url)
+        const url = this.replaceAll(this.column['action'], this.column['replacements'], this.entity)
+        const response = await fetch(url, this.column['requestInit'] || {})
         if (response.status !== 200) {
-          console.error(`[${response.status}] ${response.statusText}`)
-          // TODO error toast
+          const criticalHandler = this.column['critical']
+          if (typeof criticalHandler !== 'undefined') {
+            criticalHandler(response, this.column, this.entity)
+          }
+
           this.checked = !checked
           return
         }
 
         const body = await response.json()
         if (body.status !== 'success') {
-          console.error(`[${body.status}] ${body.reason}`)
-          // TODO error toast
+          const errorHandler = this.column['error']
+          if (typeof errorHandler !== 'undefined') {
+            errorHandler(body, this.column, this.entity)
+          }
+
           this.checked = !checked
           return
         }

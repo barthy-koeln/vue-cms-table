@@ -2,7 +2,7 @@
   <div class="input-group">
     <label class="col-form-label w-100">
       <input v-model="value"
-             :placeholder="field['title']"
+             :placeholder="column['title']"
              autocomplete="off"
              class="form-control text-dark"
              type="text"
@@ -31,12 +31,12 @@
     name: 'EntityTableDateColumn',
 
     props: {
-      field: {
-        type: Object,
+      column:  {
+        type:     Object,
         required: true
       },
       entity: {
-        type: Object,
+        type:     Object,
         required: true
       }
     },
@@ -44,14 +44,14 @@
     data () {
       return {
         initialValue: null,
-        value: null,
-        buttonColor: 'primary'
+        value:        null,
+        buttonColor:  'primary'
       }
     },
 
     mounted () {
-      this.initialValue = this.entity[this.field['name']]
-      this.value        = this.initialValue
+      this.initialValue = this.entity[this.column['name']]
+      this.value = this.initialValue
     },
 
     methods: {
@@ -60,35 +60,38 @@
           return
         }
 
-        const url = this.replaceAll(this.field['action'], this.field['replacements'], this.entity)
+        const url = this.replaceAll(this.column['action'], this.column['replacements'], this.entity)
+        const init = Object.assign(
+            this.column['requestInit'] || {},
+            {
+              method: 'post',
+              body:   JSON.stringify({
+                value: this.value
+              })
+            }
+        )
 
-        console.info(JSON.stringify({
-          value: this.value
-        }))
-
-        const response = await fetch(url, {
-          method: 'post',
-          body: JSON.stringify({
-            value: this.value
-          })
-        })
-
+        const response = await fetch(url, init)
         if (response.status !== 200) {
-          console.error(`[${response.status}] ${response.statusText}`)
-          // TODO error toast
+          const criticalHandler = this.column['critical']
+          if (typeof criticalHandler !== 'undefined') {
+            criticalHandler(response, this.column, this.entity)
+          }
           return
         }
 
         const body = await response.json()
         if (body.status !== 'success') {
-          console.error(`[${body.status}] ${body.reason}`)
-          // TODO error toast
+          const errorHandler = this.column['error']
+          if (typeof errorHandler !== 'undefined') {
+            errorHandler(body, this.column, this.entity)
+          }
           return
         }
 
         this.buttonColor = 'success'
         setTimeout(() => {
-          this.buttonColor  = 'primary'
+          this.buttonColor = 'primary'
           this.initialValue = this.value
         }, 1000)
       }

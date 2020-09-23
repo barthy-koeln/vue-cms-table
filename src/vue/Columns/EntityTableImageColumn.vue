@@ -1,9 +1,10 @@
 <template v-once
           functional
 >
-  <div class="avatar my-3"
+  <div v-if="props.entity[props.column['name']] || props.column['fallback']"
+       class="avatar my-3"
   >
-    <img :src="props.entity[props.field['name']] ? props.field['processor'].replace('__PATH__', props.entity[props.field['name']]) : props.field['fallback']"
+    <img :src="$options.methods.getImageUrl(props.column, props.entity)"
          alt="entity image"
          class="object-center object-cover"
     >
@@ -11,17 +12,31 @@
 </template>
 
 <script>
+  import {replacementMixin} from '../../utils/ReplacementMixin';
+
   export default {
     name: 'EntityTableImageColumn',
 
     props: {
-      field: {
-        type: Object,
+      column:  {
+        type:     Object,
         required: true
       },
       entity: {
-        type: Object,
+        type:     Object,
         required: true
+      }
+    },
+
+    methods: {
+      getImageUrl(column, entity) {
+        const propertyValue = props.entity[props.column['name']]
+
+        if(propertyValue){
+          return replacementMixin.methods.replaceAll(column['path'], column['replacements'], entity);
+        }
+
+        return props.column['fallback'];
       }
     }
   }

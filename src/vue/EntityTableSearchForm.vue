@@ -31,7 +31,7 @@
 </template>
 
 <script>
-  import { CCard, CCardBody } from '@coreui/vue'
+  import {CCard, CCardBody} from '@coreui/vue'
 
   let timeout = null
 
@@ -44,16 +44,16 @@
     },
 
     props: {
-      label: {
-        type: String,
+      label:       {
+        type:     String,
         required: true
       },
       placeholder: {
-        type: String,
+        type:     String,
         required: true
       },
-      value: {
-        type: String,
+      value:       {
+        type:     String,
         required: true
       }
     },

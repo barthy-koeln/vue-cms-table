@@ -11,7 +11,7 @@
 </template>
 
 <script>
-  import { CPagination } from '@coreui/vue'
+  import {CPagination} from '@coreui/vue'
 
   export default {
     name: 'EntityTablePagination',
@@ -22,12 +22,12 @@
 
     props: {
       pageCount: {
-        type: Number,
+        type:     Number,
         required: true
       },
 
       page: {
-        type: Number,
+        type:     Number,
         required: true
       }
     },

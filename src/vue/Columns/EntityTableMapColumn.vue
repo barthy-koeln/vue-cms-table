@@ -1,9 +1,9 @@
 <template v-once
           functional
 >
-    <span v-if="props.entity[props.field['name']] && props.field['map'].has(props.entity[props.field['name']])">
-        {{ props.field['map'].get(props.entity[props.field['name']]) }}
-    </span>
+  <div v-if="props.entity[props.column['name']] && props.column['map'].has(props.entity[props.column['name']])"
+       v-html="props.column['map'].get(props.entity[props.column['name']])"
+  />
 </template>
 
 <script>
@@ -11,12 +11,12 @@
     name: 'EntityTableDateColumn',
 
     props: {
-      field: {
-        type: Object,
+      column: {
+        type:     Object,
         required: true
       },
       entity: {
-        type: Object,
+        type:     Object,
         required: true
       }
     }

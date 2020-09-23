@@ -1,8 +1,8 @@
 <template v-once
           functional
 >
-    <span v-if="props.entity[props.field['name']] && parent.dateFormatter">
-        {{ parent.dateFormatter.format(new Date(props.entity[props.field['name']])) }}
+    <span v-if="props.entity[props.column['name']]">
+        {{ $options.methods.formatDate(props.entity, props.column, parent.defaultDateFormatter) }}
     </span>
 </template>
 
@@ -11,13 +11,25 @@
     name: 'EntityTableDateColumn',
 
     props: {
-      field: {
-        type: Object,
+      column:  {
+        type:     Object,
         required: true
       },
       entity: {
-        type: Object,
+        type:     Object,
         required: true
+      }
+    },
+
+    methods: {
+      formatDate (entity, column, fallback) {
+        const date = new Date(entity[column['name']])
+        const formatter = column['formatter']
+        if (formatter && formatter instanceof Intl.DateTimeFormat) {
+          return formatter.format(date)
+        }
+
+        return fallback.format(date)
       }
     }
   }

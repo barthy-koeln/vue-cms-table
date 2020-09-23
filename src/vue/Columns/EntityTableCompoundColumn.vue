@@ -1,9 +1,9 @@
 <template v-once
           functional
 >
-    <span v-if="props.field['names']"
+    <span v-if="props.column['names']"
           class="text-break"
-          v-html="props.field['names'].map(name => props.entity[name]).join(props.field['separator'])"
+          v-html="props.column['names'].map(name => props.entity[name]).join(props.column['separator'])"
     />
 </template>
 
@@ -12,12 +12,12 @@
     name: 'EntityTableStringColumn',
 
     props: {
-      field: {
-        type: Object,
+      column:  {
+        type:     Object,
         required: true
       },
       entity: {
-        type: Object,
+        type:     Object,
         required: true
       }
     }

@@ -12,14 +12,14 @@ yarn add barthy-koeln/vue-cms-table
 ## Usage Example
 
 The example below displays a table that has three rows: "Name", "Created At", and "Actions".
-This expects, that a `GET` request to `/admin/api/some-entity/search` returns an array of objects that have the fields `slug`, `name`, and `created_at`.
+This expects, that a `GET` request to `/admin/api/some-entity/search` returns an array of objects that have the properties `slug`, `name`, and `created_at`.
 
 More information about the configuration and column options can be found further down this document. 
 
 ```vue
 <template>
     <div class="page">
-        <entity-table :fields="fields"
+        <entity-table :columns="columns"
                       entity-key="slug"
                       search-label="Search SomeEntity"
                       search-placeholder="Id, Name, …"
@@ -40,7 +40,7 @@ More information about the configuration and column options can be found further
     },
 
     computed: {
-      fields() {
+      columns() {
         return [
           {
             names:     'first_name',
@@ -86,23 +86,167 @@ More information about the configuration and column options can be found further
 
 The `entity-table` component takes the following props:
 
-| Name                | Type   | Required/Default        | Description                                                                   |
-|---------------------|--------|-------------------------|-------------------------------------------------------------------------------|
-| `searchPath`        | String | Required                | URL/Path for the `GET` request that returns the data.                         |
-| `fields`            | Array  | Required                | Array of field configurations. See below for details.                         |
-| `entityKey`         | String | Required                | Key of a uniquely identifying field in the data. Typically `id` or `slug`.    |
-| `searchLabel`       | String | `'Search'`              | Title of the search form                                                      |
-| `searchPlaceholder` | String | `'Type here to search'` | Placeholder of the default search field                                       |
-| `filters`           | Object | `{}`                    | Object of filters for the search, following the structure `{field: 'value'}`. |
-| `defaultOrdering`   | Array  | `[]`                    | Array like `['field', 'order']`, where `order` is one of `asc` or `desc`.     |
+| Name                | Type   | Required/Default        | Description                                                                             |
+|---------------------|--------|-------------------------|-----------------------------------------------------------------------------------------|
+| `searchPath`        | String | Required                | URL/Path for the `GET` request that returns the data.                                   |
+| `columns`           | Array  | Required                | Array of column configurations. See below for details.                                  |
+| `entityKey`         | String | Required                | Key of a uniquely identifying property in the entity data. Typically `id` or `slug`.    |
+| `searchLabel`       | String | `'Search'`              | Title of the search form                                                                |
+| `searchPlaceholder` | String | `'Type here to search'` | Placeholder of the default search field.                                                |
+| `filters`           | Object | `{}`                    | Object of filters for the search, following the structure `{name: 'value'}`.            |
+| `defaultOrdering`   | Array  | `[]`                    | Array like `['name', 'order']`, where `order` is one of `asc` or `desc`.                |
 
-## Field/Column Types
+## Column Types
 
-Every field configuration has common options: 
+Define columns as simple objects following a specific schema.
+
+### Common Options
+
+Every column configuration has common options: 
+
+| Name                | Type   | Required/Default        | Description                                          |
+|---------------------|--------|-------------------------|------------------------------------------------------|
+| `type`              | String | Required                | Column type, one of the types defined below.         |
+| `title`             | String | Required                | Titles that shows in the table header.               |
+| `classes`           | Array  | `[]`                    | Additional classes for both header and data columns. |
+
+### Replacements
+
+Whenever the option `replacements` occurs, it maps placeholders in a string to entity property names: 
+
+```js
+const column = {
+  type: 'link',
+  path: '/entity/show/__ID__',
+  replacements: {
+    '__ID__': 'id'
+  }
+}
+```
+
+The column will then replace `__ID__` with the value of `entity['id']` and therefore create a unique path for each result row.
+
+### Boolean Column
+
+**type**: `boolean`
+
+Displays an icon based on the true/false evaluation of the property.
+
+| Name                | Type   | Required/Default        | Description                                                             |
+|---------------------|--------|-------------------------|-------------------------------------------------------------------------|
+| `name`              | String | Required                | Entity property name, which is converted to a boolean value using `!!`. |
 
 
+### String Column
+
+**type**: `string`
+
+Displays a string.
+
+| Name                | Type   | Required/Default        | Description           |
+|---------------------|--------|-------------------------|-----------------------|
+| `name`              | String | Required                | Entity property name. |
+
+### Link Column
+
+**type**: `link`
+
+Displays an entity property and wraps it in a link.
+
+| Name                | Type   | Required/Default        | Description                                         |
+|---------------------|--------|-------------------------|-----------------------------------------------------|
+| `name`              | String | Required                | Entity property name.                               |
+| `path`              | String | Required                | Path/URL template.                                  |
+| `replacements`      | Array  | `{}`                    | [See replacements.](#replacements)                  |
+
+The column will then replace `__ID__` with the value of `entity['id']`.
+
+### Compound Column
+
+**type**: `compound`
+
+Displays a concatenated string from multiple property values.
+
+| Name                | Type   | Required/Default        | Description                                              |
+|---------------------|--------|-------------------------|----------------------------------------------------------|
+| `names`             | String | Required                | Entity property names.                                   |
+| `separator`         | String | Required                | Separator between the property values. Can contain HTML. |
+
+### Map Column
+
+**type**: `map`
+
+Displays a string mapped by a property value.
+
+| Name                | Type   | Required/Default        | Description                                                                                       |
+|---------------------|--------|-------------------------|---------------------------------------------------------------------------------------------------|
+| `name`              | String | Required                | Entity property name.                                                                             |
+| `map`               | Map    | Required                | Map that has entity property values as keys and strings. String to be displayed can contain HTML. |
+
+**Example**
+
+If your entity has a property called `status`, that can be one of `APPROVED`, `DENIED`, `PENDING`, you can instead show eloquent messages using the `map` column:
+
+```js
+const column = {
+  type: 'map',
+  name: 'status',
+  map: new Map([
+    ['APPROVED', 'Nothing to do here.'],
+    ['DENIED', 'Please contact the user.'],
+    ['PENDING', 'Needs admin approval.'],
+  ]),
+}
+```
+
+### Date Column
+
+**type**: `date`
+
+Displays a formatted date.
+
+| Name                | Type                | Required/Default        | Description                                                                                      |
+|---------------------|---------------------|-------------------------|--------------------------------------------------------------------------------------------------|
+| `name`              | String              | Required                | Entity property name. Will be parsed by `new Date()`.                                             |
+| `formatter`         | Intl.DateTimeFormat | `new Intl.DateTimeFormat(navigator.language, {year: 'numeric', month: '2-digit', day: '2-digit'})` | Formats the Date.     |
+
+### Image Column
+
+**type**: `image`
+
+Displays an image.
+
+| Name                | Type   | Required/Default          | Description                                                             |
+|---------------------|--------|---------------------------|-------------------------------------------------------------------------|
+| `name`              | String | Required                  | Entity property name.                                                   |
+| `path`              | String | Required                  | Path/URL template.                                                      |
+| `replacements`      | Array  | `{}`                      | [See replacements.](#replacements)                                      |
+| `fallback`          | String | `undefined` / no fallback | In case the image property under `name` is empty, use a fallback image. |
+
+### Input Column
+
+**type**: `input`
+
+Displays an editable input field, that sends a request on change.
+
+### Toggle Column
+
+**type**: `toggle`
+
+Displays a toggle button that sends a request on change.
 
 ### Action Column
 
-type: `action`
-actions: Array
+**type**: `action`
+
+Displays any number of actions as defined below.
+
+#### Action Types
+
+##### Link Action
+
+Displays a link as a button.
+
+##### Callback Action
+
+Displays a button and adds a click listener wth the passed callback.

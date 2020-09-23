@@ -4,8 +4,8 @@
   <div class="icon-wrapper">
     <!-- Icons are imported globally -->
     <!--suppress HtmlUnknownTag -->
-    <c-icon :class="props.entity[props.field['name']] === true ? 'icon-success' : 'icon-danger'"
-            :name="props.entity[props.field['name']] === true ? 'cil-check' : 'cil-x'"
+    <c-icon :class="!!props.entity[props.column['name']] === true ? 'icon-success' : 'icon-danger'"
+            :name="!!props.entity[props.column['name']] === true ? 'cil-check' : 'cil-x'"
             size="sm"
     />
   </div>
@@ -16,12 +16,12 @@
     name: 'EntityTableBooleanColumn',
 
     props: {
-      field: {
-        type: Object,
+      column:  {
+        type:     Object,
         required: true
       },
       entity: {
-        type: Object,
+        type:     Object,
         required: true
       }
     }

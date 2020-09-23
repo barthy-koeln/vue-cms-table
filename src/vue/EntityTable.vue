@@ -11,7 +11,7 @@
           <slot name="search-form"/>
         </entity-table-search-form>
 
-        <entity-table-header :fields="fields"
+        <entity-table-header :columns="columns"
                              :orderings="orderings"
                              @header-clicked="headerClicked"
         />
@@ -19,7 +19,7 @@
 
       <entity-table-results :entities="entities"
                             :entity-key="entityKey"
-                            :fields="fields"
+                            :columns="columns"
                             :loading="loading"
       />
 
@@ -32,12 +32,12 @@
 </template>
 
 <script>
-  import { CCard, CCardHeader }   from '@coreui/vue'
-  import EntityTableSearchForm    from './EntityTableSearchForm.vue'
-  import EntityTableHeader        from './EntityTableHeader.vue'
-  import EntityTableResults       from './EntityTableResults.vue'
-  import EntityTablePagination    from './EntityTablePagination.vue'
-  import { serializeQueryString } from '../utils/SearchParamsUtils.js'
+  import {CCard, CCardHeader}   from '@coreui/vue'
+  import EntityTableSearchForm  from './EntityTableSearchForm.vue'
+  import EntityTableHeader      from './EntityTableHeader.vue'
+  import EntityTableResults     from './EntityTableResults.vue'
+  import EntityTablePagination  from './EntityTablePagination.vue'
+  import {serializeQueryString} from '../utils/SearchParamsUtils.js'
 
   export default {
     name: 'EntityTable',
@@ -53,34 +53,34 @@
 
     props: {
       searchPath: {
-        type: String,
+        type:     String,
         required: true
       },
 
-      fields: {
-        type: Array,
+      columns: {
+        type:     Array,
         required: true
       },
 
       entityKey: {
-        type: String,
+        type:     String,
         required: true
       },
 
       searchLabel: {
-        type: String,
+        type:     String,
         required: false,
-        default: 'Search'
+        default:  'Search'
       },
 
       searchPlaceholder: {
-        type: String,
+        type:     String,
         required: false,
-        default: 'Type here to search'
+        default:  'Type here to search'
       },
 
       defaultOrdering: {
-        type: Array,
+        type:     Array,
         required: false,
         default () {
           return []
@@ -93,25 +93,38 @@
           return {}
         }
       },
+
+      requestInit: {
+        type: Object,
+        default () {
+          return {}
+        }
+      }
     },
 
     data () {
       return {
-        page: 1,
-        pageCount: 0,
-        search: '',
-        entities: [],
+        page:            1,
+        pageCount:       0,
+        search:          '',
+        entities:        [],
         lastQueryString: '',
-        loading: false,
-        orderings: {}
+        loading:         false,
+        orderings:       {}
+      }
+    },
+
+    beforeMount () {
+      if (this.defaultOrdering.length === 2) {
+        // do not trigger watcher here
+        this.$set(this.orderings, this.defaultOrdering[0], this.defaultOrdering[1])
       }
     },
 
     mounted () {
-      if (this.defaultOrdering.length === 2) {
-        this.$set(this.orderings, this.defaultOrdering[0], this.defaultOrdering[1])
+      if(!this.loading) {
+        this.loadData()
       }
-      this.loadData()
     },
 
     watch: {
@@ -133,13 +146,13 @@
     methods: {
       getQueryString () {
         const queryData = {
-          search: this.search,
-          page: this.page,
-          filters: this.filters,
+          search:    this.search,
+          page:      this.page,
+          filters:   this.filters,
           orderings: this.orderings
         }
 
-        return serializeQueryString(Object.assign(queryData, this.extraQueryData))
+        return serializeQueryString(queryData)
       },
 
       async loadData () {
@@ -149,40 +162,38 @@
           return
         }
 
-        this.loading   = true
-        const response = await fetch(`${this.searchPath}?${queryString}`)
+        this.loading = true
+        const response = await fetch(`${this.searchPath}?${queryString}`, this.requestInit)
         if (response.status !== 200) {
           throw new Error(response.statusText)
         }
 
-        const body     = await response.json()
-        this.page      = body.page
+        const body = await response.json()
+        this.page = body.page
         this.pageCount = body.pageCount
-        this.entities  = body.entities
+        this.entities = body.entities
 
         this.lastQueryString = queryString
-        this.loading         = false
+        this.loading = false
       },
 
-      headerClicked (fieldName) {
-        if (this.fields[fieldName]['sortable'] === false) {
-          return
-        }
-
-        for (const [currentFieldName] of Object.entries(this.orderings)) {
-          if (fieldName === currentFieldName) {
+      headerClicked (propertyNames) {
+        for (const [currentPropertyName] of Object.entries(this.orderings)) {
+          if (propertyNames.includes(currentPropertyName)) {
             continue
           }
 
-          this.$delete(this.orderings, currentFieldName)
+          this.$delete(this.orderings, currentPropertyName)
         }
 
-        if (fieldName in this.orderings) {
-          this.$set(this.orderings, fieldName, this.orderings[fieldName] === 'asc' ? 'desc' : 'asc')
-          return
-        }
+        for (const propertyName of propertyNames) {
+          if (this.orderings.hasOwnProperty(propertyName)) {
+            this.$set(this.orderings, propertyName, this.orderings[propertyName] === 'asc' ? 'desc' : 'asc')
+            continue
+          }
 
-        this.$set(this.orderings, fieldName, 'asc')
+          this.$set(this.orderings, propertyName, 'asc')
+        }
       },
 
       loadPage (page) {
