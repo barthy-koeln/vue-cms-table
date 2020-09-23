@@ -3,20 +3,18 @@
 This bundle provides Vue.js components suitable to build typical Content Management System tables.
 With regard to responsiveness and flexibility, the "table" is however constructed using bootstrap rows and columns.
 
-<br><br>
+<br>
 ## Installing
 
 ```bash
 yarn add barthy-koeln/vue-cms-table
 ```
 
-<br><br>
+<br>
 ## Usage Example
 
 The example below displays a table that has three rows: "Name", "Created At", and "Actions".
-This expects, that a `GET` request to `/admin/api/some-entity/search` returns an array of objects that have the properties `slug`, `name`, and `created_at`.
-
-More information about the configuration and column options can be found further down this document. 
+This expects that a `GET` request to `/admin/api/some-entity/search` returns an array of objects that have the properties `slug`, `name`, and `created_at`.
 
 <details>
     <summary>Show Example Code</summary>
@@ -89,8 +87,10 @@ More information about the configuration and column options can be found further
 
 </details>
 
-<br><br>
-## Component Props
+More information about the column types and options can be found [further down this document](#column-types). 
+
+<br>
+## Main Component Props
 
 The `entity-table` component takes the following props:
 
@@ -104,7 +104,7 @@ The `entity-table` component takes the following props:
 | `filters`           | `Object` | `{}`                    | Object of filters for the search, following the structure `{name: 'value'}`.            |
 | `defaultOrdering`   | `Array`  | `[]`                    | Array like `['name', 'order']`, where `order` is one of `asc` or `desc`.                |
 
-<br><br>
+<br>
 ## Column Types
 
 Define columns as simple objects following a specific schema.
@@ -124,7 +124,7 @@ Define columns as simple objects following a specific schema.
   * [Link Action](#link-action)
   * [Button Action](#button-action)
 
-<br><br>
+<br>
 ### Common Options
 
 Every column configuration has common options: 
@@ -135,7 +135,7 @@ Every column configuration has common options:
 | `title`             | `String` | Required                | Titles that shows in the table header.               |
 | `classes`           | `Array`  | `[]`                    | Additional classes for both header and data columns. |
 
-<br><br>
+<br>
 ### Replacements
 
 Whenever the option `replacements` occurs, it maps placeholders in a string to entity property names: 
@@ -152,7 +152,7 @@ const column = {
 
 The column will then replace `__ID__` with the value of `entity['id']` and therefore create a unique path for each result row.
 
-<br><br>
+<br>
 ### Boolean Column
 
 **Type:** `boolean`
@@ -168,7 +168,7 @@ Displays an icon based on the true/false evaluation of the property.
 
 </details>
 
-<br><br>
+<br>
 ### String Column
 
 **Type:** `string`
@@ -184,7 +184,7 @@ Displays a string.
 
 </details>
 
-<br><br>
+<br>
 ### Link Column
 
 **Type:** `link`
@@ -204,7 +204,7 @@ The column will then replace `__ID__` with the value of `entity['id']`.
 
 </details>
 
-<br><br>
+<br>
 ### Compound Column
 
 **Type:** `compound`
@@ -221,7 +221,7 @@ Displays a concatenated string from multiple property values.
 
 </details>
 
-<br><br>
+<br>
 ### Map Column
 
 **Type:** `map`
@@ -257,7 +257,7 @@ const column = {
 
 </details>
 
-<br><br>
+<br>
 ### Date Column
 
 **Type:** `date`
@@ -274,7 +274,7 @@ Displays a formatted date.
 
 </details>
 
-<br><br>
+<br>
 ### Image Column
 
 **Type:** `image`
@@ -293,21 +293,21 @@ Displays an image.
 
 </details>
 
-<br><br>
+<br>
 ### Input Column
 
 **Type:** `input`
 
 Displays an editable input field, that sends a request on change.
 
-<br><br>
+<br>
 ### Toggle Column
 
 **Type:** `toggle`
 
 Displays a toggle button that sends a request on change.
 
-<br><br>
+<br>
 ### Actions Column
 
 **Type:** `action`
