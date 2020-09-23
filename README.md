@@ -147,9 +147,14 @@ The column will then replace `__ID__` with the value of `entity['id']` and there
 
 Displays an icon based on the true/false evaluation of the property.
 
-| Name                | Type   | Required/Default        | Description                                                             |
-|---------------------|--------|-------------------------|-------------------------------------------------------------------------|
+<details>
+    <summary>Options</summary>
+    
+| Name                | Type     | Required/Default        | Description                                                             |
+|---------------------|----------|-------------------------|-------------------------------------------------------------------------|
 | `name`              | `String` | Required                | Entity property name, which is converted to a boolean value using `!!`. |
+
+</details>
 
 ### String Column
 
@@ -157,9 +162,14 @@ Displays an icon based on the true/false evaluation of the property.
 
 Displays a string.
 
-| Name                | Type   | Required/Default        | Description           |
-|---------------------|--------|-------------------------|-----------------------|
+<details>
+    <summary>Options</summary>
+    
+| Name                | Type     | Required/Default        | Description           |
+|---------------------|----------|-------------------------|-----------------------|
 | `name`              | `String` | Required                | Entity property name. |
+
+</details>
 
 ### Link Column
 
@@ -167,13 +177,18 @@ Displays a string.
 
 Displays an entity property and wraps it in a link.
 
-| Name                | Type   | Required/Default        | Description                                         |
-|---------------------|--------|-------------------------|-----------------------------------------------------|
+<details>
+    <summary>Options</summary>
+    
+| Name                | Type     | Required/Default        | Description                                         |
+|---------------------|----------|-------------------------|-----------------------------------------------------|
 | `name`              | `String` | Required                | Entity property name.                               |
 | `path`              | `String` | Required                | Path/URL template.                                  |
 | `replacements`      | `Array`  | `{}`                    | [See replacements.](#replacements)                  |
 
 The column will then replace `__ID__` with the value of `entity['id']`.
+
+</details>
 
 ### Compound Column
 
@@ -181,10 +196,15 @@ The column will then replace `__ID__` with the value of `entity['id']`.
 
 Displays a concatenated string from multiple property values.
 
-| Name                | Type   | Required/Default        | Description                                              |
-|---------------------|--------|-------------------------|----------------------------------------------------------|
+<details>
+    <summary>Options</summary>
+
+| Name                | Type     | Required/Default        | Description                                              |
+|---------------------|----------|-------------------------|----------------------------------------------------------|
 | `names`             | `String` | Required                | Entity property names.                                   |
 | `separator`         | `String` | Required                | Separator between the property values. Can contain HTML. |
+
+</details>
 
 ### Map Column
 
@@ -195,14 +215,15 @@ Displays a string mapped by a property value.
 <details>
     <summary>Options</summary>
     
-    | Name                | Type   | Required/Default        | Description                                                                                       |
-    |---------------------|--------|-------------------------|---------------------------------------------------------------------------------------------------|
-    | `name`              | `String` | Required                | Entity property name.                                                                             |
-    | `map`               | `Map`    | Required                | Map that has entity property values as keys and strings. String to be displayed can contain HTML. |
-    
+| Name                | Type     | Required/Default        | Description                                                                                       |
+|---------------------|----------|-------------------------|---------------------------------------------------------------------------------------------------|
+| `name`              | `String` | Required                | Entity property name.                                                                             |
+| `map`               | `Map`    | Required                | Map that has entity property values as keys and strings. String to be displayed can contain HTML. |
+
 </details>
 
-**Example**
+<details>
+    <summary>Example</summary>
 
 If your entity has a property called `status`, that can be one of `APPROVED`, `DENIED`, `PENDING`, you can instead show eloquent messages using the `map` column:
 
@@ -218,16 +239,23 @@ const column = {
 }
 ```
 
+</details>
+
 ### Date Column
 
 **Type:** `date`
 
 Displays a formatted date.
 
-| Name                | Type                | Required/Default        | Description                                                                                      |
-|---------------------|---------------------|-------------------------|--------------------------------------------------------------------------------------------------|
+<details>
+    <summary>Options</summary>
+    
+| Name                | Type                  | Required/Default        | Description                                                                                      |
+|---------------------|-----------------------|-------------------------|--------------------------------------------------------------------------------------------------|
 | `name`              | `String`              | Required                | Entity property name. Will be parsed by `new Date()`.                                             |
 | `formatter`         | `Intl.DateTimeFormat` | `new Intl.DateTimeFormat(navigator.language, {year: 'numeric', month: '2-digit', day: '2-digit'})` | Formats the Date.     |
+
+</details>
 
 ### Image Column
 
@@ -235,12 +263,17 @@ Displays a formatted date.
 
 Displays an image.
 
-| Name                | Type   | Required/Default          | Description                                                             |
-|---------------------|--------|---------------------------|-------------------------------------------------------------------------|
+<details>
+    <summary>Options</summary>
+    
+| Name                | Type     | Required/Default          | Description                                                             |
+|---------------------|----------|---------------------------|-------------------------------------------------------------------------|
 | `name`              | `String` | Required                  | Entity property name.                                                   |
 | `path`              | `String` | Required                  | Path/URL template.                                                      |
 | `replacements`      | `Array`  | `{}`                      | [See replacements.](#replacements)                                      |
 | `fallback`          | `String` | `undefined` / no fallback | In case the image property under `name` is empty, use a fallback image. |
+
+</details>
 
 ### Input Column
 
