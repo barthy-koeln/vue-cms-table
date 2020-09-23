@@ -115,6 +115,7 @@ Define columns as simple objects following a specific schema.
   * [Link Action](#link-action)
   * [Button Action](#button-action)
 
+<br><br>
 ### Common Options
 
 Every column configuration has common options: 
@@ -125,6 +126,7 @@ Every column configuration has common options:
 | `title`             | `String` | Required                | Titles that shows in the table header.               |
 | `classes`           | `Array`  | `[]`                    | Additional classes for both header and data columns. |
 
+<br><br>
 ### Replacements
 
 Whenever the option `replacements` occurs, it maps placeholders in a string to entity property names: 
@@ -141,6 +143,7 @@ const column = {
 
 The column will then replace `__ID__` with the value of `entity['id']` and therefore create a unique path for each result row.
 
+<br><br>
 ### Boolean Column
 
 **Type:** `boolean`
@@ -156,6 +159,7 @@ Displays an icon based on the true/false evaluation of the property.
 
 </details>
 
+<br><br>
 ### String Column
 
 **Type:** `string`
@@ -171,6 +175,7 @@ Displays a string.
 
 </details>
 
+<br><br>
 ### Link Column
 
 **Type:** `link`
@@ -190,6 +195,7 @@ The column will then replace `__ID__` with the value of `entity['id']`.
 
 </details>
 
+<br><br>
 ### Compound Column
 
 **Type:** `compound`
@@ -206,6 +212,7 @@ Displays a concatenated string from multiple property values.
 
 </details>
 
+<br><br>
 ### Map Column
 
 **Type:** `map`
@@ -241,6 +248,7 @@ const column = {
 
 </details>
 
+<br><br>
 ### Date Column
 
 **Type:** `date`
@@ -257,6 +265,7 @@ Displays a formatted date.
 
 </details>
 
+<br><br>
 ### Image Column
 
 **Type:** `image`
@@ -275,18 +284,21 @@ Displays an image.
 
 </details>
 
+<br><br>
 ### Input Column
 
 **Type:** `input`
 
 Displays an editable input field, that sends a request on change.
 
+<br><br>
 ### Toggle Column
 
 **Type:** `toggle`
 
 Displays a toggle button that sends a request on change.
 
+<br><br>
 ### Actions Column
 
 **Type:** `action`
