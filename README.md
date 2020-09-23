@@ -162,7 +162,8 @@ The column will then replace `__ID__` with the value of `entity['id']` and there
 
 ### Boolean Column
 
-**Type:** `boolean`
+`type: 'boolean'`
+
 
 Displays an icon based on the true/false evaluation of the property.
 
@@ -179,7 +180,8 @@ Displays an icon based on the true/false evaluation of the property.
 
 ### String Column
 
-**Type:** `string`
+`type: 'string'`
+
 
 Displays a string.
 
@@ -196,7 +198,8 @@ Displays a string.
 
 ### Link Column
 
-**Type:** `link`
+`type: 'link'`
+
 
 Displays an entity property and wraps it in a link.
 
@@ -217,7 +220,8 @@ The column will then replace `__ID__` with the value of `entity['id']`.
 
 ### Compound Column
 
-**Type:** `compound`
+`type: 'compound'`
+
 
 Displays a concatenated string from multiple property values.
 
@@ -235,7 +239,8 @@ Displays a concatenated string from multiple property values.
 
 ### Map Column
 
-**Type:** `map`
+`type: 'map'`
+
 
 Displays a string mapped by a property value.
 
@@ -272,7 +277,8 @@ const column = {
 
 ### Date Column
 
-**Type:** `date`
+`type: 'date'`
+
 
 Displays a formatted date.
 
@@ -290,7 +296,8 @@ Displays a formatted date.
 
 ### Image Column
 
-**Type:** `image`
+`type: 'image'`
+
 
 Displays an image.
 
@@ -310,7 +317,8 @@ Displays an image.
 
 ### Input Column
 
-**Type:** `input`
+`type: 'input'`
+
 
 Displays an editable input field, that sends a request on change.
 
@@ -318,7 +326,8 @@ Displays an editable input field, that sends a request on change.
 
 ### Toggle Column
 
-**Type:** `toggle`
+`type: 'toggle'`
+
 
 Displays a toggle button that sends a request on change.
 
@@ -326,7 +335,8 @@ Displays a toggle button that sends a request on change.
 
 ### Actions Column
 
-**Type:** `action`
+`type: 'action'`
+
 
 Displays any number of actions as defined below.
 
