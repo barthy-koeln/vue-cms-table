@@ -1,3 +1,9 @@
+<style>
+table {
+    width: 100% !important;
+}
+</style>
+
 # Vue.js CMS Table
 
 This bundle provides Vue.js components suitable to build typical Content Management System tables.
@@ -110,6 +116,8 @@ Every column configuration has common options:
 | `title`             | String | Required                | Titles that shows in the table header.               |
 | `classes`           | Array  | `[]`                    | Additional classes for both header and data columns. |
 
+----
+
 ### Replacements
 
 Whenever the option `replacements` occurs, it maps placeholders in a string to entity property names: 
@@ -126,9 +134,11 @@ const column = {
 
 The column will then replace `__ID__` with the value of `entity['id']` and therefore create a unique path for each result row.
 
+----
+
 ### Boolean Column
 
-**type**: `boolean`
+*type:* `boolean`
 
 Displays an icon based on the true/false evaluation of the property.
 
@@ -136,10 +146,11 @@ Displays an icon based on the true/false evaluation of the property.
 |---------------------|--------|-------------------------|-------------------------------------------------------------------------|
 | `name`              | String | Required                | Entity property name, which is converted to a boolean value using `!!`. |
 
+----
 
 ### String Column
 
-**type**: `string`
+*type:* `string`
 
 Displays a string.
 
@@ -147,9 +158,11 @@ Displays a string.
 |---------------------|--------|-------------------------|-----------------------|
 | `name`              | String | Required                | Entity property name. |
 
+----
+
 ### Link Column
 
-**type**: `link`
+*type:* `link`
 
 Displays an entity property and wraps it in a link.
 
@@ -161,9 +174,11 @@ Displays an entity property and wraps it in a link.
 
 The column will then replace `__ID__` with the value of `entity['id']`.
 
+----
+
 ### Compound Column
 
-**type**: `compound`
+*type:* `compound`
 
 Displays a concatenated string from multiple property values.
 
@@ -172,9 +187,11 @@ Displays a concatenated string from multiple property values.
 | `names`             | String | Required                | Entity property names.                                   |
 | `separator`         | String | Required                | Separator between the property values. Can contain HTML. |
 
+----
+
 ### Map Column
 
-**type**: `map`
+*type:* `map`
 
 Displays a string mapped by a property value.
 
@@ -199,9 +216,11 @@ const column = {
 }
 ```
 
+----
+
 ### Date Column
 
-**type**: `date`
+*type:* `date`
 
 Displays a formatted date.
 
@@ -210,9 +229,11 @@ Displays a formatted date.
 | `name`              | String              | Required                | Entity property name. Will be parsed by `new Date()`.                                             |
 | `formatter`         | Intl.DateTimeFormat | `new Intl.DateTimeFormat(navigator.language, {year: 'numeric', month: '2-digit', day: '2-digit'})` | Formats the Date.     |
 
+----
+
 ### Image Column
 
-**type**: `image`
+*type:* `image`
 
 Displays an image.
 
@@ -223,23 +244,31 @@ Displays an image.
 | `replacements`      | Array  | `{}`                      | [See replacements.](#replacements)                                      |
 | `fallback`          | String | `undefined` / no fallback | In case the image property under `name` is empty, use a fallback image. |
 
+----
+
 ### Input Column
 
-**type**: `input`
+*type:* `input`
 
 Displays an editable input field, that sends a request on change.
 
+----
+
 ### Toggle Column
 
-**type**: `toggle`
+*type:* `toggle`
 
 Displays a toggle button that sends a request on change.
 
+----
+
 ### Action Column
 
-**type**: `action`
+*type:* `action`
 
 Displays any number of actions as defined below.
+
+----
 
 #### Action Types
 
