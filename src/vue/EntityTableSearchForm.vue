@@ -31,17 +31,10 @@
 </template>
 
 <script>
-  import {CCard, CCardBody} from '@coreui/vue'
-
   let timeout = null
 
   export default {
     name: 'EntityTableSearchForm',
-
-    components: {
-      CCard,
-      CCardBody
-    },
 
     props: {
       label:       {

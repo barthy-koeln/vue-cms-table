@@ -30,13 +30,13 @@
 
     methods: {
       getImageUrl(column, entity) {
-        const propertyValue = props.entity[props.column['name']]
+        const propertyValue = entity[column['name']]
 
         if(propertyValue){
           return replacementMixin.methods.replaceAll(column['path'], column['replacements'], entity);
         }
 
-        return props.column['fallback'];
+        return column['fallback'];
       }
     }
   }
