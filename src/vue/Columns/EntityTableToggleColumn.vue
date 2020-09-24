@@ -47,8 +47,15 @@
     methods: {
       async toggleChecked (checked) {
         const url = this.replaceAll(this.column['action'], this.column['replacements'], this.entity)
-        const response = await fetch(url, this.column['requestInit'] || {})
-        if (response.status !== 200) {
+        const init = Object.assign(
+            this.column['requestInit'] || {},
+            {
+              method: 'post'
+            }
+        )
+        
+        const response = await fetch(url, init)
+        if (!response.ok) {
           const criticalHandler = this.column['critical']
           if (typeof criticalHandler !== 'undefined') {
             criticalHandler(response, this.column, this.entity)
