@@ -72,7 +72,7 @@
         )
 
         const response = await fetch(url, init)
-        if (response.status !== 200) {
+        if (!response.ok) {
           const criticalHandler = this.column['critical']
           if (typeof criticalHandler !== 'undefined') {
             criticalHandler(response, this.column, this.entity)
