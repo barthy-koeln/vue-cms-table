@@ -1,31 +1,33 @@
-<template v-once
-          functional
+<template
+  v-once
+  functional
 >
   <div class="icon-wrapper">
     <!-- Icons are imported globally -->
     <!--suppress HtmlUnknownTag -->
-    <c-icon :class="!!props.entity[props.column['name']] === true ? 'icon-success' : 'icon-danger'"
-            :name="!!props.entity[props.column['name']] === true ? 'cil-check' : 'cil-x'"
-            size="sm"
+    <c-icon
+      :class="!!props.entity[props.column['name']] === true ? 'icon-success' : 'icon-danger'"
+      :name="!!props.entity[props.column['name']] === true ? 'cil-check' : 'cil-x'"
+      size="sm"
     />
   </div>
 </template>
 
 <script>
-  export default {
-    name: 'EntityTableBooleanColumn',
+export default {
+  name: 'EntityTableBooleanColumn',
 
-    props: {
-      column:  {
-        type:     Object,
-        required: true
-      },
-      entity: {
-        type:     Object,
-        required: true
-      }
+  props: {
+    column: {
+      type: Object,
+      required: true
+    },
+    entity: {
+      type: Object,
+      required: true
     }
   }
+}
 </script>
 
 <style lang="scss"

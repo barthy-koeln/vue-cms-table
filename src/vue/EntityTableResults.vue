@@ -1,27 +1,32 @@
 <template>
   <c-card-body class="position-relative entity-table-results">
-    <transition appear
-                name="fade"
+    <transition
+      appear
+      name="fade"
     >
       <div class="spinner-container">
-        <c-spinner v-if="loading"
-                   class="spinner"
+        <c-spinner
+          v-if="loading"
+          class="spinner"
         />
       </div>
     </transition>
 
     <template v-for="entity in entities">
-      <div :key="entity[entityKey]"
-           class="row entity"
+      <div
+        :key="entity[entityKey]"
+        class="row entity"
       >
         <template v-for="column in columns">
-          <div :class="[column['type'], ...column['classes']]"
-               class="col"
+          <div
+            :class="[column['type'], ...column['classes']]"
+            class="col"
           >
-            <component :is="`entity-table-${column['type']}-column`"
-                       :key="column['title']"
-                       :entity="entity"
-                       :column="column"
+            <component
+              :is="`entity-table-${column['type']}-column`"
+              :key="column['title']"
+              :entity="entity"
+              :column="column"
             />
           </div>
         </template>
@@ -31,73 +36,73 @@
 </template>
 
 <script>
-  import {CCardBody, CSpinner}     from '@coreui/vue'
-  import EntityTableImageColumn    from './Columns/EntityTableImageColumn.vue'
-  import EntityTableDateColumn     from './Columns/EntityTableDateColumn.vue'
-  import EntityTableBooleanColumn  from './Columns/EntityTableBooleanColumn.vue'
-  import EntityTableStringColumn   from './Columns/EntityTableStringColumn.vue'
-  import EntityTableCompoundColumn from './Columns/EntityTableCompoundColumn.vue'
-  import EntityTableLinkColumn   from './Columns/EntityTableLinkColumn.vue'
-  import EntityTableActionsColumn from './Columns/EntityTableActionsColumn.vue'
-  import EntityTableToggleColumn from './Columns/EntityTableToggleColumn.vue'
-  import EntityTableMapColumn      from './Columns/EntityTableMapColumn.vue'
-  import EntityTableInputColumn    from './Columns/EntityTableInputColumn.vue'
+import { CCardBody, CSpinner } from '@coreui/vue'
+import EntityTableImageColumn from './Columns/EntityTableImageColumn.vue'
+import EntityTableDateColumn from './Columns/EntityTableDateColumn.vue'
+import EntityTableBooleanColumn from './Columns/EntityTableBooleanColumn.vue'
+import EntityTableStringColumn from './Columns/EntityTableStringColumn.vue'
+import EntityTableCompoundColumn from './Columns/EntityTableCompoundColumn.vue'
+import EntityTableLinkColumn from './Columns/EntityTableLinkColumn.vue'
+import EntityTableActionsColumn from './Columns/EntityTableActionsColumn.vue'
+import EntityTableToggleColumn from './Columns/EntityTableToggleColumn.vue'
+import EntityTableMapColumn from './Columns/EntityTableMapColumn.vue'
+import EntityTableInputColumn from './Columns/EntityTableInputColumn.vue'
 
-  export default {
-    name: 'EntityTableResults',
+export default {
+  name: 'EntityTableResults',
 
-    components: {
-      CCardBody,
-      CSpinner,
-      EntityTableImageColumn,
-      EntityTableDateColumn,
-      EntityTableBooleanColumn,
-      EntityTableStringColumn,
-      EntityTableCompoundColumn,
-      EntityTableLinkColumn,
-      EntityTableActionsColumn,
-      EntityTableToggleColumn,
-      EntityTableMapColumn,
-      EntityTableInputColumn
+  components: {
+    CCardBody,
+    CSpinner,
+    EntityTableImageColumn,
+    EntityTableDateColumn,
+    EntityTableBooleanColumn,
+    EntityTableStringColumn,
+    EntityTableCompoundColumn,
+    EntityTableLinkColumn,
+    EntityTableActionsColumn,
+    EntityTableToggleColumn,
+    EntityTableMapColumn,
+    EntityTableInputColumn
+  },
+
+  props: {
+    loading: {
+      type: Boolean,
+      required: true
     },
 
-    props: {
-      loading: {
-        type:     Boolean,
-        required: true
-      },
+    columns: {
+      type: Array,
+      required: true
+    },
 
-      columns: {
-        type:     Array,
-        required: true
-      },
+    entities: {
+      type: Array,
+      required: true
+    },
 
-      entities: {
-        type:     Array,
-        required: true
-      },
+    entityKey: {
+      type: String,
+      required: true
+    },
 
-      entityKey: {
-        type:     String,
-        required: true
-      },
-
-      defaultDateFormatter: {
-        type: Intl.DateTimeFormat,
-        required: false,
-        default() {
-          return new Intl.DateTimeFormat(
-              navigator.language,
-              {
-                year:  'numeric',
-                month: '2-digit',
-                day:   '2-digit'
-              }
-          )
-        }
+    defaultDateFormatter: {
+      type: Intl.DateTimeFormat,
+      required: false,
+      default () {
+        return new Intl.DateTimeFormat(
+          navigator.language,
+          {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit'
+          }
+        )
       }
-    },
+    }
   }
+}
 </script>
 
 <style lang="scss"

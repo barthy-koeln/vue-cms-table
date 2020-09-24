@@ -1,5 +1,7 @@
 # Vue.js CMS Table
 
+[![DeepScan grade](https://deepscan.io/api/teams/11039/projects/13961/branches/248774/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=11039&pid=13961&bid=248774)
+
 This bundle provides *opinionanted* Vue.js components suitable to build typical Content Management System tables.
 With regard to responsiveness and flexibility, the "table" is however constructed using bootstrap rows and columns.
 

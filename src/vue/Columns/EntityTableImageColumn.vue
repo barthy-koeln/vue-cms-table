@@ -1,45 +1,48 @@
-<template v-once
-          functional
+<template
+  v-once
+  functional
 >
-  <div v-if="props.entity[props.column['name']] || props.column['fallback']"
-       class="avatar my-3"
+  <div
+    v-if="props.entity[props.column['name']] || props.column['fallback']"
+    class="avatar my-3"
   >
-    <img :src="$options.methods.getImageUrl(props.column, props.entity)"
-         alt="entity image"
-         class="object-center object-cover"
+    <img
+      :src="$options.methods.getImageUrl(props.column, props.entity)"
+      alt="entity image"
+      class="object-center object-cover"
     >
   </div>
 </template>
 
 <script>
-  import {replacementMixin} from '../../utils/ReplacementMixin';
+import { replacementMixin } from '../../utils/ReplacementMixin'
 
-  export default {
-    name: 'EntityTableImageColumn',
+export default {
+  name: 'EntityTableImageColumn',
 
-    props: {
-      column:  {
-        type:     Object,
-        required: true
-      },
-      entity: {
-        type:     Object,
-        required: true
-      }
+  props: {
+    column: {
+      type: Object,
+      required: true
     },
+    entity: {
+      type: Object,
+      required: true
+    }
+  },
 
-    methods: {
-      getImageUrl(column, entity) {
-        const propertyValue = entity[column['name']]
+  methods: {
+    getImageUrl (column, entity) {
+      const propertyValue = entity[column.name]
 
-        if(propertyValue){
-          return replacementMixin.methods.replaceAll(column['path'], column['replacements'], entity);
-        }
-
-        return column['fallback'];
+      if (propertyValue) {
+        return replacementMixin.methods.replaceAll(column.path, column.replacements, entity)
       }
+
+      return column.fallback
     }
   }
+}
 </script>
 
 <style lang="scss"

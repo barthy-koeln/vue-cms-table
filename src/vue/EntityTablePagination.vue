@@ -1,41 +1,42 @@
 <template>
-  <c-pagination :activePage="page"
-                :limit="5"
-                :pages="pageCount"
-                align="center"
-                dots
-                doubleArrows
-                responsive
-                @update:activePage="changePage"
+  <c-pagination
+    :active-page="page"
+    :limit="5"
+    :pages="pageCount"
+    align="center"
+    dots
+    double-arrows
+    responsive
+    @update:activePage="changePage"
   />
 </template>
 
 <script>
-  import {CPagination} from '@coreui/vue'
+import { CPagination } from '@coreui/vue'
 
-  export default {
-    name: 'EntityTablePagination',
+export default {
+  name: 'EntityTablePagination',
 
-    components: {
-      CPagination
+  components: {
+    CPagination
+  },
+
+  props: {
+    pageCount: {
+      type: Number,
+      required: true
     },
 
-    props: {
-      pageCount: {
-        type:     Number,
-        required: true
-      },
+    page: {
+      type: Number,
+      required: true
+    }
+  },
 
-      page: {
-        type:     Number,
-        required: true
-      }
-    },
-
-    methods: {
-      changePage (value) {
-        this.$emit('search', value)
-      }
+  methods: {
+    changePage (value) {
+      this.$emit('search', value)
     }
   }
+}
 </script>

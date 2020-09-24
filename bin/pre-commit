@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+eslint --fix src/utils/**/*.js
+eslint --fix src/vue/**/*.vue
