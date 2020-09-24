@@ -1,6 +1,6 @@
 # Vue.js CMS Table
 
-This bundle provides Vue.js components suitable to build typical Content Management System tables.
+This bundle provides *opinionanted* Vue.js components suitable to build typical Content Management System tables.
 With regard to responsiveness and flexibility, the "table" is however constructed using bootstrap rows and columns.
 
 <br/>
@@ -12,6 +12,46 @@ yarn add barthy-koeln/vue-cms-table
 ```
 
 <br/>
+
+## CoreUI
+
+These components use [@coreui/coreui](https://github.com/coreui/coreui), [@coreui/vue](https://github.com/coreui/vue) and optionally [@coreui/icons](https://github.com/coreui/coreui-icons).
+
+### Theming CoreUI
+
+Follow the guide on ["Theming CoreUI for Bootstrap 4"](https://coreui.io/docs/getting-started/theming/).
+
+### CoreUI Icons
+
+Register icons globally:
+
+```js
+import {freeSet} from '@coreui/icons'
+import {CIcon}   from '@coreui/vue';
+
+Vue.component('CIcon', CIcon);
+
+const root = document.getElementById('app');
+
+const vm = new Vue({
+  icons:  freeSet,
+  /* [...] */
+});
+
+vm.$mount(root);
+```
+
+And add color styles
+
+```scss
+@each $name, $color in $theme-colors {
+  .icon-#{$name} {
+    fill: $color;
+  }
+}
+```
+
+<br>
 
 ## Usage Example
 
@@ -164,7 +204,6 @@ The column will then replace `__ID__` with the value of `entity['id']` and there
 
 `type: 'boolean'`
 
-
 Displays an icon based on the true/false evaluation of the property.
 
 <details>
@@ -182,7 +221,6 @@ Displays an icon based on the true/false evaluation of the property.
 
 `type: 'string'`
 
-
 Displays a string.
 
 <details>
@@ -199,7 +237,6 @@ Displays a string.
 ### Link Column
 
 `type: 'link'`
-
 
 Displays an entity property and wraps it in a link.
 
@@ -222,7 +259,6 @@ The column will then replace `__ID__` with the value of `entity['id']`.
 
 `type: 'compound'`
 
-
 Displays a concatenated string from multiple property values.
 
 <details>
@@ -240,7 +276,6 @@ Displays a concatenated string from multiple property values.
 ### Map Column
 
 `type: 'map'`
-
 
 Displays a string mapped by a property value.
 
@@ -434,15 +469,48 @@ Displays a toggle button that sends a request on change.
 
 `type: 'action'`
 
-
 Displays any number of actions as defined below.
 
+| Name                | Type       | Required/Default          | Description                                                                    |
+|---------------------|------------|---------------------------|--------------------------------------------------------------------------------|
+| `actions`           | `Array`    | Required                  | Array of action definitions (objects). See below for action types and oprions. |
+| `condition`         | `function` | no condition              | Callback defining whether the action is displayed b returning a boolean value. Argments: `(entity)`|                                    |
+
 #### Action Types
+
+##### Common Options
+
+| Name                | Type       | Required/Default          | Description                |
+|---------------------|------------|---------------------------|----------------------------|
+| `title`             | `String`   | Required                  | String used as button text |
 
 ##### Link Action
 
 Displays a link as a button.
 
+<details>
+    <summary>Options</summary>
+    
+| Name                | Type     | Required/Default        | Description                         |
+|---------------------|----------|-------------------------|-------------------------------------|
+| `path`              | `String` | Required                | Path/URL template.                  |
+| `replacements`      | `Array`  | `{}`                    | [See replacements.](#replacements)  |
+| `icon`              | `String` | no icon                 | Name of any imported [coreui icon](https://icons.coreui.io/icons/). Read the [CoreUI Section](#coreui) for more information.|
+
+</details>
+
 ##### Button Action
 
 Displays a button and adds a click listener wth the passed callback.
+
+<details>
+    <summary>Options</summary>
+    
+| Name                | Type       | Required/Default        | Description                         |
+|---------------------|------------|-------------------------|-------------------------------------|
+| `path`              | `String`   | Required                | Path/URL template.                  |
+| `click`             | `function` | Required                | Callback that handles the button click. Arguments: `(entity, event)` |
+| `replacements`      | `Array`    | `{}`                    | [See replacements.](#replacements)  |
+| `icon`              | `String`   | no icon                 | Name of any imported [coreui icon](https://icons.coreui.io/icons/). Read the [CoreUI Section](#coreui) for more information.|
+
+</details>
