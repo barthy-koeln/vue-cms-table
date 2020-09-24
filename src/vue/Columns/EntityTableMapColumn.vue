@@ -9,18 +9,18 @@
 </template>
 
 <script>
-export default {
-  name: 'EntityTableDateColumn',
+  export default {
+    name: 'EntityTableDateColumn',
 
-  props: {
-    column: {
-      type: Object,
-      required: true
-    },
-    entity: {
-      type: Object,
-      required: true
+    props: {
+      column: {
+        type: Object,
+        required: true
+      },
+      entity: {
+        type: Object,
+        required: true
+      }
     }
   }
-}
 </script>

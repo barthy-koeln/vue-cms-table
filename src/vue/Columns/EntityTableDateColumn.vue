@@ -8,30 +8,30 @@
 </template>
 
 <script>
-export default {
-  name: 'EntityTableDateColumn',
+  export default {
+    name: 'EntityTableDateColumn',
 
-  props: {
-    column: {
-      type: Object,
-      required: true
-    },
-    entity: {
-      type: Object,
-      required: true
-    }
-  },
-
-  methods: {
-    formatDate (entity, column, fallback) {
-      const date = new Date(entity[column.name])
-      const formatter = column.formatter
-      if (formatter && formatter instanceof Intl.DateTimeFormat) {
-        return formatter.format(date)
+    props: {
+      column: {
+        type: Object,
+        required: true
+      },
+      entity: {
+        type: Object,
+        required: true
       }
+    },
 
-      return fallback.format(date)
+    methods: {
+      formatDate (entity, column, fallback) {
+        const date = new Date(entity[column.name])
+        const formatter = column.formatter
+        if (formatter && formatter instanceof Intl.DateTimeFormat) {
+          return formatter.format(date)
+        }
+
+        return fallback.format(date)
+      }
     }
   }
-}
 </script>

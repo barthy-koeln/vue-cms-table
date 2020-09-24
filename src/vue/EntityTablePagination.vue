@@ -12,31 +12,31 @@
 </template>
 
 <script>
-import { CPagination } from '@coreui/vue'
+  import { CPagination } from '@coreui/vue'
 
-export default {
-  name: 'EntityTablePagination',
+  export default {
+    name: 'EntityTablePagination',
 
-  components: {
-    CPagination
-  },
-
-  props: {
-    pageCount: {
-      type: Number,
-      required: true
+    components: {
+      CPagination
     },
 
-    page: {
-      type: Number,
-      required: true
-    }
-  },
+    props: {
+      pageCount: {
+        type: Number,
+        required: true
+      },
 
-  methods: {
-    changePage (value) {
-      this.$emit('search', value)
+      page: {
+        type: Number,
+        required: true
+      }
+    },
+
+    methods: {
+      changePage (value) {
+        this.$emit('search', value)
+      }
     }
   }
-}
 </script>

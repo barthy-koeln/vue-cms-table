@@ -8,7 +8,7 @@
         @click="headerClicked(column)"
       >
         <div
-          v-if="orderings.hasOwnProperty(sortedColumnName(column))"
+          v-if="Object.prototype.hasOwnProperty.apply(orderings, sortedColumnName(column))"
           class="icon-wrapper"
         >
           <!-- Icons are imported globally -->
@@ -26,51 +26,51 @@
 </template>
 
 <script>
-export default {
-  name: 'EntityTableHeader',
+  export default {
+    name: 'EntityTableHeader',
 
-  props: {
-    columns: {
-      type: Array,
-      required: true
-    },
-    orderings: {
-      type: Object,
-      required: true
-    }
-  },
-
-  methods: {
-    headerClicked (column) {
-      if (['actions', 'image'].includes(column.type)) {
-        return
+    props: {
+      columns: {
+        type: Array,
+        required: true
+      },
+      orderings: {
+        type: Object,
+        required: true
       }
-
-      if (column.hasOwnProperty('sortable') && column.sortable === false) {
-        return
-      }
-
-      if (column.type === 'compound') {
-        this.emitHeaderClicked(column.names)
-        return
-      }
-
-      this.emitHeaderClicked([column.name])
     },
 
-    emitHeaderClicked (columnNames) {
-      this.$emit('header-clicked', columnNames)
-    },
+    methods: {
+      headerClicked (column) {
+        if (['actions', 'image'].includes(column.type)) {
+          return
+        }
 
-    sortedColumnName (column) {
-      if (column.type === 'compound') {
-        return column.names[0]
+        if (Object.prototype.hasOwnProperty.apply(column, 'sortable') && column.sortable === false) {
+          return
+        }
+
+        if (column.type === 'compound') {
+          this.emitHeaderClicked(column.names)
+          return
+        }
+
+        this.emitHeaderClicked([column.name])
+      },
+
+      emitHeaderClicked (columnNames) {
+        this.$emit('header-clicked', columnNames)
+      },
+
+      sortedColumnName (column) {
+        if (column.type === 'compound') {
+          return column.names[0]
+        }
+
+        return column.name
       }
-
-      return column.name
     }
   }
-}
 </script>
 
 <style lang="scss"

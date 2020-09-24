@@ -191,7 +191,7 @@ export default {
       }
 
       for (const propertyName of propertyNames) {
-        if (this.orderings.hasOwnProperty(propertyName)) {
+        if (Object.prototype.hasOwnProperty.apply(this.orderings, propertyName)) {
           this.$set(this.orderings, propertyName, this.orderings[propertyName] === 'asc' ? 'desc' : 'asc')
           continue
         }

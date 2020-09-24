@@ -15,34 +15,34 @@
 </template>
 
 <script>
-import { replacementMixin } from '../../utils/ReplacementMixin'
+  import { replacementMixin } from '../../utils/ReplacementMixin'
 
-export default {
-  name: 'EntityTableImageColumn',
+  export default {
+    name: 'EntityTableImageColumn',
 
-  props: {
-    column: {
-      type: Object,
-      required: true
-    },
-    entity: {
-      type: Object,
-      required: true
-    }
-  },
-
-  methods: {
-    getImageUrl (column, entity) {
-      const propertyValue = entity[column.name]
-
-      if (propertyValue) {
-        return replacementMixin.methods.replaceAll(column.path, column.replacements, entity)
+    props: {
+      column: {
+        type: Object,
+        required: true
+      },
+      entity: {
+        type: Object,
+        required: true
       }
+    },
 
-      return column.fallback
+    methods: {
+      getImageUrl (column, entity) {
+        const propertyValue = entity[column.name]
+
+        if (propertyValue) {
+          return replacementMixin.methods.replaceAll(column.path, column.replacements, entity)
+        }
+
+        return column.fallback
+      }
     }
   }
-}
 </script>
 
 <style lang="scss"

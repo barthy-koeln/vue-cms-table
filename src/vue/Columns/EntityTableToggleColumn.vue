@@ -10,77 +10,77 @@
 </template>
 
 <script>
-import { CSwitch } from '@coreui/vue'
-import { replacementMixin } from '../../utils/ReplacementMixin.js'
+  import { CSwitch } from '@coreui/vue'
+  import { replacementMixin } from '../../utils/ReplacementMixin.js'
 
-export default {
-  name: 'EntityTableToggleColumn',
+  export default {
+    name: 'EntityTableToggleColumn',
 
-  components: {
-    CSwitch
-  },
-
-  mixins: [
-    replacementMixin
-  ],
-
-  props: {
-    column: {
-      type: Object,
-      required: true
+    components: {
+      CSwitch
     },
-    entity: {
-      type: Object,
-      required: true
-    }
-  },
 
-  data () {
-    return {
-      checked: false
-    }
-  },
+    mixins: [
+      replacementMixin
+    ],
 
-  mounted () {
-    this.checked = this.entity[this.column.name]
-  },
-
-  methods: {
-    async toggleChecked (checked) {
-      const url = this.replaceAll(this.column.action, this.column.replacements, this.entity)
-      const init = Object.assign(
-        this.column.requestInit || {},
-        {
-          method: 'post'
-        }
-      )
-
-      const response = await fetch(url, init)
-      if (!response.ok) {
-        const criticalHandler = this.column.critical
-        if (typeof criticalHandler !== 'undefined') {
-          criticalHandler(response, this.column, this.entity)
-        }
-
-        this.checked = !checked
-        return
+    props: {
+      column: {
+        type: Object,
+        required: true
+      },
+      entity: {
+        type: Object,
+        required: true
       }
+    },
 
-      const body = await response.json()
-      if (body.status !== 'success') {
-        const errorHandler = this.column.error
-        if (typeof errorHandler !== 'undefined') {
-          errorHandler(body, this.column, this.entity)
+    data () {
+      return {
+        checked: false
+      }
+    },
+
+    mounted () {
+      this.checked = this.entity[this.column.name]
+    },
+
+    methods: {
+      async toggleChecked (checked) {
+        const url = this.replaceAll(this.column.action, this.column.replacements, this.entity)
+        const init = Object.assign(
+          this.column.requestInit || {},
+          {
+            method: 'post'
+          }
+        )
+
+        const response = await fetch(url, init)
+        if (!response.ok) {
+          const criticalHandler = this.column.critical
+          if (typeof criticalHandler !== 'undefined') {
+            criticalHandler(response, this.column, this.entity)
+          }
+
+          this.checked = !checked
+          return
         }
 
-        this.checked = !checked
-        return
-      }
+        const body = await response.json()
+        if (body.status !== 'success') {
+          const errorHandler = this.column.error
+          if (typeof errorHandler !== 'undefined') {
+            errorHandler(body, this.column, this.entity)
+          }
 
-      this.checked = body.checked
+          this.checked = !checked
+          return
+        }
+
+        this.checked = body.checked
+      }
     }
   }
-}
 </script>
 
 <style scoped>

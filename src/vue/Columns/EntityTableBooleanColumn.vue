@@ -14,20 +14,20 @@
 </template>
 
 <script>
-export default {
-  name: 'EntityTableBooleanColumn',
+  export default {
+    name: 'EntityTableBooleanColumn',
 
-  props: {
-    column: {
-      type: Object,
-      required: true
-    },
-    entity: {
-      type: Object,
-      required: true
+    props: {
+      column: {
+        type: Object,
+        required: true
+      },
+      entity: {
+        type: Object,
+        required: true
+      }
     }
   }
-}
 </script>
 
 <style lang="scss"

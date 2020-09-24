@@ -29,56 +29,56 @@
         </div>
       </div>
     </div>
-    <slot />
+    <slot/>
   </div>
 </template>
 
 <script>
-let timeout = null
+  let timeout = null
 
-export default {
-  name: 'EntityTableSearchForm',
+  export default {
+    name: 'EntityTableSearchForm',
 
-  props: {
-    label: {
-      type: String,
-      required: true
-    },
-    placeholder: {
-      type: String,
-      required: true
-    },
-    value: {
-      type: String,
-      required: true
-    }
-  },
-
-  computed: {
-    localState: {
-      get () {
-        return this.value
+    props: {
+      label: {
+        type: String,
+        required: true
       },
-      set (value) {
-        this.$emit('input', value)
+      placeholder: {
+        type: String,
+        required: true
+      },
+      value: {
+        type: String,
+        required: true
+      }
+    },
+
+    computed: {
+      localState: {
+        get () {
+          return this.value
+        },
+        set (value) {
+          this.$emit('input', value)
+        }
+      }
+    },
+
+    methods: {
+      debounceSearch () {
+        clearTimeout(timeout)
+        timeout = setTimeout(this.search, 300)
+      },
+
+      search () {
+        this.$emit('search')
+      },
+
+      clear () {
+        this.$emit('input', '')
+        this.search()
       }
     }
-  },
-
-  methods: {
-    debounceSearch () {
-      clearTimeout(timeout)
-      timeout = setTimeout(this.search, 300)
-    },
-
-    search () {
-      this.$emit('search')
-    },
-
-    clear () {
-      this.$emit('input', '')
-      this.search()
-    }
   }
-}
 </script>

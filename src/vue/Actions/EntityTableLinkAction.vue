@@ -22,24 +22,24 @@
 </template>
 
 <script>
-import { replacementMixin } from '../../utils/ReplacementMixin.js'
+  import { replacementMixin } from '../../utils/ReplacementMixin.js'
 
-export default {
-  name: 'EntityTableLinkAction',
+  export default {
+    name: 'EntityTableLinkAction',
 
-  mixins: [
-    replacementMixin
-  ],
+    mixins: [
+      replacementMixin
+    ],
 
-  props: {
-    action: {
-      type: Object,
-      required: true
-    },
-    entity: {
-      type: Object,
-      required: true
+    props: {
+      action: {
+        type: Object,
+        required: true
+      },
+      entity: {
+        type: Object,
+        required: true
+      }
     }
   }
-}
 </script>

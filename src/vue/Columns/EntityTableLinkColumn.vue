@@ -11,24 +11,24 @@
 </template>
 
 <script>
-import { replacementMixin } from '../../utils/ReplacementMixin.js'
+  import { replacementMixin } from '../../utils/ReplacementMixin.js'
 
-export default {
-  name: 'EntityTableLinkColumn',
+  export default {
+    name: 'EntityTableLinkColumn',
 
-  mixins: [
-    replacementMixin
-  ],
+    mixins: [
+      replacementMixin
+    ],
 
-  props: {
-    column: {
-      type: Object,
-      required: true
-    },
-    entity: {
-      type: Object,
-      required: true
+    props: {
+      column: {
+        type: Object,
+        required: true
+      },
+      entity: {
+        type: Object,
+        required: true
+      }
     }
   }
-}
 </script>

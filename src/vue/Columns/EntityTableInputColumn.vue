@@ -30,80 +30,80 @@
 </template>
 
 <script>
-export default {
-  name: 'EntityTableDateColumn',
+  export default {
+    name: 'EntityTableDateColumn',
 
-  props: {
-    column: {
-      type: Object,
-      required: true
+    props: {
+      column: {
+        type: Object,
+        required: true
+      },
+      entity: {
+        type: Object,
+        required: true
+      }
     },
-    entity: {
-      type: Object,
-      required: true
-    }
-  },
 
-  data () {
-    return {
-      initialValue: null,
-      value: null,
-      buttonColor: 'primary'
-    }
-  },
-
-  computed: {
-    buttonDisabled () {
-      return this.value === this.initialValue || this.value.length <= 0
-    }
-  },
-
-  mounted () {
-    this.initialValue = this.entity[this.column.name]
-    this.value = this.initialValue
-  },
-
-  methods: {
-    async persist () {
-      if (this.value === this.initialValue) {
-        return
+    data () {
+      return {
+        initialValue: null,
+        value: null,
+        buttonColor: 'primary'
       }
+    },
 
-      const url = this.replaceAll(this.column.action, this.column.replacements, this.entity)
-      const init = Object.assign(
-        this.column.requestInit || {},
-        {
-          method: 'post',
-          body: JSON.stringify({
-            value: this.value
-          })
-        }
-      )
-
-      const response = await fetch(url, init)
-      if (!response.ok) {
-        const criticalHandler = this.column.critical
-        if (typeof criticalHandler !== 'undefined') {
-          criticalHandler(response, this.column, this.entity)
-        }
-        return
+    computed: {
+      buttonDisabled () {
+        return this.value === this.initialValue || this.value.length <= 0
       }
+    },
 
-      const body = await response.json()
-      if (body.status !== 'success') {
-        const errorHandler = this.column.error
-        if (typeof errorHandler !== 'undefined') {
-          errorHandler(body, this.column, this.entity)
+    mounted () {
+      this.initialValue = this.entity[this.column.name]
+      this.value = this.initialValue
+    },
+
+    methods: {
+      async persist () {
+        if (this.value === this.initialValue) {
+          return
         }
-        return
-      }
 
-      this.buttonColor = 'success'
-      setTimeout(() => {
-        this.buttonColor = 'primary'
-        this.initialValue = this.value
-      }, 1000)
+        const url = this.replaceAll(this.column.action, this.column.replacements, this.entity)
+        const init = Object.assign(
+          this.column.requestInit || {},
+          {
+            method: 'post',
+            body: JSON.stringify({
+              value: this.value
+            })
+          }
+        )
+
+        const response = await fetch(url, init)
+        if (!response.ok) {
+          const criticalHandler = this.column.critical
+          if (typeof criticalHandler !== 'undefined') {
+            criticalHandler(response, this.column, this.entity)
+          }
+          return
+        }
+
+        const body = await response.json()
+        if (body.status !== 'success') {
+          const errorHandler = this.column.error
+          if (typeof errorHandler !== 'undefined') {
+            errorHandler(body, this.column, this.entity)
+          }
+          return
+        }
+
+        this.buttonColor = 'success'
+        setTimeout(() => {
+          this.buttonColor = 'primary'
+          this.initialValue = this.value
+        }, 1000)
+      }
     }
   }
-}
 </script>

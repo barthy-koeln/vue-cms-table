@@ -16,31 +16,31 @@
 </template>
 
 <script>
-import { replacementMixin } from '../../utils/ReplacementMixin.js'
-import EntityTableLinkAction from '../Actions/EntityTableLinkAction'
-import EntityTableButtonAction from '../Actions/EntityTableButtonAction'
+  import { replacementMixin } from '../../utils/ReplacementMixin.js'
+  import EntityTableLinkAction from '../Actions/EntityTableLinkAction'
+  import EntityTableButtonAction from '../Actions/EntityTableButtonAction'
 
-export default {
-  name: 'EntityTableActionsColumn',
+  export default {
+    name: 'EntityTableActionsColumn',
 
-  components: {
-    'entity-table-link-action': EntityTableLinkAction,
-    'entity-table-button-action': EntityTableButtonAction
-  },
-
-  mixins: [
-    replacementMixin
-  ],
-
-  props: {
-    column: {
-      type: Object,
-      required: true
+    components: {
+      'entity-table-link-action': EntityTableLinkAction,
+      'entity-table-button-action': EntityTableButtonAction
     },
-    entity: {
-      type: Object,
-      required: true
+
+    mixins: [
+      replacementMixin
+    ],
+
+    props: {
+      column: {
+        type: Object,
+        required: true
+      },
+      entity: {
+        type: Object,
+        required: true
+      }
     }
   }
-}
 </script>
