@@ -309,7 +309,7 @@ Displays an image.
 | `name`              | `String` | Required                  | Entity property name.                                                   |
 | `path`              | `String` | Required                  | Path/URL template.                                                      |
 | `replacements`      | `Array`  | `{}`                      | [See replacements.](#replacements)                                      |
-| `fallback`          | `String` | `undefined` / no fallback | In case the image property under `name` is empty, use a fallback image. |
+| `fallback`          | `String` | no fallback | In case the image property under `name` is empty, use a fallback image. |
 
 </details>
 
@@ -320,7 +320,53 @@ Displays an image.
 `type: 'input'`
 
 
-Displays an editable input field, that sends a request on change.
+Displays an editable input field, that shows a button on change and sends a request when pressing it.
+
+<details>
+    <summary>Request Sent</summary>
+
+**Method:** `POST`
+
+**Content Type:** JSON
+
+**Request Body:**
+
+`value`: contains the new input field value
+
+</details>
+
+<details>
+    <summary>Expected Response</summary>
+    
+**Content Type:** JSON
+
+**Response Body:**
+
+`status`: `'success'` if all went well, anything else to trigger the error callback.
+
+**Notes:**
+
+You can send any number of additional data in case something went wrong. Typically along the lines of "reason" or "message".
+
+The entire response body will be passed to the error callback.
+
+</details>
+
+<details>
+    <summary>Options</summary>
+    
+| Name                | Type       | Required/Default          | Description                                                             |
+|---------------------|------------|---------------------------|-------------------------------------------------------------------------|
+| `name`              | `String`   | Required                  | Entity property name.                                                   |
+| `action`            | `String`   | Required                  | Action Path/URL template                                                |
+| `replacements`      | `Array`    | `{}`                      | [See replacements.](#replacements)                                      |
+| `requestInit`       | `Object`   | `{}`                      | Options to be passed to the `fetch` call. [See possible properties.](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request) NOTE: `body` will be overwritten. |
+| `critical`          | `function` | no handler  | Callback when the request fails (result code not 200–299). Arguments: `(response, column, entity)`. |
+| `error`             | `function` | no handler  | Callback when the application returns a response body where `status` unequals `'success'`. Arguments: `(body, column, entity)`.|
+
+</details>
+
+<br/>
 
 <br/>
 
@@ -328,8 +374,49 @@ Displays an editable input field, that sends a request on change.
 
 `type: 'toggle'`
 
-
 Displays a toggle button that sends a request on change.
+
+
+<details>
+    <summary>Request Sent</summary>
+
+**Method:** `POST`
+
+**Content Type:** JSON
+
+**Request Body:** empty / defined in `requestInit` option.
+
+</details>
+
+<details>
+    <summary>Expected Response (JSON)</summary>
+ 
+**Response Body:**
+
+`status`: `'success'` if all went well, anything else to trigger the error callback.
+`checked`: Boolean value indicating the new state.
+
+**Notes:**
+
+You can send any number of additional data in case something went wrong. Typically along the lines of "reason" or "message".
+
+The entire response body will be passed to the error callback.
+
+</details>
+
+<details>
+    <summary>Options</summary>
+    
+| Name                | Type       | Required/Default          | Description                                                             |
+|---------------------|------------|---------------------------|-------------------------------------------------------------------------|
+| `name`              | `String`   | Required                  | Entity property name.                                                   |
+| `action`            | `String`   | Required                  | Action Path/URL template                                                |
+| `replacements`      | `Array`    | `{}`                      | [See replacements.](#replacements)                                      |
+| `requestInit`       | `Object`   | `{}`                      | Options to be passed to the `fetch` call. [See possible properties.](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request) |
+| `critical`          | `function` | no handler  | Callback when the request fails (result code not 200–299). Arguments: `(response, column, entity)`. |
+| `error`             | `function` | no handler  | Callback when the application returns a response body where `status` unequals `'success'`. Arguments: `(body, column, entity)`.|
+
+</details>
 
 <br/>
 
