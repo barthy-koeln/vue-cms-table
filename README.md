@@ -269,7 +269,7 @@ Displays a concatenated string from multiple property values.
 | Name                | Type     | Required/Default        | Description                                              |
 |---------------------|----------|-------------------------|----------------------------------------------------------|
 | `names`             | `String` | Required                | Entity property names.                                   |
-| `separator`         | `String` | Required                | Separator between the property values. Can contain HTML. |
+| `separator`         | `String` | Required                | Separator between the property values. Can not contain HTML. |
 
 </details>
 
@@ -287,7 +287,7 @@ Displays a string mapped by a property value.
 | Name                | Type     | Required/Default        | Description                                                                                       |
 |---------------------|----------|-------------------------|---------------------------------------------------------------------------------------------------|
 | `name`              | `String` | Required                | Entity property name.                                                                             |
-| `map`               | `Map`    | Required                | Map that has entity property values as keys and strings. String to be displayed can contain HTML. |
+| `map`               | `Map`    | Required                | Map that has entity property values as keys and strings. Strings to be displayed can not contain HTML. |
 
 </details>
 

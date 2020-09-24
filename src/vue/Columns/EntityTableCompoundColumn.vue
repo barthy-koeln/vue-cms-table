@@ -5,8 +5,9 @@
   <span
     v-if="props.column['names']"
     class="text-break"
-    v-html="props.column['names'].map(name => props.entity[name]).join(props.column['separator'])"
-  />
+  >
+    {{ props.column['names'].map(name => props.entity[name]).join(props.column['separator']) }}
+  </span>
 </template>
 
 <script>

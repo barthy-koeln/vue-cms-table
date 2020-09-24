@@ -4,8 +4,9 @@
 >
   <div
     v-if="props.entity[props.column['name']] && props.column['map'].has(props.entity[props.column['name']])"
-    v-html="props.column['map'].get(props.entity[props.column['name']])"
-  />
+  >
+    {{ props.column['map'].get(props.entity[props.column['name']]) }}
+  </div>
 </template>
 
 <script>

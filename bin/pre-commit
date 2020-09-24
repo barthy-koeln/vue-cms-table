@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
 
-eslint --fix src/utils/**/*.js
-eslint --fix src/vue/**/*.vue
+# shellcheck disable=SC2046
+eslint --fix $(find src -name '*.vue')
+# shellcheck disable=SC2046
+eslint --fix $(find src -name '*.js')
