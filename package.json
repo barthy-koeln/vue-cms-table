@@ -7,7 +7,6 @@
   "private": false,
   "dependencies": {
     "@coreui/coreui": "^3.3.0",
-    "@coreui/icons": "^1.0.1",
     "@coreui/vue": "^3.1.2",
     "vue": "^2.6.12"
   },
