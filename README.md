@@ -319,42 +319,13 @@ Displays an image.
 
 `type: 'input'`
 
-
 Displays an editable input field, that shows a button on change and sends a request when pressing it.
 
 <details>
-    <summary>Request Sent</summary>
-
-**Method:** `POST`
-
-**Content Type:** JSON
-
-**Request Body:**
-
-`value`: contains the new input field value
-
-</details>
-
-<details>
-    <summary>Expected Response</summary>
-    
-**Content Type:** JSON
-
-**Response Body:**
-
-`status`: `'success'` if all went well, anything else to trigger the error callback.
-
-**Notes:**
-
-You can send any number of additional data in case something went wrong. Typically along the lines of "reason" or "message".
-
-The entire response body will be passed to the error callback.
-
-</details>
-
-<details>
     <summary>Options</summary>
-    
+
+<br/>
+
 | Name                | Type       | Required/Default          | Description                                                             |
 |---------------------|------------|---------------------------|-------------------------------------------------------------------------|
 | `name`              | `String`   | Required                  | Entity property name.                                                   |
@@ -366,7 +337,39 @@ The entire response body will be passed to the error callback.
 
 </details>
 
+<details>
+    <summary>Request Sent</summary>
+
 <br/>
+
+**Method:** `POST`
+
+**Content Type:** JSON
+
+**Request Body:**
+
+| Name                | Type       | Description                         |
+|---------------------|------------|-------------------------------------|
+| `value`             | `Any`      | Contains the new input field value. |
+
+</details>
+
+<details>
+    <summary>Expected Response</summary>
+
+<br/>
+    
+**Content Type:** JSON
+
+**Response Body:**
+
+| Name                | Type       | Required/Default          | Description                                                                |
+|---------------------|------------|---------------------------|----------------------------------------------------------------------------|
+| `status`            | `String`   | Required                  | `'success'` if all went well, anything else to trigger the error callback. |
+
+*NOTE: You can send any number of additional data in case something went wrong. Typically along the lines of "reason" or "message". The entire response body will be passed to the error callback.*
+
+</details>
 
 <br/>
 
@@ -376,9 +379,26 @@ The entire response body will be passed to the error callback.
 
 Displays a toggle button that sends a request on change.
 
+<details>
+    <summary>Options</summary>
+
+<br/>
+    
+| Name                | Type       | Required/Default          | Description                                                             |
+|---------------------|------------|---------------------------|-------------------------------------------------------------------------|
+| `name`              | `String`   | Required                  | Entity property name.                                                   |
+| `action`            | `String`   | Required                  | Action Path/URL template                                                |
+| `replacements`      | `Array`    | `{}`                      | [See replacements.](#replacements)                                      |
+| `requestInit`       | `Object`   | `{}`                      | Options to be passed to the `fetch` call. [See possible properties.](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request) |
+| `critical`          | `function` | no handler  | Callback when the request fails (result code not 200–299). Arguments: `(response, column, entity)`. |
+| `error`             | `function` | no handler  | Callback when the application returns a response body where `status` unequals `'success'`. Arguments: `(body, column, entity)`.|
+
+</details>
 
 <details>
     <summary>Request Sent</summary>
+
+<br/>
 
 **Method:** `POST`
 
@@ -389,32 +409,22 @@ Displays a toggle button that sends a request on change.
 </details>
 
 <details>
-    <summary>Expected Response (JSON)</summary>
- 
+    <summary>Expected Response</summary>
+
+<br/>
+
+**Content Type:** JSON
+
 **Response Body:**
 
-`status`: `'success'` if all went well, anything else to trigger the error callback.
-`checked`: Boolean value indicating the new state.
+| Name                | Type       | Required/Default          | Description                                                                |
+|---------------------|------------|---------------------------|----------------------------------------------------------------------------|
+| `status`            | `String`   | Required                  | `'success'` if all went well, anything else to trigger the error callback. |
+| `checked`           | `Boolean`  | Required                  | Boolean value indicating the new state.                                    |
 
-**Notes:**
 
-You can send any number of additional data in case something went wrong. Typically along the lines of "reason" or "message".
 
-The entire response body will be passed to the error callback.
-
-</details>
-
-<details>
-    <summary>Options</summary>
-    
-| Name                | Type       | Required/Default          | Description                                                             |
-|---------------------|------------|---------------------------|-------------------------------------------------------------------------|
-| `name`              | `String`   | Required                  | Entity property name.                                                   |
-| `action`            | `String`   | Required                  | Action Path/URL template                                                |
-| `replacements`      | `Array`    | `{}`                      | [See replacements.](#replacements)                                      |
-| `requestInit`       | `Object`   | `{}`                      | Options to be passed to the `fetch` call. [See possible properties.](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request) |
-| `critical`          | `function` | no handler  | Callback when the request fails (result code not 200–299). Arguments: `(response, column, entity)`. |
-| `error`             | `function` | no handler  | Callback when the application returns a response body where `status` unequals `'success'`. Arguments: `(body, column, entity)`.|
+*NOTE: You can send any number of additional data in case something went wrong. Typically along the lines of "reason" or "message". The entire response body will be passed to the error callback.*
 
 </details>
 
