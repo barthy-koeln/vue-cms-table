@@ -9,7 +9,7 @@
           class="p-3"
           @search="loadData"
         >
-          <slot name="search-form" />
+          <slot name="search-form"/>
         </entity-table-search-form>
 
         <entity-table-header
@@ -36,176 +36,176 @@
 </template>
 
 <script>
-import { CCard, CCardHeader } from '@coreui/vue'
-import EntityTableSearchForm from './EntityTableSearchForm.vue'
-import EntityTableHeader from './EntityTableHeader.vue'
-import EntityTableResults from './EntityTableResults.vue'
-import EntityTablePagination from './EntityTablePagination.vue'
-import { serializeQueryString } from '../utils/SearchParamsUtils.js'
+  import { CCard, CCardHeader } from '@coreui/vue'
+  import EntityTableSearchForm from './EntityTableSearchForm.vue'
+  import EntityTableHeader from './EntityTableHeader.vue'
+  import EntityTableResults from './EntityTableResults.vue'
+  import EntityTablePagination from './EntityTablePagination.vue'
+  import { serializeQueryString } from '../utils/SearchParamsUtils.js'
 
-export default {
-  name: 'EntityTable',
+  export default {
+    name: 'EntityTable',
 
-  components: {
-    CCard,
-    CCardHeader,
-    EntityTableSearchForm,
-    EntityTableHeader,
-    EntityTableResults,
-    EntityTablePagination
-  },
-
-  props: {
-    searchPath: {
-      type: String,
-      required: true
+    components: {
+      CCard,
+      CCardHeader,
+      EntityTableSearchForm,
+      EntityTableHeader,
+      EntityTableResults,
+      EntityTablePagination
     },
 
-    columns: {
-      type: Array,
-      required: true
-    },
-
-    entityKey: {
-      type: String,
-      required: true
-    },
-
-    searchLabel: {
-      type: String,
-      required: false,
-      default: 'Search'
-    },
-
-    searchPlaceholder: {
-      type: String,
-      required: false,
-      default: 'Type here to search'
-    },
-
-    defaultOrdering: {
-      type: Array,
-      required: false,
-      default () {
-        return []
-      }
-    },
-
-    filters: {
-      type: Object,
-      default () {
-        return {}
-      }
-    },
-
-    requestInit: {
-      type: Object,
-      default () {
-        return {}
-      }
-    }
-  },
-
-  data () {
-    return {
-      page: 1,
-      pageCount: 0,
-      search: '',
-      entities: [],
-      lastQueryString: '',
-      loading: false,
-      orderings: {}
-    }
-  },
-
-  watch: {
-    filters: {
-      handler () {
-        this.loadData()
+    props: {
+      searchPath: {
+        type: String,
+        required: true
       },
-      deep: true
-    },
 
-    orderings: {
-      handler () {
-        this.loadData()
+      columns: {
+        type: Array,
+        required: true
       },
-      deep: true
-    }
-  },
 
-  beforeMount () {
-    if (this.defaultOrdering.length === 2) {
-      // do not trigger watcher here
-      this.$set(this.orderings, this.defaultOrdering[0], this.defaultOrdering[1])
-    }
-  },
+      entityKey: {
+        type: String,
+        required: true
+      },
 
-  mounted () {
-    if (!this.loading) {
-      this.loadData()
-    }
-  },
+      searchLabel: {
+        type: String,
+        required: false,
+        default: 'Search'
+      },
 
-  methods: {
-    getQueryString () {
-      const queryData = {
-        search: this.search,
-        page: this.page,
-        filters: this.filters,
-        orderings: this.orderings
+      searchPlaceholder: {
+        type: String,
+        required: false,
+        default: 'Type here to search'
+      },
+
+      defaultOrdering: {
+        type: Array,
+        required: false,
+        default () {
+          return []
+        }
+      },
+
+      filters: {
+        type: Object,
+        default () {
+          return {}
+        }
+      },
+
+      requestInit: {
+        type: Object,
+        default () {
+          return {}
+        }
       }
-
-      return serializeQueryString(queryData)
     },
 
-    async loadData () {
-      const queryString = this.getQueryString()
-
-      if (this.lastQueryString === queryString) {
-        return
+    data () {
+      return {
+        page: 1,
+        pageCount: 0,
+        search: '',
+        entities: [],
+        lastQueryString: '',
+        loading: false,
+        orderings: {}
       }
-
-      this.loading = true
-      const response = await fetch(`${this.searchPath}?${queryString}`, this.requestInit)
-      if (response.status !== 200) {
-        throw new Error(response.statusText)
-      }
-
-      const body = await response.json()
-      this.page = body.page
-      this.pageCount = body.pageCount
-      this.entities = body.entities
-
-      this.lastQueryString = queryString
-      this.loading = false
     },
 
-    headerClicked (propertyNames) {
-      for (const [currentPropertyName] of Object.entries(this.orderings)) {
-        if (propertyNames.includes(currentPropertyName)) {
-          continue
+    watch: {
+      filters: {
+        handler () {
+          this.loadData()
+        },
+        deep: true
+      },
+
+      orderings: {
+        handler () {
+          this.loadData()
+        },
+        deep: true
+      }
+    },
+
+    beforeMount () {
+      if (this.defaultOrdering.length === 2) {
+        // do not trigger watcher here
+        this.$set(this.orderings, this.defaultOrdering[0], this.defaultOrdering[1])
+      }
+    },
+
+    mounted () {
+      if (!this.loading) {
+        this.loadData()
+      }
+    },
+
+    methods: {
+      getQueryString () {
+        const queryData = {
+          search: this.search,
+          page: this.page,
+          filters: this.filters,
+          orderings: this.orderings
         }
 
-        this.$delete(this.orderings, currentPropertyName)
-      }
+        return serializeQueryString(queryData)
+      },
 
-      for (const propertyName of propertyNames) {
-        if (Object.prototype.hasOwnProperty.apply(this.orderings, propertyName)) {
-          this.$set(this.orderings, propertyName, this.orderings[propertyName] === 'asc' ? 'desc' : 'asc')
-          continue
+      async loadData () {
+        const queryString = this.getQueryString()
+
+        if (this.lastQueryString === queryString) {
+          return
         }
 
-        this.$set(this.orderings, propertyName, 'asc')
-      }
-    },
+        this.loading = true
+        const response = await fetch(`${this.searchPath}?${queryString}`, this.requestInit)
+        if (response.status !== 200) {
+          throw new Error(response.statusText)
+        }
 
-    loadPage (page) {
-      this.page = page
-      this.loadData()
+        const body = await response.json()
+        this.page = body.page
+        this.pageCount = body.pageCount
+        this.entities = body.entities
+
+        this.lastQueryString = queryString
+        this.loading = false
+      },
+
+      headerClicked (propertyNames) {
+        for (const [currentPropertyName] of Object.entries(this.orderings)) {
+          if (propertyNames.includes(currentPropertyName)) {
+            continue
+          }
+
+          this.$delete(this.orderings, currentPropertyName)
+        }
+
+        for (const propertyName of propertyNames) {
+          if (Object.prototype.hasOwnProperty.apply(this.orderings, propertyName)) {
+            this.$set(this.orderings, propertyName, this.orderings[propertyName] === 'asc' ? 'desc' : 'asc')
+            continue
+          }
+
+          this.$set(this.orderings, propertyName, 'asc')
+        }
+      },
+
+      loadPage (page) {
+        this.page = page
+        this.loadData()
+      }
     }
   }
-}
 </script>
 
 <style lang="scss">
