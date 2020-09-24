@@ -211,7 +211,6 @@
 <style lang="scss">
   .entity-table-results,
   .entity-table-header {
-
     .col {
       align-items: flex-start;
       display: flex;
