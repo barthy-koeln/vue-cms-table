@@ -99,10 +99,12 @@
         }
 
         this.buttonColor = 'success'
-        setTimeout(() => {
-          this.buttonColor = 'primary'
-          this.initialValue = this.value
-        }, 1000)
+        setTimeout(this.reset, 1000)
+      },
+
+      reset () {
+        this.buttonColor = 'primary'
+        this.initialValue = this.value
       }
     }
   }

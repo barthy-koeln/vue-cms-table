@@ -1,15 +1,18 @@
 # Vue.js CMS Table
 
 [![DeepScan grade](https://deepscan.io/api/teams/11039/projects/13961/branches/248774/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=11039&pid=13961&bid=248774)
+[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
-This bundle provides *opinionanted* Vue.js components suitable to build typical Content Management System tables.
-With regard to responsiveness and flexibility, the "table" is however constructed using bootstrap rows and columns.
+This bundle provides *opinionated* Vue.js components suitable to build
+typical Content Management System tables. With regard to responsiveness
+and flexibility, the "table" is however constructed using bootstrap rows
+and columns.
 
 <br/>
 
 ## Installing
 
-```bash
+```shell script
 yarn add barthy-koeln/vue-cms-table
 ```
 
@@ -17,17 +20,20 @@ yarn add barthy-koeln/vue-cms-table
 
 ## CoreUI
 
-These components use [@coreui/coreui](https://github.com/coreui/coreui), [@coreui/vue](https://github.com/coreui/vue) and optionally [@coreui/icons](https://github.com/coreui/coreui-icons).
+These components use [@coreui/coreui](https://github.com/coreui/coreui),
+[@coreui/vue](https://github.com/coreui/vue) and optionally
+[@coreui/icons](https://github.com/coreui/coreui-icons).
 
 ### Theming CoreUI
 
-Follow the guide on ["Theming CoreUI for Bootstrap 4"](https://coreui.io/docs/getting-started/theming/).
+Follow the guide on
+["Theming CoreUI for Bootstrap 4"](https://coreui.io/docs/getting-started/theming/).
 
 ### CoreUI Icons
 
 Register icons globally:
 
-```js
+```javascript
 import {freeSet} from '@coreui/icons'
 import {CIcon}   from '@coreui/vue';
 
@@ -36,7 +42,7 @@ Vue.component('CIcon', CIcon);
 const root = document.getElementById('app');
 
 const vm = new Vue({
-  icons:  freeSet,
+  icons:  freeSet
   /* [...] */
 });
 
@@ -57,8 +63,10 @@ And add color styles
 
 ## Usage Example
 
-The example below displays a table that has three rows: "Name", "Created At", and "Actions".
-This expects that a `GET` request to `/admin/api/some-entity/search` returns an array of objects that have the properties `slug`, `name`, and `created_at`.
+The example below displays a table that has three rows: "Name", "Created
+At", and "Actions". This expects that a `GET` request to
+`/admin/api/some-entity/search` returns an array of objects that have
+the properties `slug`, `name`, and `created_at`.
 
 <details>
     <summary>Show Example Code</summary>
@@ -66,12 +74,13 @@ This expects that a `GET` request to `/admin/api/some-entity/search` returns an 
 ```vue
 <template>
     <div class="page">
-        <entity-table :columns="columns"
-                      entity-key="slug"
-                      search-label="Search SomeEntity"
-                      search-placeholder="Id, Name, …"
-                      search-path="/admin/api/some-entity/search"
-                      :default-ordering="['created_at', 'desc']"
+        <entity-table 
+          :columns="columns"
+          entity-key="slug"
+          search-label="Search SomeEntity"
+          search-placeholder="Id, Name, …"
+          search-path="/admin/api/some-entity/search"
+          :default-ordering="['created_at', 'desc']"
         />
     </div>
 </template>
@@ -110,14 +119,14 @@ This expects that a `GET` request to `/admin/api/some-entity/search` returns an 
                 type:         'link',
                 title:        'View',
                 icon:         'cil-link',
-                replacements: {'__SLUG__': 'slug'},
+                replacements: new Map([['__SLUG__', 'slug']]),
                 path:         '/some-entity/__SLUG__'
               },
               {
                 type:         'link',
                 title:        'Edit',
                 icon:         'cil-pencil',
-                replacements: {'__SLUG__': 'slug'},
+                replacements: new Map([['__SLUG__', 'slug']]),
                 path:         '/some-entity/edit/__SLUG__'
               }
             ]
@@ -131,23 +140,36 @@ This expects that a `GET` request to `/admin/api/some-entity/search` returns an 
 
 </details>
 
-More information about the column types and options can be found [further down this document](#column-types). 
+More information about the column types and options can be found
+[further down this document](#column-types).
 
 <br/>
+
+## Data API
+
+The data endpoints specified in the option `searchPath`
+([see below](#main-component-props)) must return a JSON response with
+the following fields:
+
+| Name        | Type       | Required/Default | Description                              |
+|:------------|:-----------|:-----------------|:-----------------------------------------|
+| `page`      | `Number`   | Required         | The 'current' page, should start at `1`. |
+| `pageCount` | `Number`   | Required         | Number of pages.                         |
+| `entities`  | `Object[]` | Required         | Results.                                 |
 
 ## Main Component Props
 
 The `entity-table` component takes the following props:
 
-| Name                | Type   | Required/Default        | Description                                                                             |
-|---------------------|--------|-------------------------|-----------------------------------------------------------------------------------------|
-| `searchPath`        | `String` | Required                | URL/Path for the `GET` request that returns the data.                                   |
-| `columns`           | `Array`  | Required                | Array of column configurations. See below for details.                                  |
-| `entityKey`         | `String` | Required                | Key of a uniquely identifying property in the entity data. Typically `id` or `slug`.    |
-| `searchLabel`       | `String` | `'Search'`              | Title of the search form                                                                |
-| `searchPlaceholder` | `String` | `'Type here to search'` | Placeholder of the default search field.                                                |
-| `filters`           | `Object` | `{}`                    | Object of filters for the search, following the structure `{name: 'value'}`.            |
-| `defaultOrdering`   | `Array`  | `[]`                    | Array like `['name', 'order']`, where `order` is one of `asc` or `desc`.                |
+| Name                | Type        | Required/Default        | Description                                                                          |
+|:--------------------|:------------|:------------------------|:-------------------------------------------------------------------------------------|
+| `searchPath`        | `String`    | Required                | URL/Path for the `GET` request that returns the data.                                |
+| `columns`           | `Array`     | Required                | Array of column configurations. See below for details.                               |
+| `entityKey`         | `String`    | Required                | Key of a uniquely identifying property in the entity data. Typically `id` or `slug`. |
+| `searchLabel`       | `String`    | `'Search'`              | Title of the search form                                                             |
+| `searchPlaceholder` | `String`    | `'Type here to search'` | Placeholder of the default search field.                                             |
+| `filters`           | `Object`    | `{}`                    | Object of filters for the search, following the structure `{name: 'value'}`.         |
+| `defaultOrdering`   | `String[2]` | `[]`                    | Array like `['name', 'order']`, where `order` is one of `asc` or `desc`.             |
 
 <br/>
 
@@ -155,7 +177,7 @@ The `entity-table` component takes the following props:
 
 Define columns as simple objects following a specific schema.
 
-* [Common Options](#common-options)
+* [Common Column Options](#common-column-options)
 * [Replacements](#replacements)
 * [Boolean Column](#boolean-column)
 * [String Column](#string-column)
@@ -172,33 +194,37 @@ Define columns as simple objects following a specific schema.
 
 <br/>
 
-### Common Options
+### Common Column Options
 
-Every column configuration has common options: 
+Every column configuration has common options:
 
-| Name                | Type   | Required/Default        | Description                                          |
-|---------------------|--------|-------------------------|------------------------------------------------------|
-| `type`              | `String` | Required                | Column type, one of the types defined below.         |
-| `title`             | `String` | Required                | Titles that shows in the table header.               |
-| `classes`           | `Array`  | `[]`                    | Additional classes for both header and data columns. |
+| Name      | Type       | Required/Default | Description                                          |
+|:----------|:-----------|:-----------------|:-----------------------------------------------------|
+| `type`    | `String`   | Required         | Column type, one of the types defined below.         |
+| `title`   | `String`   | Required         | Titles that shows in the table header.               |
+| `classes` | `String[]` | `[]`             | Additional classes for both header and data columns. |
 
 <br/>
 
 ### Replacements
 
-Whenever the option `replacements` occurs, it maps placeholders in a string to entity property names: 
+Whenever the option `replacements` occurs, it maps placeholders in a
+string to entity property names:
 
-```js
+```javascript
 const column = {
   type: 'link',
   path: '/entity/show/__ID__',
-  replacements: {
-    '__ID__': 'id'
-  }
+  replacements: new Map([
+    ['__ID__', 'id']
+  ])
 }
 ```
 
-The column will then replace `__ID__` with the value of `entity['id']` and therefore create a unique path for each result row.
+Replacement maps must have the signature `Map<String|RegExp, String>`.
+
+The column will then replace `__ID__` with the value of `entity['id']`
+and therefore create a unique path for each result row.
 
 <br/>
 
@@ -210,10 +236,10 @@ Displays an icon based on the true/false evaluation of the property.
 
 <details>
     <summary>Options</summary>
-    
-| Name                | Type     | Required/Default        | Description                                                             |
-|---------------------|----------|-------------------------|-------------------------------------------------------------------------|
-| `name`              | `String` | Required                | Entity property name, which is converted to a boolean value using `!!`. |
+
+| Name   | Type     | Required/Default | Description                                                             |
+|:-------|:---------|:-----------------|:------------------------------------------------------------------------|
+| `name` | `String` | Required         | Entity property name, which is converted to a boolean value using `!!`. |
 
 </details>
 
@@ -227,12 +253,14 @@ Displays a string.
 
 <details>
     <summary>Options</summary>
-    
-| Name                | Type     | Required/Default        | Description           |
-|---------------------|----------|-------------------------|-----------------------|
-| `name`              | `String` | Required                | Entity property name. |
+
+| Name   | Type     | Required/Default | Description           |
+|:-------|:---------|:-----------------|:----------------------|
+| `name` | `String` | Required         | Entity property name. |
 
 </details>
+
+*NOTE: Array values will be concatenated with a comma as separator.
 
 <br/>
 
@@ -244,12 +272,12 @@ Displays an entity property and wraps it in a link.
 
 <details>
     <summary>Options</summary>
-    
-| Name                | Type     | Required/Default        | Description                                         |
-|---------------------|----------|-------------------------|-----------------------------------------------------|
-| `name`              | `String` | Required                | Entity property name.                               |
-| `path`              | `String` | Required                | Path/URL template.                                  |
-| `replacements`      | `Array`  | `{}`                    | [See replacements.](#replacements)                  |
+
+| Name           | Type                         | Required/Default | Description                        |
+|:---------------|:-----------------------------|:-----------------|:-----------------------------------|
+| `name`         | `String`                     | Required         | Entity property name.              |
+| `path`         | `String`                     | Required         | Path/URL template.                 |
+| `replacements` | `Map<String|RegExp, String>` | no replacements  | [See replacements.](#replacements) |
 
 The column will then replace `__ID__` with the value of `entity['id']`.
 
@@ -266,10 +294,10 @@ Displays a concatenated string from multiple property values.
 <details>
     <summary>Options</summary>
 
-| Name                | Type     | Required/Default        | Description                                              |
-|---------------------|----------|-------------------------|----------------------------------------------------------|
-| `names`             | `String` | Required                | Entity property names.                                   |
-| `separator`         | `String` | Required                | Separator between the property values. Can not contain HTML. |
+| Name        | Type     | Required/Default | Description                                                 |
+|:------------|:---------|:-----------------|:------------------------------------------------------------|
+| `names`     | `String` | Required         | Entity property names.                                      |
+| `separator` | `String` | Required         | Separator between the property values. Cannot contain HTML. |
 
 </details>
 
@@ -283,28 +311,30 @@ Displays a string mapped by a property value.
 
 <details>
     <summary>Options</summary>
-    
-| Name                | Type     | Required/Default        | Description                                                                                       |
-|---------------------|----------|-------------------------|---------------------------------------------------------------------------------------------------|
-| `name`              | `String` | Required                | Entity property name.                                                                             |
-| `map`               | `Map`    | Required                | Map that has entity property values as keys and strings. Strings to be displayed can not contain HTML. |
+
+| Name   | Type                  | Required/Default | Description                                                                                           |
+|:-------|:----------------------|:-----------------|:------------------------------------------------------------------------------------------------------|
+| `name` | `String`              | Required         | Entity property name.                                                                                 |
+| `map`  | `Map<String, String>` | Required         | Map that has entity property values as keys and strings. Strings to be displayed cannot contain HTML. |
 
 </details>
 
 <details>
     <summary>Example</summary>
 
-If your entity has a property called `status`, that can be one of `APPROVED`, `DENIED`, `PENDING`, you can instead show eloquent messages using the `map` column:
+If your entity has a property called `status`, that can be one of
+`APPROVED`, `DENIED`, `PENDING`, you can instead show eloquent messages
+using the `map` column:
 
-```js
+```javascript
 const column = {
   type: 'map',
   name: 'status',
   map: new Map([
     ['APPROVED', 'Nothing to do here.'],
     ['DENIED', 'Please contact the user.'],
-    ['PENDING', 'Needs admin approval.'],
-  ]),
+    ['PENDING', 'Needs admin approval.']
+  ])
 }
 ```
 
@@ -321,11 +351,11 @@ Displays a formatted date.
 
 <details>
     <summary>Options</summary>
-    
-| Name                | Type                  | Required/Default        | Description                                                                                      |
-|---------------------|-----------------------|-------------------------|--------------------------------------------------------------------------------------------------|
-| `name`              | `String`              | Required                | Entity property name. Will be parsed by `new Date()`.                                             |
-| `formatter`         | `Intl.DateTimeFormat` | `new Intl.DateTimeFormat(navigator.language, {year: 'numeric', month: '2-digit', day: '2-digit'})` | Formats the Date.     |
+
+| Name        | Type                  | Required/Default                                                                                   | Description                                           |
+|:------------|:----------------------|:---------------------------------------------------------------------------------------------------|:------------------------------------------------------|
+| `name`      | `String`              | Required                                                                                           | Entity property name. Will be parsed by `new Date()`. |
+| `formatter` | `Intl.DateTimeFormat` | `new Intl.DateTimeFormat(navigator.language, {year: 'numeric', month: '2-digit', day: '2-digit'})` | Formats the Date.                                     |
 
 </details>
 
@@ -340,13 +370,13 @@ Displays an image.
 
 <details>
     <summary>Options</summary>
-    
-| Name                | Type     | Required/Default          | Description                                                             |
-|---------------------|----------|---------------------------|-------------------------------------------------------------------------|
-| `name`              | `String` | Required                  | Entity property name.                                                   |
-| `path`              | `String` | Required                  | Path/URL template.                                                      |
-| `replacements`      | `Array`  | `{}`                      | [See replacements.](#replacements)                                      |
-| `fallback`          | `String` | no fallback | In case the image property under `name` is empty, use a fallback image. |
+
+| Name           | Type                         | Required/Default | Description                                                             |
+|:---------------|:-----------------------------|:-----------------|:------------------------------------------------------------------------|
+| `name`         | `String`                     | Required         | Entity property name.                                                   |
+| `path`         | `String`                     | Required         | Path/URL template.                                                      |
+| `replacements` | `Map<String|RegExp, String>` | no replacements  | [See replacements.](#replacements)                                      |
+| `fallback`     | `String`                     | no fallback      | In case the image property under `name` is empty, use a fallback image. |
 
 </details>
 
@@ -356,21 +386,22 @@ Displays an image.
 
 `type: 'input'`
 
-Displays an editable input field, that shows a button on change and sends a request when pressing it.
+Displays an editable input field, that shows a button on change and
+sends a request when pressing it.
 
 <details>
     <summary>Options</summary>
 
 <br/>
 
-| Name                | Type       | Required/Default          | Description                                                             |
-|---------------------|------------|---------------------------|-------------------------------------------------------------------------|
-| `name`              | `String`   | Required                  | Entity property name.                                                   |
-| `action`            | `String`   | Required                  | Action Path/URL template                                                |
-| `replacements`      | `Array`    | `{}`                      | [See replacements.](#replacements)                                      |
-| `requestInit`       | `Object`   | `{}`                      | Options to be passed to the `fetch` call. [See possible properties.](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request) NOTE: `body` will be overwritten. |
-| `critical`          | `function` | no handler  | Callback when the request fails (result code not 200–299). Arguments: `(response, column, entity)`. |
-| `error`             | `function` | no handler  | Callback when the application returns a response body where `status` unequals `'success'`. Arguments: `(body, column, entity)`.|
+| Name           | Type                         | Required/Default | Description                                                                                                                                                              |
+|:---------------|:-----------------------------|:-----------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `name`         | `String`                     | Required         | Entity property name.                                                                                                                                                    |
+| `action`       | `String`                     | Required         | Action Path/URL template                                                                                                                                                 |
+| `replacements` | `Map<String|RegExp, String>` | no replacements  | [See replacements.](#replacements)                                                                                                                                       |
+| `requestInit`  | `Object`                     | `{}`             | Options to be passed to the `fetch` call. [See possible properties.](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request) NOTE: `body` will be overwritten. |
+| `critical`     | `Function`                   | no handler       | Callback when the request fails (result code not 200–299). Arguments: `(response, column, entity)`.                                                                      |
+| `error`        | `Function`                   | no handler       | Callback when the application returns a response body where `status` unequals `'success'`. Arguments: `(body, column, entity)`.                                          |
 
 </details>
 
@@ -385,9 +416,9 @@ Displays an editable input field, that shows a button on change and sends a requ
 
 **Request Body:**
 
-| Name                | Type       | Description                         |
-|---------------------|------------|-------------------------------------|
-| `value`             | `Any`      | Contains the new input field value. |
+| Name    | Type  | Description                         |
+|:--------|:------|:------------------------------------|
+| `value` | `Any` | Contains the new input field value. |
 
 </details>
 
@@ -395,16 +426,18 @@ Displays an editable input field, that shows a button on change and sends a requ
     <summary>Expected Response</summary>
 
 <br/>
-    
+
 **Content Type:** JSON
 
 **Response Body:**
 
-| Name                | Type       | Required/Default          | Description                                                                |
-|---------------------|------------|---------------------------|----------------------------------------------------------------------------|
-| `status`            | `String`   | Required                  | `'success'` if all went well, anything else to trigger the error callback. |
+| Name     | Type     | Required/Default | Description                                                                |
+|:---------|:---------|:-----------------|:---------------------------------------------------------------------------|
+| `status` | `String` | Required         | `'success'` if all went well, anything else to trigger the error callback. |
 
-*NOTE: You can send any number of additional data in case something went wrong. Typically along the lines of "reason" or "message". The entire response body will be passed to the error callback.*
+*NOTE: You can send any number of additional data in case something went
+wrong. Typically along the lines of "reason" or "message". The entire
+response body will be passed to the error callback.*
 
 </details>
 
@@ -420,15 +453,15 @@ Displays a toggle button that sends a request on change.
     <summary>Options</summary>
 
 <br/>
-    
-| Name                | Type       | Required/Default          | Description                                                             |
-|---------------------|------------|---------------------------|-------------------------------------------------------------------------|
-| `name`              | `String`   | Required                  | Entity property name.                                                   |
-| `action`            | `String`   | Required                  | Action Path/URL template                                                |
-| `replacements`      | `Array`    | `{}`                      | [See replacements.](#replacements)                                      |
-| `requestInit`       | `Object`   | `{}`                      | Options to be passed to the `fetch` call. [See possible properties.](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request) |
-| `critical`          | `function` | no handler  | Callback when the request fails (result code not 200–299). Arguments: `(response, column, entity)`. |
-| `error`             | `function` | no handler  | Callback when the application returns a response body where `status` unequals `'success'`. Arguments: `(body, column, entity)`.|
+
+| Name           | Type                         | Required/Default | Description                                                                                                                            |
+|:---------------|:-----------------------------|:-----------------|:---------------------------------------------------------------------------------------------------------------------------------------|
+| `name`         | `String`                     | Required         | Entity property name.                                                                                                                  |
+| `action`       | `String`                     | Required         | Action Path/URL template                                                                                                               |
+| `replacements` | `Map<String|RegExp, String>` | no replacements  | [See replacements.](#replacements)                                                                                                     |
+| `requestInit`  | `Object`                     | `{}`             | Options to be passed to the `fetch` call. [See possible properties.](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request) |
+| `critical`     | `Function`                   | no handler       | Callback when the request fails (result code not 200–299). Arguments: `(response, column, entity)`.                                    |
+| `error`        | `Function`                   | no handler       | Callback when the application returns a response body where `status` unequals `'success'`. Arguments: `(body, column, entity)`.        |
 
 </details>
 
@@ -454,14 +487,15 @@ Displays a toggle button that sends a request on change.
 
 **Response Body:**
 
-| Name                | Type       | Required/Default          | Description                                                                |
-|---------------------|------------|---------------------------|----------------------------------------------------------------------------|
-| `status`            | `String`   | Required                  | `'success'` if all went well, anything else to trigger the error callback. |
-| `checked`           | `Boolean`  | Required                  | Boolean value indicating the new state.                                    |
+| Name      | Type      | Required/Default | Description                                                                |
+|:----------|:----------|:-----------------|:---------------------------------------------------------------------------|
+| `status`  | `String`  | Required         | `'success'` if all went well, anything else to trigger the error callback. |
+| `checked` | `Boolean` | Required         | Boolean value indicating the new state.                                    |
 
 
-
-*NOTE: You can send any number of additional data in case something went wrong. Typically along the lines of "reason" or "message". The entire response body will be passed to the error callback.*
+*NOTE: You can send any number of additional data in case something went
+wrong. Typically along the lines of "reason" or "message". The entire
+response body will be passed to the error callback.*
 
 </details>
 
@@ -473,18 +507,18 @@ Displays a toggle button that sends a request on change.
 
 Displays any number of actions as defined below.
 
-| Name                | Type       | Required/Default          | Description                                                                    |
-|---------------------|------------|---------------------------|--------------------------------------------------------------------------------|
-| `actions`           | `Array`    | Required                  | Array of action definitions (objects). See below for action types and oprions. |
-| `condition`         | `function` | no condition              | Callback defining whether the action is displayed b returning a boolean value. Argments: `(entity)`|                                    |
+| Name        | Type       | Required/Default | Description                                                                                         |    |
+|:------------|:-----------|:-----------------|:----------------------------------------------------------------------------------------------------|:---|
+| `actions`   | `Object[]` | Required         | Array of action definitions. See below for action types and oprions.                                |    |
+| `condition` | `Function` | no condition     | Callback defining whether the action is displayed b returning a boolean value. Argments: `(entity)` |    |
 
 #### Action Types
 
 ##### Common Options
 
-| Name                | Type       | Required/Default          | Description                |
-|---------------------|------------|---------------------------|----------------------------|
-| `title`             | `String`   | Required                  | String used as button text |
+| Name    | Type     | Required/Default | Description                |
+|:--------|:---------|:-----------------|:---------------------------|
+| `title` | `String` | Required         | String used as button text |
 
 ##### Link Action
 
@@ -492,12 +526,12 @@ Displays a link as a button.
 
 <details>
     <summary>Options</summary>
-    
-| Name                | Type     | Required/Default        | Description                         |
-|---------------------|----------|-------------------------|-------------------------------------|
-| `path`              | `String` | Required                | Path/URL template.                  |
-| `replacements`      | `Array`  | `{}`                    | [See replacements.](#replacements)  |
-| `icon`              | `String` | no icon                 | Name of any imported [coreui icon](https://icons.coreui.io/icons/). Read the [CoreUI Section](#coreui) for more information.|
+
+| Name           | Type                         | Required/Default | Description                                                                                                                  |
+|:---------------|:-----------------------------|:-----------------|:-----------------------------------------------------------------------------------------------------------------------------|
+| `path`         | `String`                     | Required         | Path/URL template.                                                                                                           |
+| `replacements` | `Map<String|RegExp, String>` | no replacements  | [See replacements.](#replacements)                                                                                           |
+| `icon`         | `String`                     | no icon          | Name of any imported [coreui icon](https://icons.coreui.io/icons/). Read the [CoreUI Section](#coreui) for more information. |
 
 </details>
 
@@ -507,12 +541,13 @@ Displays a button and adds a click listener wth the passed callback.
 
 <details>
     <summary>Options</summary>
-    
-| Name                | Type       | Required/Default        | Description                         |
-|---------------------|------------|-------------------------|-------------------------------------|
-| `path`              | `String`   | Required                | Path/URL template.                  |
-| `click`             | `function` | Required                | Callback that handles the button click. Arguments: `(entity, event)` |
-| `replacements`      | `Array`    | `{}`                    | [See replacements.](#replacements)  |
-| `icon`              | `String`   | no icon                 | Name of any imported [coreui icon](https://icons.coreui.io/icons/). Read the [CoreUI Section](#coreui) for more information.|
+
+| Name           | Type                         | Required/Default | Description                                                                                                                  |
+|:---------------|:-----------------------------|:-----------------|:-----------------------------------------------------------------------------------------------------------------------------|
+| `path`         | `String`                     | Required         | Path/URL template.                                                                                                           |
+| `click`        | `Function`                   | Required         | Callback that handles the button click. Arguments: `(entity, event)`                                                         |
+| `replacements` | `Map<String|RegExp, String>` | no replacements  | [See replacements.](#replacements)                                                                                           |
+| `icon`         | `String`                     | no icon          | Name of any imported [coreui icon](https://icons.coreui.io/icons/). Read the [CoreUI Section](#coreui) for more information. |
 
 </details>
+

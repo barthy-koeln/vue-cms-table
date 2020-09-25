@@ -5,13 +5,13 @@
  * @return {string}
  */
 export function serializeQueryString (data, prefix = null) {
-  const str = []
+  const queryString = []
   for (const property in data) {
     if (Object.prototype.hasOwnProperty.apply(data, property)) {
       const key = prefix ? prefix + '[' + property + ']' : property
       const value = data[property]
 
-      str.push(
+      queryString.push(
         typeof value === 'object'
           ? serializeQueryString(value, key)
           : encodeURIComponent(key) + '=' + encodeURIComponent(value)
@@ -19,5 +19,5 @@ export function serializeQueryString (data, prefix = null) {
     }
   }
 
-  return str.join('&')
+  return queryString.join('&')
 }

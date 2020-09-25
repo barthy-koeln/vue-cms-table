@@ -99,9 +99,11 @@
       },
 
       requestInit: {
-        type: Object,
+        validator (value) {
+          return value instanceof Object || typeof value === 'undefined'
+        },
         default () {
-          return {}
+          return undefined
         }
       }
     },
@@ -168,7 +170,7 @@
 
         this.loading = true
         const response = await fetch(`${this.searchPath}?${queryString}`, this.requestInit)
-        if (response.status !== 200) {
+        if (!response.ok) {
           throw new Error(response.statusText)
         }
 
