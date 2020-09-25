@@ -21,7 +21,7 @@ yarn add barthy-koeln/vue-cms-table
 ## CoreUI
 
 These components use [@coreui/coreui](https://github.com/coreui/coreui),
-[@coreui/vue](https://github.com/coreui/vue) and optionally
+[@coreui/vue](https://github.com/coreui/vue) and
 [@coreui/icons](https://github.com/coreui/coreui-icons).
 
 ### Theming CoreUI
@@ -49,7 +49,7 @@ const vm = new Vue({
 vm.$mount(root);
 ```
 
-And add color styles
+Add color styles:
 
 ```scss
 @each $name, $color in $theme-colors {
@@ -148,14 +148,46 @@ More information about the column types and options can be found
 ## Data API
 
 The data endpoints specified in the option `searchPath`
-([see below](#main-component-props)) must return a JSON response with
-the following fields:
+([see below](#main-component-props)) must accept and return JSON data.
+
+<details>
+    <summary>Request Sent</summary>
+
+<br/>
+
+**Method:** `GET`
+
+**Content Type:** URL-Encoded
+
+**Request Parameters:**
+
+| Name       | Type     | Description                                                                                                                               |
+|:-----------|:---------|:------------------------------------------------------------------------------------------------------------------------------------------|
+| `search`   | `String` | Contains the search input field value.                                                                                                    |
+| `page`     | `Number` | The current page to fetch. The server determines the amount of results per page.                                                          |
+| `filters`  | `Object` | A filter map of `'property' => 'value'`. This parameter is equivalent to the [main component's property `filters`](#main-component-props) |
+| `ordering` | `Object` | An ordering map of `'property' => 'direction'`.                                                                                           |
+
+</details>
+
+<details>
+    <summary>Expected Response</summary>
+
+<br/>
+
+**Content Type:** JSON
+
+**Response Body:**
 
 | Name        | Type       | Required/Default | Description                              |
 |:------------|:-----------|:-----------------|:-----------------------------------------|
 | `page`      | `Number`   | Required         | The 'current' page, should start at `1`. |
 | `pageCount` | `Number`   | Required         | Number of pages.                         |
 | `entities`  | `Object[]` | Required         | Results.                                 |
+
+</details>
+
+<br/>
 
 ## Main Component Props
 
@@ -170,6 +202,120 @@ The `entity-table` component takes the following props:
 | `searchPlaceholder` | `String`    | `'Type here to search'` | Placeholder of the default search field.                                             |
 | `filters`           | `Object`    | `{}`                    | Object of filters for the search, following the structure `{name: 'value'}`.         |
 | `defaultOrdering`   | `String[2]` | `[]`                    | Array like `['name', 'order']`, where `order` is one of `asc` or `desc`.             |
+
+<br/>
+
+## Search Form
+
+By default, the component displays a simple search input. if you want to
+add more filters and inputs, use the main component's `'search-form'`
+slot.
+
+<details>
+    <summary>Example</summary>
+
+<br/>
+
+```vue
+<template>
+    <entity-table 
+      :default-ordering="['type', 'asc']"
+      :columns="columns"
+      :filters="filters"
+      entity-key="id"
+      search-label="Search Things"
+      search-path="/admin/api/things/search"
+      search-placeholder="Thing, Stuff, …"
+    >
+      <template #search-form>
+        <label for="filter-suggestions">Show only approved things</label>
+        <c-switch 
+          id="filter-suggestions"
+          color="primary"
+          name="filter-suggestions"
+          shape="pill"
+          @update:checked="toggleFilterApproved"
+        />
+            
+        <c-select
+          id="filter-type"
+          :options="typeOptions"
+          add-input-classes="mb-0"
+          label="Filter by Type"
+          @update:value="setFilterType"
+        />
+      </template>
+    </entity-table>
+</template>
+
+<script>
+import EntityTable        from 'vue-cms-table/src/vue/EntityTable.vue';
+import {CSelect, CSwitch} from '@coreui/vue'
+
+export default {
+  name: 'Taxonomies',
+
+  components: {
+    EntityTable,
+    CSwitch,
+    CSelect
+  },
+
+  data() {
+    return {
+      filters: {}
+    }
+  },
+
+  methods: {
+    toggleFilterApproved(checked) {
+      if (checked) {
+        this.$set(this.filters, 'approved', false);
+        return
+      }
+
+      this.$delete(this.filters, 'approved');
+    },
+
+    setFilterType(value) {
+      if (value !== 'all') {
+        this.$set(this.filters, 'type', value);
+        return
+      }
+
+      this.$delete(this.filters, 'type');
+    }
+  },
+
+  computed: {
+    columns() {
+      return [
+        {
+          name:    'type',
+          type:    'string',
+          title:   'Type',
+          classes: ['col-2', 'col-md-2']
+        },
+        {
+          name:         'title',
+          type:         'string',
+          title:        'Title',
+          classes:      ['col-4', 'col-md-3']
+        },
+        {
+          name:    'created_at_dt',
+          type:    'date',
+          title:   'Created At',
+          classes: ['d-none', 'd-md-flex', 'col-md-1']
+        },
+      ]
+    }
+  }
+}
+</script>
+```
+
+</details>
 
 <br/>
 
@@ -494,7 +640,7 @@ Displays a toggle button that sends a request on change.
 
 
 *NOTE: You can send any number of additional data in case something went
-wrong. Typically along the lines of "reason" or "message". The entire
+wrong, typically along the lines of "reason" or "message". The entire
 response body will be passed to the error callback.*
 
 </details>
@@ -507,18 +653,26 @@ response body will be passed to the error callback.*
 
 Displays any number of actions as defined below.
 
-| Name        | Type       | Required/Default | Description                                                                                         |    |
-|:------------|:-----------|:-----------------|:----------------------------------------------------------------------------------------------------|:---|
-| `actions`   | `Object[]` | Required         | Array of action definitions. See below for action types and oprions.                                |    |
-| `condition` | `Function` | no condition     | Callback defining whether the action is displayed b returning a boolean value. Argments: `(entity)` |    |
+<details>
+    <summary>Options</summary>
+
+| Name        | Type       | Required/Default | Description                                                                                                  |
+|:------------|:-----------|:-----------------|:-------------------------------------------------------------------------------------------------------------|
+| `actions`   | `Object[]` | Required         | Array of action definitions. See below for action types and options.                                         |
+| `condition` | `Function` | no condition     | Callback that returns a boolean value and defines whether the action will be rendered. Arguments: `(entity)` |
+
+</details>
 
 #### Action Types
 
-##### Common Options
+<details>
+    <summary>Common Options</summary>
 
-| Name    | Type     | Required/Default | Description                |
-|:--------|:---------|:-----------------|:---------------------------|
-| `title` | `String` | Required         | String used as button text |
+| Name    | Type     | Required/Default | Description                 |
+|:--------|:---------|:-----------------|:----------------------------|
+| `title` | `String` | Required         | String used as button text. |
+
+</details>
 
 ##### Link Action
 

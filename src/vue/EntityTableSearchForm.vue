@@ -9,7 +9,7 @@
           :placeholder="placeholder"
           autocomplete="off"
           class="form-control"
-          type="text"
+          type="search"
           @keyup.passive="debounceSearch"
         >
         <div class="input-group-append">
@@ -34,8 +34,6 @@
 </template>
 
 <script>
-  let timeout = null
-
   export default {
     name: 'EntityTableSearchForm',
 
@@ -54,6 +52,12 @@
       }
     },
 
+    data () {
+      return {
+        timeout: null
+      }
+    },
+
     computed: {
       localState: {
         get () {
@@ -67,8 +71,8 @@
 
     methods: {
       debounceSearch () {
-        clearTimeout(timeout)
-        timeout = setTimeout(this.search, 300)
+        clearTimeout(this.timeout)
+        this.timeout = setTimeout(this.search, 300)
       },
 
       search () {
