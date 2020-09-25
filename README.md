@@ -16,9 +16,8 @@ and columns.
 * [Data API](#data-api)
 * [Main Component Props](#main-component-props)
 * [Search Form](#search-form)
-* [Column Types](#column-types)
-  + [Common Column Options](#common-column-options)
-  + [Replacements](#replacements)
+* [Replacements](#replacements)
+* [Columns](#columns)
   + [Boolean Column](#boolean-column)
   + [String Column](#string-column)
   + [Link Column](#link-column)
@@ -29,9 +28,8 @@ and columns.
   + [Input Column](#input-column)
   + [Toggle Column](#toggle-column)
   + [Actions Column](#actions-column)
-    - [Action Types](#action-types)
-      * [Link Action](#link-action)
-      * [Button Action](#button-action)
+    - [Link Action](#link-action)
+    - [Button Action](#button-action)
 
 
 <br/>
@@ -152,7 +150,7 @@ the properties `slug`, `name`, and `created_at`.
 </details>
 
 More information about the column types and options can be found
-[further down this document](#column-types).
+[further down this document](#columns).
 
 <br/>
 
@@ -330,25 +328,7 @@ export default {
 
 <br/>
 
-## Column Types
-
-Define columns as simple objects following a specific schema.
-
-<br/>
-
-### Common Column Options
-
-Every column configuration has common options:
-
-| Name      | Type       | Required/Default | Description                                          |
-|:----------|:-----------|:-----------------|:-----------------------------------------------------|
-| `type`    | `String`   | Required         | Column type, one of the types defined below.         |
-| `title`   | `String`   | Required         | Titles that shows in the table header.               |
-| `classes` | `String[]` | `[]`             | Additional classes for both header and data columns. |
-
-<br/>
-
-### Replacements
+## Replacements
 
 Whenever the option `replacements` occurs, it maps placeholders in a
 string to entity property names:
@@ -362,11 +342,27 @@ const column = {
   ])
 }
 ```
-
 Replacement maps must have the signature `Map<String|RegExp, String>`.
 
 The column will then replace `__ID__` with the value of `entity['id']`
 and therefore create a unique path for each result row.
+
+<br/>
+
+## Columns
+
+Define columns as simple objects following a specific schema.
+
+<details>
+    <summary>Common Column Options</summary>
+
+| Name      | Type       | Required/Default | Description                                          |
+|:----------|:-----------|:-----------------|:-----------------------------------------------------|
+| `type`    | `String`   | Required         | Column type, one of the types defined below.         |
+| `title`   | `String`   | Required         | Titles that shows in the table header.               |
+| `classes` | `String[]` | `[]`             | Additional classes for both header and data columns. |
+
+</details>
 
 <br/>
 
@@ -659,10 +655,8 @@ Displays any number of actions as defined below.
 
 </details>
 
-#### Action Types
-
 <details>
-    <summary>Common Options</summary>
+    <summary>Common Action Options</summary>
 
 | Name    | Type     | Required/Default | Description                 |
 |:--------|:---------|:-----------------|:----------------------------|
@@ -670,7 +664,7 @@ Displays any number of actions as defined below.
 
 </details>
 
-##### Link Action
+#### Link Action
 
 Displays a link as a button.
 
@@ -685,7 +679,7 @@ Displays a link as a button.
 
 </details>
 
-##### Button Action
+#### Button Action
 
 Displays a button and adds a click listener wth the passed callback.
 
