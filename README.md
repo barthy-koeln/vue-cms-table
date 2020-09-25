@@ -8,6 +8,32 @@ typical Content Management System tables. With regard to responsiveness
 and flexibility, the "table" is however constructed using bootstrap rows
 and columns.
 
+* [Installing](#installing)
+* [CoreUI](#coreui)
+  + [Theming CoreUI](#theming-coreui)
+  + [CoreUI Icons](#coreui-icons)
+* [Usage Example](#usage-example)
+* [Data API](#data-api)
+* [Main Component Props](#main-component-props)
+* [Search Form](#search-form)
+* [Column Types](#column-types)
+  + [Common Column Options](#common-column-options)
+  + [Replacements](#replacements)
+  + [Boolean Column](#boolean-column)
+  + [String Column](#string-column)
+  + [Link Column](#link-column)
+  + [Compound Column](#compound-column)
+  + [Map Column](#map-column)
+  + [Date Column](#date-column)
+  + [Image Column](#image-column)
+  + [Input Column](#input-column)
+  + [Toggle Column](#toggle-column)
+  + [Actions Column](#actions-column)
+    - [Action Types](#action-types)
+      * [Link Action](#link-action)
+      * [Button Action](#button-action)
+
+
 <br/>
 
 ## Installing
@@ -31,23 +57,8 @@ Follow the guide on
 
 ### CoreUI Icons
 
-Register icons globally:
-
-```javascript
-import {freeSet} from '@coreui/icons'
-import {CIcon}   from '@coreui/vue';
-
-Vue.component('CIcon', CIcon);
-
-const root = document.getElementById('app');
-
-const vm = new Vue({
-  icons:  freeSet
-  /* [...] */
-});
-
-vm.$mount(root);
-```
+Register icons globally as described in the
+[CoreUI Vue.js Icon Documentation](https://coreui.io/vue/docs/components/icon.html).
 
 Add color styles:
 
@@ -322,21 +333,6 @@ export default {
 ## Column Types
 
 Define columns as simple objects following a specific schema.
-
-* [Common Column Options](#common-column-options)
-* [Replacements](#replacements)
-* [Boolean Column](#boolean-column)
-* [String Column](#string-column)
-* [Link Column](#link-column)
-* [Compound Column](#compound-column)
-* [Map Column](#map-column)
-* [Date Column](#date-column)
-* [Image Column](#image-column)
-* [Input Column](#input-column)
-* [Toggle Column](#toggle-column)
-* [Actions Column](#actions-column)
-  * [Link Action](#link-action)
-  * [Button Action](#button-action)
 
 <br/>
 
