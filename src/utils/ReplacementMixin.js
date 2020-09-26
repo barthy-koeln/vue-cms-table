@@ -15,6 +15,10 @@ export const replacementMixin = {
      */
     replaceAll (template, replacements, data) {
       for (const [search, replace] of replacements) {
+        if (!Object.prototype.hasOwnProperty.call(data, replace)) {
+          throw new Error(`Property ${replace} not found in data while trying to build string: ${template}.`)
+        }
+
         template = template.replace(search, data[replace])
       }
 

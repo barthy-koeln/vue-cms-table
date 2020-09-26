@@ -8,7 +8,7 @@
         @click="headerClicked(column)"
       >
         <div
-          v-if="Object.prototype.hasOwnProperty.apply(orderings, sortedColumnName(column))"
+          v-if="Object.prototype.hasOwnProperty.call(orderings, sortedColumnName(column))"
           class="icon-wrapper"
         >
           <!-- Icons are imported globally -->
@@ -46,7 +46,7 @@
           return
         }
 
-        if (Object.prototype.hasOwnProperty.apply(column, 'sortable') && column.sortable === false) {
+        if (Object.prototype.hasOwnProperty.call(column, 'sortable') && column.sortable === false) {
           return
         }
 

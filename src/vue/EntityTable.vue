@@ -193,7 +193,7 @@
         }
 
         for (const propertyName of propertyNames) {
-          if (Object.prototype.hasOwnProperty.apply(this.orderings, propertyName)) {
+          if (Object.prototype.hasOwnProperty.call(this.orderings, propertyName)) {
             this.$set(this.orderings, propertyName, this.orderings[propertyName] === 'asc' ? 'desc' : 'asc')
             continue
           }

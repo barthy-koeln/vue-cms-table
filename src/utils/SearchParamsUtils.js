@@ -7,7 +7,7 @@
 export function serializeQueryString (data, prefix = null) {
   const queryString = []
   for (const property in data) {
-    if (Object.prototype.hasOwnProperty.apply(data, property)) {
+    if (Object.prototype.hasOwnProperty.call(data, property)) {
       const key = prefix ? prefix + '[' + property + ']' : property
       const value = data[property]
 

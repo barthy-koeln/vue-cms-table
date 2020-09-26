@@ -10,6 +10,7 @@
       :src="$options.methods.getImageUrl(props.column, props.entity)"
       alt="entity image"
       class="object-center object-cover"
+      @error="event => event.target.src = props.column.fallback"
     >
   </div>
 </template>
@@ -33,13 +34,11 @@
 
     methods: {
       getImageUrl (column, entity) {
-        const propertyValue = entity[column.name]
-
-        if (propertyValue) {
+        try {
           return replacementMixin.methods.replaceAll(column.path, column.replacements, entity)
+        } catch (error) {
+          return column.fallback
         }
-
-        return column.fallback
       }
     }
   }

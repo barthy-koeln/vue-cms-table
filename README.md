@@ -509,12 +509,12 @@ Displays an image.
 <details>
     <summary>Options</summary>
 
-| Name           | Type                         | Required/Default | Description                                                             |
-|:---------------|:-----------------------------|:-----------------|:------------------------------------------------------------------------|
-| `name`         | `String`                     | Required         | Entity property name.                                                   |
-| `path`         | `String`                     | Required         | Path/URL template.                                                      |
-| `replacements` | `Map<String|RegExp, String>` | no replacements  | [See replacements.](#replacements)                                      |
-| `fallback`     | `String`                     | no fallback      | In case the image property under `name` is empty, use a fallback image. |
+| Name           | Type                         | Required/Default | Description                                                                                                                |
+|:---------------|:-----------------------------|:-----------------|:---------------------------------------------------------------------------------------------------------------------------|
+| `name`         | `String`                     | Required         | Entity property name.                                                                                                      |
+| `path`         | `String`                     | Required         | Path/URL template.                                                                                                         |
+| `replacements` | `Map<String|RegExp, String>` | no replacements  | [See replacements.](#replacements)                                                                                         |
+| `fallback`     | `String`                     | no fallback      | In case the image property under `name` is empty, use a fallback image. This will also be used in case of a loading error. |
 
 </details>
 
