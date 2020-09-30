@@ -12,13 +12,21 @@
       <button
         :class="[{'d-none': buttonDisabled}, `btn-${buttonColor}`]"
         :disabled="buttonDisabled"
-        class="btn"
+        class="btn btn-addon"
         type="button"
         @click="persist"
       >
+        <c-spinner
+          v-if="loading"
+          color="white"
+          grow
+          tag="span"
+          size="sm"
+        />
         <!-- Icons are imported globally -->
         <!--suppress HtmlUnknownTag -->
         <c-icon
+          v-else
           class="m-0"
           fill="white"
           name="cil-check"
@@ -30,9 +38,14 @@
 
 <script>
   import { replacementMixin } from '../../utils/ReplacementMixin.js'
+  import { CSpinner } from '@coreui/vue'
 
   export default {
     name: 'EntityTableDateColumn',
+
+    components: {
+      CSpinner
+    },
 
     mixins: [
       replacementMixin
@@ -53,7 +66,8 @@
       return {
         initialValue: null,
         value: null,
-        buttonColor: 'primary'
+        buttonColor: 'primary',
+        loading: false
       }
     },
 
@@ -74,6 +88,12 @@
           return
         }
 
+        this.loading = true
+        await this.sendRequest()
+        this.loading = false
+      },
+
+      async sendRequest () {
         const url = this.replaceAll(this.column.action, this.column.replacements, this.entity)
         const init = Object.assign(
           this.column.requestInit || {},
@@ -114,3 +134,9 @@
     }
   }
 </script>
+
+<style scoped>
+  .btn-addon {
+    width: 3rem;
+  }
+</style>
