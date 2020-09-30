@@ -1,8 +1,8 @@
 {
   "name": "vue-cms-table",
   "version": "0.1.0",
-  "main": "index.js",
-  "author": "Barthy <post@barthy.koeln>",
+  "main": "src/vue/EntityTable.vue",
+  "author": "Barthy Bonhomme <post@barthy.koeln>",
   "license": "MIT",
   "private": false,
   "dependencies": {
