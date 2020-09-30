@@ -17,7 +17,7 @@
 
 <script>
   export default {
-    name: 'EntityTableStringColumn',
+    name: 'EntityTableCompoundColumn',
 
     props: {
       column: {

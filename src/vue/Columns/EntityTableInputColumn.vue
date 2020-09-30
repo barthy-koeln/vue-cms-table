@@ -41,7 +41,7 @@
   import { CSpinner } from '@coreui/vue'
 
   export default {
-    name: 'EntityTableDateColumn',
+    name: 'EntityTableInputColumn',
 
     components: {
       CSpinner
