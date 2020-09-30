@@ -1,19 +1,18 @@
 <template>
   <div class="input-group">
-    <label class="col-form-label w-100">
-      <input
-        v-model="value"
-        :placeholder="column['title']"
-        autocomplete="off"
-        class="form-control text-dark"
-        type="text"
-      >
-    </label>
-    <div class="input-group-append">
+    <input
+      v-model="value"
+      :placeholder="column['title']"
+      :title="column['title']"
+      autocomplete="off"
+      class="form-control text-dark"
+      type="text"
+    >
+    <span class="input-group-append">
       <button
         :class="[{'d-none': buttonDisabled}, `btn-${buttonColor}`]"
         :disabled="buttonDisabled"
-        class="btn btn-primary input-group-addon"
+        class="btn"
         type="button"
         @click="persist"
       >
@@ -25,13 +24,19 @@
           name="cil-check"
         />
       </button>
-    </div>
+    </span>
   </div>
 </template>
 
 <script>
+  import { replacementMixin } from '../../utils/ReplacementMixin.js'
+
   export default {
     name: 'EntityTableDateColumn',
+
+    mixins: [
+      replacementMixin
+    ],
 
     props: {
       column: {
