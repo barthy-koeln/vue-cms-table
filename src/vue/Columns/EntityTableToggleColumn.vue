@@ -1,24 +1,38 @@
-<template v-once>
-  <c-switch
-    :checked.sync="checked"
-    class="my-2"
+<template>
+  <label
     :class="{loading: loading, checked: checked}"
-    color="primary"
-    shape="pill"
-    size="lg"
-    @update:checked="toggleChecked"
-  />
+    class="c-switch c-switch-pill c-switch-lg c-switch-primary my-2"
+    @click.prevent.stop="toggleChecked"
+  >
+    <input
+      :checked="checked"
+      class="c-switch-input"
+      type="checkbox"
+    >
+    <span class="c-switch-slider">
+      <span
+        v-if="loading"
+        class="spinner-wrapper"
+      >
+        <c-spinner
+          color="dark"
+          grow
+          size="sm"
+        />
+      </span>
+    </span>
+  </label>
 </template>
 
 <script>
-  import { CSwitch } from '@coreui/vue'
   import { replacementMixin } from '../../utils/ReplacementMixin.js'
+  import { CSpinner } from '@coreui/vue'
 
   export default {
     name: 'EntityTableToggleColumn',
 
     components: {
-      CSwitch
+      CSpinner
     },
 
     mixins: [
@@ -87,25 +101,26 @@
   }
 </script>
 
-<style lang="scss">
+<style lang="scss"
+       scoped
+>
   @import '../../scss/base';
 
-  .loading {
-    .c-switch-slider::after {
-      content: "";
-      display: block;
-      position: absolute;
-      top: 2px;
-      left: 2px;
-      background-color: $secondary;
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      animation: spinner-grow 0.75s linear infinite;
-    }
+  .c-switch-input {
+    pointer-events: none;
+  }
 
-    &.checked .c-switch-slider::after {
-      transform: translateX(18px);
+  .spinner-wrapper {
+    left: 6px;
+    position: absolute;
+    top: 50%;
+    transform: translate(0, -50%);
+    transition: transform 0.15s ease-out;
+  }
+
+  .checked {
+    .spinner-wrapper {
+      transform: translate(18px, -50%);
     }
   }
 </style>
