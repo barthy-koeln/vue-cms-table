@@ -2,6 +2,7 @@
   <c-switch
     :checked.sync="checked"
     class="my-2"
+    :class="{loading: loading, checked: checked}"
     color="primary"
     shape="pill"
     size="lg"
@@ -37,7 +38,8 @@
 
     data () {
       return {
-        checked: false
+        checked: false,
+        loading: false
       }
     },
 
@@ -46,7 +48,13 @@
     },
 
     methods: {
-      async toggleChecked (checked) {
+      async toggleChecked () {
+        this.loading = true
+        await this.sendRequest()
+        this.loading = false
+      },
+
+      async sendRequest () {
         const url = this.replaceAll(this.column.action, this.column.replacements, this.entity)
         const init = Object.assign(
           this.column.requestInit || {},
@@ -61,8 +69,6 @@
           if (typeof criticalHandler !== 'undefined') {
             criticalHandler(response, this.column, this.entity)
           }
-
-          this.checked = !checked
           return
         }
 
@@ -72,8 +78,6 @@
           if (typeof errorHandler !== 'undefined') {
             errorHandler(body, this.column, this.entity)
           }
-
-          this.checked = !checked
           return
         }
 
@@ -82,3 +86,26 @@
     }
   }
 </script>
+
+<style lang="scss">
+  @import '../../scss/base';
+
+  .loading {
+    .c-switch-slider::after {
+      content: "";
+      display: block;
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      background-color: $secondary;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      animation: spinner-grow 0.75s linear infinite;
+    }
+
+    &.checked .c-switch-slider::after {
+      transform: translateX(18px);
+    }
+  }
+</style>
