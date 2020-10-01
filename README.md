@@ -432,10 +432,10 @@ Displays a concatenated string from multiple property values.
 <details>
     <summary>Options</summary>
 
-| Name        | Type     | Required/Default | Description                                                 |
-|:------------|:---------|:-----------------|:------------------------------------------------------------|
-| `names`     | `String` | Required         | Entity property names.                                      |
-| `separator` | `String` | Required         | Separator between the property values. Cannot contain HTML. |
+| Name        | Type     | Required/Default | Description                                                                                |
+|:------------|:---------|:-----------------|:-------------------------------------------------------------------------------------------|
+| `names`     | `String` | Required         | Entity property names.                                                                     |
+| `separator` | `String` | Required         | Separator between the property values. Cannot contain HTML, except `'&nsbp;'` or `'<br>'`. |
 
 </details>
 
