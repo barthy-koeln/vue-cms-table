@@ -136,17 +136,14 @@
       }
     },
 
-    beforeMount () {
+    mounted () {
       if (this.defaultOrdering.length === 2) {
         // do not trigger watcher here
         this.$set(this.orderings, this.defaultOrdering[0], this.defaultOrdering[1])
+        return
       }
-    },
 
-    mounted () {
-      if (!this.loading) {
-        this.loadData()
-      }
+      this.loadData()
     },
 
     methods: {
