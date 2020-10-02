@@ -27,6 +27,7 @@ and columns.
   + [Image Column](#image-column)
   + [Input Column](#input-column)
   + [Toggle Column](#toggle-column)
+  + [Custom Column](#custom-column)
   + [Actions Column](#actions-column)
     - [Link Action](#link-action)
     - [Button Action](#button-action)
@@ -634,6 +635,39 @@ Displays a toggle button that sends a request on change.
 *NOTE: You can send any number of additional data in case something went
 wrong, typically along the lines of "reason" or "message". The entire
 response body will be passed to the error callback.*
+
+</details>
+
+<br/>
+
+### Custom Column
+
+Use your own Vue.js component as a column. Make sure to add the
+appropriate props described below.
+
+<details>
+    <summary>Options</summary>
+
+<br/>
+
+| Name        | Type     | Required/Default | Description                                                                           |
+|:------------|:---------|:-----------------|:--------------------------------------------------------------------------------------|
+| `component` | `Object` | Required         | Vue.js component, either a globally registered component name, or a component object. |
+
+*NOTE: You can pass any amount of additional options. These will be
+passed as a prop to each instance of your column component.*
+
+</details>
+
+<details>
+    <summary>Component Props</summary>
+
+<br/>
+
+| Name     | Type     | Description                                                                     |
+|:---------|:---------|:--------------------------------------------------------------------------------|
+| `column` | `Object` | Column declaration. This holds any option you passed in the column declaration. |
+| `entity` | `Object` | A result row/entity object. Use it to display data.                             |
 
 </details>
 

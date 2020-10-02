@@ -24,7 +24,7 @@
             class="col"
           >
             <component
-              :is="`entity-table-${column['type']}-column`"
+              :is="column['type'] === 'custom' ? column['component'] : `entity-table-${column['type']}-column`"
               :entity="entity"
               :column="column"
             />
