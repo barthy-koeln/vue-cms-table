@@ -7,9 +7,7 @@
   <c-icon
     :class="!!props.entity[props.column['name']] === true ? 'icon-success' : 'icon-danger'"
     :name="!!props.entity[props.column['name']] === true ? 'cil-check' : 'cil-x'"
-    size="custom"
-    height="2rem"
-    width="2rem"
+    size="xl"
   />
 </template>
 

@@ -361,8 +361,8 @@ Define columns as simple objects following a specific schema.
 |:----------|:-----------|:-----------------|:-----------------------------------------------------|
 | `type`    | `String`   | Required         | Column type, one of the types defined below.         |
 | `title`   | `String`   | Required         | Titles that shows in the table header.               |
-| `classes` | `String[]` | `[]`             | Additional classes for both header and data columns. |
-
+| `classes` | `String[]` | `[]`             | Additional classes for both header and data columns. By default, each column gets the class `col`, which uses flex-box to automatically size columns. |
+| `align`   | `String`   | No alignment     | One of `'start'`, `'center'` or `'end'`. Aligns both header and column. |
 </details>
 
 <br/>
@@ -436,7 +436,7 @@ Displays a concatenated string from multiple property values.
 | Name        | Type     | Required/Default | Description                                                                                |
 |:------------|:---------|:-----------------|:-------------------------------------------------------------------------------------------|
 | `names`     | `String` | Required         | Entity property names.                                                                     |
-| `separator` | `String` | Required         | Separator between the property values. Cannot contain HTML, except `'&nsbp;'` or `'<br>'`. |
+| `separator` | `String` | Required         | Separator between the property values. Cannot contain HTML, except entities like `'&nsbp;'` or `'&rarr;'`.  Use `'\n'` for line breaks. |
 
 </details>
 

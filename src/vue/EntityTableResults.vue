@@ -1,5 +1,5 @@
 <template>
-  <c-card-body class="position-relative entity-table-results">
+  <c-card-body class="position-relative entity-table-results px-gutter">
     <transition
       appear
       name="fade"
@@ -17,16 +17,28 @@
         :key="entity[entityKey]"
         class="row entity"
       >
+        <template v-if="selectRow">
+          <div class="selection-checkbox">
+            <label>
+              <input
+                :name="entity[entityKey]"
+                type="checkbox"
+                :checked="Object.prototype.hasOwnProperty.call(selected, entity[entityKey])"
+                @click="$emit('toggle-select-row', entity[entityKey])"
+              >
+            </label>
+          </div>
+        </template>
         <template v-for="column in columns">
           <div
             :key="column['title']"
-            :class="[column['type'], ...column['classes']]"
+            :class="[column['type'], ...column['classes'], column['align'] ? `align-items-${column['align']}` : null]"
             class="col"
           >
             <component
               :is="column['type'] === 'custom' ? column['component'] : `entity-table-${column['type']}-column`"
-              :entity="entity"
               :column="column"
+              :entity="entity"
             />
           </div>
         </template>
@@ -82,6 +94,11 @@
         required: true
       },
 
+      selected: {
+        type: Object,
+        required: true
+      },
+
       entityKey: {
         type: String,
         required: true
@@ -100,6 +117,16 @@
             }
           )
         }
+      },
+
+      selectAll: {
+        type: Boolean,
+        default: true
+      },
+
+      selectRow: {
+        type: Boolean,
+        default: true
       }
     }
   }

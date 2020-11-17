@@ -1,9 +1,21 @@
 <template>
-  <div class="row bg-dark text-light entity-table-header p-3 m-0">
+  <div class="row bg-dark text-light entity-table-header py-3 m-0">
+    <template v-if="selectRow || selectAll">
+      <div class="selection-checkbox">
+        <label v-if="selectAll">
+          <input
+            v-model="allSelected"
+            name="all"
+            type="checkbox"
+            @change="$emit('toggle-select-all', allSelected)"
+          >
+        </label>
+      </div>
+    </template>
     <template v-for="column in columns">
       <div
         :key="column['title']"
-        :class="[column['type'], ...column['classes']]"
+        :class="[column['type'], ...column['classes'], column['align'] ? `justify-content-${column['align']}` : null]"
         class="col column-header flex-row"
         @click="headerClicked(column)"
       >
@@ -34,9 +46,26 @@
         type: Array,
         required: true
       },
+
       orderings: {
         type: Object,
         required: true
+      },
+
+      selectAll: {
+        type: Boolean,
+        default: true
+      },
+
+      selectRow: {
+        type: Boolean,
+        default: true
+      }
+    },
+
+    data () {
+      return {
+        allSelected: false
       }
     },
 

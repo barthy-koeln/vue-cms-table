@@ -16,6 +16,7 @@
           :columns="columns"
           :orderings="orderings"
           @header-clicked="headerClicked"
+          @toggle-select-all="onSelectAll"
         />
       </c-card-header>
 
@@ -24,6 +25,10 @@
         :entities="entities"
         :entity-key="entityKey"
         :loading="loading"
+        :select-all="selectAll"
+        :select-row="selectRow"
+        :selected="selected"
+        @toggle-select-row="onSelectRow"
       />
 
       <entity-table-pagination
@@ -105,6 +110,16 @@
         default () {
           return undefined
         }
+      },
+
+      selectAll: {
+        type: Boolean,
+        default: true
+      },
+
+      selectRow: {
+        type: Boolean,
+        default: true
       }
     },
 
@@ -114,6 +129,7 @@
         pageCount: 0,
         search: '',
         entities: [],
+        selected: {},
         lastQueryString: '',
         loading: false,
         orderings: {}
@@ -202,12 +218,42 @@
       loadPage (page) {
         this.page = page
         this.loadData()
+      },
+
+      toggleSelection (id) {
+        if (Object.prototype.hasOwnProperty.call(this.selected, id)) {
+          this.removeSelection(id)
+          return
+        }
+
+        this.addSelection(id)
+      },
+
+      addSelection (id) {
+        this.$set(this.selected, id, true)
+      },
+
+      removeSelection (id) {
+        this.$delete(this.selected, id)
+      },
+
+      onSelectAll (allSelected) {
+        const callback = allSelected ? this.addSelection : this.removeSelection
+        this.entities.map(entity => callback(entity[this.entityKey]))
+        this.$emit('selection-changed', Object.keys(this.selected).length)
+      },
+
+      onSelectRow (id) {
+        this.toggleSelection(id)
+        this.$emit('selection-changed', Object.keys(this.selected).length)
       }
     }
   }
 </script>
 
 <style lang="scss">
+  @import '../scss/base';
+
   .entity-table-results,
   .entity-table-header {
     .col {
@@ -227,5 +273,22 @@
         justify-content: flex-end;
       }
     }
+
+    .selection-checkbox {
+      align-items: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      width: 2rem;
+
+      label {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  .px-gutter {
+    padding-left: $grid-gutter-width / 2 !important;
+    padding-right: $grid-gutter-width / 2 !important;
   }
 </style>

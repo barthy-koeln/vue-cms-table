@@ -4,7 +4,7 @@
 >
   <span
     v-if="props.entity[props.column['name']]"
-    class="text-break py-2"
+    class="py-2"
   >
     {{
       props.entity[props.column['name']] instanceof Array
