@@ -109,7 +109,7 @@ the properties `slug`, `name`, and `created_at`.
       columns() {
         return [
           {
-            names:     'first_name',
+            name:     'first_name',
             type:      'string',
             title:     'Name',
             classes:   ['col-5', 'col-md-2']
