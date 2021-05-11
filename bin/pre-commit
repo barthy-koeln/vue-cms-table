@@ -2,12 +2,46 @@
 # We want to use globs to pass multiple files
 # shellcheck disable=SC2046
 
-eslint --fix $(find src -name '*.vue')
-eslint --fix $(find src -name '*.js')
+DIR=$(realpath "$(dirname "${BASH_SOURCE[0]}")")
+# shellcheck source=./io.sh
+source "$DIR/io.sh"
 
-stylelint --fix --syntax scss $(find src -name '*.scss')
-stylelint --fix $(find src -name '*.vue')
+DIRECTORIES="src"
 
-# Stage only already staged files to prevent committing files prematurely.
-# Premature commitment... Classic Schmosby.
+colored_output "$GREEN" "\n[EXECUTING PRE COMMIT HOOK]"
+
+###---###
+e_info "Linting/Fixing JavaScript Code Style"
+
+if ! eslint --fix --quiet $(find $DIRECTORIES -type f -name '*.js'); then
+  e_error "Error in JavaScript file. Run ${YELLOW}eslint${RESET} to check."
+  exit 1
+fi
+
+###---###
+e_info "Linting/Fixing Vue.js JavaScript Code Style"
+
+if ! eslint --fix --quiet $(find $DIRECTORIES -type f -name '*.vue'); then
+  e_error "Error in Vue.js file (${YELLOW}<script>${RESET}). Run ${YELLOW}eslint${RESET} to check."
+  exit 1
+fi
+
+###---###
+e_info "Linting/Fixing SCSS Code Style"
+
+if ! stylelint --fix --quiet --syntax scss $(find $DIRECTORIES -type f -name '*.scss'); then
+  e_error "Error in SCSS file. Run ${YELLOW}stylelint${RESET} to check."
+  exit 1
+fi
+
+###---###
+e_info "Linting/Fixing Vue.js SCSS Code Style"
+
+if ! stylelint --fix --quiet --syntax scss $(find $DIRECTORIES -type f -name '*.scss'); then
+  e_error "Error in Vue.js file (${YELLOW}<style>${RESET}). Run ${YELLOW}stylelint${RESET} to check."
+  exit 1
+fi
+
+###---###
+e_success "All good, staging additional changes.\n"
 git update-index --again
