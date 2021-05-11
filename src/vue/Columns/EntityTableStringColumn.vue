@@ -3,13 +3,13 @@
   functional
 >
   <span
-    v-if="props.entity[props.column['name']]"
+    v-if="props.entity[props.name]"
     class="py-2"
   >
     {{
-      props.entity[props.column['name']] instanceof Array
-        ? props.entity[props.column['name']].join(', ')
-        : props.entity[props.column['name']]
+      props.entity[props.name] instanceof Array
+        ? props.entity[props.name].join(', ')
+        : props.entity[props.name]
     }}
   </span>
 </template>
@@ -19,8 +19,8 @@
     name: 'EntityTableStringColumn',
 
     props: {
-      column: {
-        type: Object,
+      name: {
+        type: String,
         required: true
       },
       entity: {

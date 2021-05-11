@@ -1,11 +1,94 @@
 {
   "extends": "stylelint-config-standard",
   "plugins": [
-    "stylelint-scss"
+    "stylelint-scss",
+    "stylelint-order"
   ],
   "rules": {
+    "max-nesting-depth": 4,
+    "number-leading-zero": "never",
     "no-empty-source": null,
     "at-rule-no-unknown": null,
-    "scss/at-rule-no-unknown": true
+    "scss/at-rule-no-unknown": true,
+    "at-rule-empty-line-before": [
+      "always",
+      {
+        "ignoreAtRules": [
+          "else",
+          "import"
+        ]
+      }
+    ],
+    "block-opening-brace-space-before": "always",
+    "block-closing-brace-newline-after": [
+      "always",
+      {
+        "ignoreAtRules": [
+          "if",
+          "else"
+        ]
+      }
+    ],
+    "at-rule-name-space-after": "always",
+    "rule-empty-line-before": "always",
+    "scss/at-else-closing-brace-newline-after": "always-last-in-chain",
+    "scss/at-else-closing-brace-space-after": "always-intermediate",
+    "scss/at-else-empty-line-before": "never",
+    "scss/at-if-closing-brace-newline-after": "always-last-in-chain",
+    "scss/at-if-closing-brace-space-after": "always-intermediate",
+    "order/properties-alphabetical-order": true,
+    "order/order": [
+      {
+        "type": "at-rule",
+        "name": "import"
+      },
+      {
+        "type": "at-rule",
+        "name": "extend"
+      },
+      "custom-properties",
+      "dollar-variables",
+      "declarations",
+      {
+        "type": "at-rule",
+        "name": "include",
+        "hasBlock": false
+      },
+      {
+        "type": "at-rule",
+        "name": "include",
+        "hasBlock": true
+      },
+      {
+        "type": "at-rule",
+        "name": "media",
+        "hasBlock": true
+      },
+      {
+        "type": "rule",
+        "selector": "^&__[\\w-]+"
+      },
+      {
+        "type": "rule",
+        "selector": "^&.-[\\w-]+$"
+      },
+      {
+        "type": "rule",
+        "selector": "^&__[\\w-] &.-[\\w-]+$"
+      },
+      {
+        "type": "rule",
+        "selector": "^[\\w]+$"
+      },
+      "rules",
+      {
+        "type": "rule",
+        "selector": "^&::(before|after|first-line|first-letter)$"
+      },
+      {
+        "type": "rule",
+        "selector": "^&:.+$"
+      }
+    ]
   }
 }

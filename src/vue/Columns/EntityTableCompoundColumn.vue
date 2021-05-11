@@ -1,6 +1,6 @@
 <template v-once>
   <span
-    v-if="column['names']"
+    v-if="names"
     v-safe-html="filteredAndSeparatedValues"
   />
 </template>
@@ -20,9 +20,13 @@
     },
 
     props: {
-      column: {
-        type: Object,
+      names: {
+        type: Array,
         required: true
+      },
+      separator: {
+        type: String,
+        default: ', '
       },
       entity: {
         type: Object,
@@ -32,10 +36,10 @@
 
     computed: {
       filteredAndSeparatedValues () {
-        return this.column.names
+        return this.names
           .map(name => this.entity[name])
           .filter(x => x)
-          .join(this.column.separator)
+          .join(this.separator)
       }
     }
   }

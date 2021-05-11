@@ -1,0 +1,15 @@
+@import 'base';
+
+.entity-table-results {
+
+  .row {
+
+    &:nth-child(even) {
+      background-color: $entity-table-bg-even;
+    }
+
+    &:nth-child(odd) {
+      background-color: $entity-table-bg-odd;
+    }
+  }
+}

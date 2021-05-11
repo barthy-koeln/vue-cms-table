@@ -23,13 +23,12 @@
             <c-icon
               class="m-0"
               fill="white"
-              name="cil-x"
+              :name="iconClear"
             />
           </button>
         </div>
       </div>
     </div>
-    <slot/>
   </div>
 </template>
 
@@ -47,6 +46,10 @@
         required: true
       },
       value: {
+        type: String,
+        required: true
+      },
+      iconClear: {
         type: String,
         required: true
       }

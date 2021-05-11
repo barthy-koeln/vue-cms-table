@@ -1,3 +1,6 @@
 @import '~@coreui/coreui/scss/functions';
 @import '~@coreui/coreui/scss/variables';
 @import '~@coreui/coreui/scss/mixins';
+
+$entity-table-bg-even: $white !default;
+$entity-table-bg-odd: $white !default;

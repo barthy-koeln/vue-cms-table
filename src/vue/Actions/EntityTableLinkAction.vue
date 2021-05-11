@@ -4,36 +4,61 @@
 >
   <div class="action d-inline-flex ml-2">
     <a
-      :href="$options.methods.replaceAll(props.action['path'], props.action['replacements'], props.entity)"
-      class="btn btn-primary"
+      v-c-tooltip="props.tooltip"
+      :href="$options.methods.replaceAll(props.path, props.replacements, props.entity)"
+      class="btn btn-primary text-nowrap"
       target="_blank"
     >
-      <!-- Icons are imported globally -->
-      <!--suppress HtmlUnknownTag -->
-      <c-icon
-        v-if="props.action['icon']"
-        :name="props.action['icon']"
-        class="mr-2"
-        fill="white"
-      />
-      <span class="d-none d-md-inline">{{ props.action['title'] }}</span>
+      <template v-if="props.icon">
+        <!-- Icons are imported globally -->
+        <!--suppress HtmlUnknownTag -->
+        <c-icon
+          :name="props.icon"
+          fill="white"
+        />
+      </template>
+      <template v-if="props.icon && props.title">&nbsp;</template>
+      <template v-if="props.title">
+        <span class="d-none d-md-inline">{{ props.title }}</span>
+      </template>
     </a>
   </div>
 </template>
 
 <script>
   import { replacementMixin } from '../../utils/ReplacementMixin.js'
+  import { CTooltip } from '@coreui/vue'
 
   export default {
     name: 'EntityTableLinkAction',
+
+    directives: {
+      cTooltip: CTooltip
+    },
 
     mixins: [
       replacementMixin
     ],
 
     props: {
-      action: {
-        type: Object,
+      path: {
+        type: String,
+        required: true
+      },
+      title: {
+        type: String,
+        default: null
+      },
+      tooltip: {
+        type: String,
+        default: null
+      },
+      icon: {
+        type: String,
+        required: true
+      },
+      replacements: {
+        type: Map,
         required: true
       },
       entity: {

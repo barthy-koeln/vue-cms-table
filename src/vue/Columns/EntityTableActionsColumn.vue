@@ -3,12 +3,12 @@
   functional
 >
   <div class="py-2">
-    <template v-for="action in props.column['actions']">
+    <template v-for="action in props.actions">
       <component
         :is="$options.components[`entity-table-${action['type']}-action`]"
         v-if="!action['condition'] || (typeof action['condition'] === 'function' && action['condition'](props.entity))"
         :key="action['title']"
-        :action="action"
+        v-bind="action"
         :entity="props.entity"
       />
     </template>
@@ -33,8 +33,8 @@
     ],
 
     props: {
-      column: {
-        type: Object,
+      actions: {
+        type: Array,
         required: true
       },
       entity: {

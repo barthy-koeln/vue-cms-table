@@ -3,35 +3,32 @@
 [![DeepScan grade](https://deepscan.io/api/teams/11039/projects/13961/branches/248774/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=11039&pid=13961&bid=248774)
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
-This bundle provides *opinionated* Vue.js components suitable to build
-typical Content Management System tables. With regard to responsiveness
-and flexibility, the "table" is however constructed using bootstrap rows
-and columns.
+This bundle provides *opinionated* Vue.js components suitable to build typical Content Management System tables. With
+regard to responsiveness and flexibility, the "table" is however constructed using bootstrap rows and columns.
 
 * [Installing](#installing)
 * [CoreUI](#coreui)
-  + [Theming CoreUI](#theming-coreui)
-  + [CoreUI Icons](#coreui-icons)
+    + [Theming CoreUI](#theming-coreui)
+    + [CoreUI Icons](#coreui-icons)
 * [Usage Example](#usage-example)
 * [Data API](#data-api)
 * [Main Component Props](#main-component-props)
 * [Search Form](#search-form)
 * [Replacements](#replacements)
 * [Columns](#columns)
-  + [Boolean Column](#boolean-column)
-  + [String Column](#string-column)
-  + [Link Column](#link-column)
-  + [Compound Column](#compound-column)
-  + [Map Column](#map-column)
-  + [Date Column](#date-column)
-  + [Image Column](#image-column)
-  + [Input Column](#input-column)
-  + [Toggle Column](#toggle-column)
-  + [Custom Column](#custom-column)
-  + [Actions Column](#actions-column)
-    - [Link Action](#link-action)
-    - [Button Action](#button-action)
-
+    + [Boolean Column](#boolean-column)
+    + [String Column](#string-column)
+    + [Link Column](#link-column)
+    + [Compound Column](#compound-column)
+    + [Map Column](#map-column)
+    + [Date Column](#date-column)
+    + [Image Column](#image-column)
+    + [Input Column](#input-column)
+    + [Toggle Column](#toggle-column)
+    + [Custom Column](#custom-column)
+    + [Actions Column](#actions-column)
+        - [Link Action](#link-action)
+        - [Button Action](#button-action)
 
 <br/>
 
@@ -73,71 +70,71 @@ Add color styles:
 
 ## Usage Example
 
-The example below displays a table that has three rows: "Name", "Created
-At", and "Actions". This expects that a `GET` request to
-`/admin/api/some-entity/search` returns an array of objects that have
-the properties `slug`, `name`, and `created_at`.
+The example below displays a table that has three rows: "Name", "Created At", and "Actions". This expects that a `GET`
+request to
+`/admin/api/some-entity/search` returns an array of objects that have the properties `slug`, `name`, and `created_at`.
 
 <details>
     <summary>Show Example Code</summary>
 
 ```vue
+
 <template>
-    <div class="page">
-        <entity-table 
-          :columns="columns"
-          entity-key="slug"
-          search-label="Search SomeEntity"
-          search-placeholder="Id, Name, …"
-          search-path="/admin/api/some-entity/search"
-          :default-ordering="['created_at', 'desc']"
-        />
-    </div>
+  <div class="page">
+    <entity-table
+      :columns="columns"
+      entity-key="slug"
+      search-label="Search SomeEntity"
+      search-placeholder="Id, Name, …"
+      search-path="/admin/api/some-entity/search"
+      :default-ordering="['created_at', 'desc']"
+    />
+  </div>
 </template>
 
 <script>
-  import EntityTable   from 'vue-cms-table/src/vue/EntityTable.vue';
-    
+  import EntityTable from 'vue-cms-table/src/vue/EntityTable.vue';
+
   export default {
     name: 'SomeEntity',
-    
+
     components: {
       EntityTable
     },
 
     computed: {
-      columns() {
+      columns () {
         return [
           {
-            name:     'first_name',
-            type:      'string',
-            title:     'Name',
-            classes:   ['col-5', 'col-md-2']
+            name: 'first_name',
+            type: 'string',
+            title: 'Name',
+            classes: ['col-5', 'col-md-2']
           },
           {
-            name:    'created_at',
-            type:    'date',
-            title:   'Created At',
+            name: 'created_at',
+            type: 'date',
+            title: 'Created At',
             classes: ['d-none', 'd-md-flex', 'col-md-2']
           },
           {
-            type:    'actions',
-            title:   'Actions',
+            type: 'actions',
+            title: 'Actions',
             classes: ['col-2', 'col-md-3'],
             actions: [
               {
-                type:         'link',
-                title:        'View',
-                icon:         'cil-link',
+                type: 'link',
+                title: 'View',
+                icon: 'cil-link',
                 replacements: new Map([['__SLUG__', 'slug']]),
-                path:         '/some-entity/__SLUG__'
+                path: '/some-entity/__SLUG__'
               },
               {
-                type:         'link',
-                title:        'Edit',
-                icon:         'cil-pencil',
+                type: 'link',
+                title: 'Edit',
+                icon: 'cil-pencil',
                 replacements: new Map([['__SLUG__', 'slug']]),
-                path:         '/some-entity/edit/__SLUG__'
+                path: '/some-entity/edit/__SLUG__'
               }
             ]
           }
@@ -208,8 +205,10 @@ The `entity-table` component takes the following props:
 | `searchPath`        | `String`    | Required                | URL/Path for the `GET` request that returns the data.                                |
 | `columns`           | `Array`     | Required                | Array of column configurations. See below for details.                               |
 | `entityKey`         | `String`    | Required                | Key of a uniquely identifying property in the entity data. Typically `id` or `slug`. |
+| `searchForm`        | `Boolean`   | `true`                  | Show or hide the search form                                                         |
 | `searchLabel`       | `String`    | `'Search'`              | Title of the search form                                                             |
 | `searchPlaceholder` | `String`    | `'Type here to search'` | Placeholder of the default search field.                                             |
+| `searchIconClear`   | `String`    | `'cil-x'`               | Icon used in the search field clear button                                           |
 | `filters`           | `Object`    | `{}`                    | Object of filters for the search, following the structure `{name: 'value'}`.         |
 | `defaultOrdering`   | `String[2]` | `[]`                    | Array like `['name', 'order']`, where `order` is one of `asc` or `desc`.             |
 
@@ -217,8 +216,8 @@ The `entity-table` component takes the following props:
 
 ## Search Form
 
-By default, the component displays a simple search input. if you want to
-add more filters and inputs, use the main component's `'search-form'`
+By default, the component displays a simple search input. if you want to add more filters and inputs, use the main
+component's `'search-form'`
 slot.
 
 <details>
@@ -227,101 +226,102 @@ slot.
 <br/>
 
 ```vue
+
 <template>
-    <entity-table 
-      :default-ordering="['type', 'asc']"
-      :columns="columns"
-      :filters="filters"
-      entity-key="id"
-      search-label="Search Things"
-      search-path="/admin/api/things/search"
-      search-placeholder="Thing, Stuff, …"
-    >
-      <template #search-form>
-        <label for="filter-suggestions">Show only approved things</label>
-        <c-switch 
-          id="filter-suggestions"
-          color="primary"
-          name="filter-suggestions"
-          shape="pill"
-          @update:checked="toggleFilterApproved"
-        />
-            
-        <c-select
-          id="filter-type"
-          :options="typeOptions"
-          add-input-classes="mb-0"
-          label="Filter by Type"
-          @update:value="setFilterType"
-        />
-      </template>
-    </entity-table>
+  <entity-table
+    :default-ordering="['type', 'asc']"
+    :columns="columns"
+    :filters="filters"
+    entity-key="id"
+    search-label="Search Things"
+    search-path="/admin/api/things/search"
+    search-placeholder="Thing, Stuff, …"
+  >
+    <template #search-form>
+      <label for="filter-suggestions">Show only approved things</label>
+      <c-switch
+        id="filter-suggestions"
+        color="primary"
+        name="filter-suggestions"
+        shape="pill"
+        @update:checked="toggleFilterApproved"
+      />
+
+      <c-select
+        id="filter-type"
+        :options="typeOptions"
+        add-input-classes="mb-0"
+        label="Filter by Type"
+        @update:value="setFilterType"
+      />
+    </template>
+  </entity-table>
 </template>
 
 <script>
-import EntityTable        from 'vue-cms-table/src/vue/EntityTable.vue';
-import {CSelect, CSwitch} from '@coreui/vue'
+  import EntityTable from 'vue-cms-table/src/vue/EntityTable.vue';
+  import { CSelect, CSwitch } from '@coreui/vue'
 
-export default {
-  name: 'Taxonomies',
+  export default {
+    name: 'Taxonomies',
 
-  components: {
-    EntityTable,
-    CSwitch,
-    CSelect
-  },
-
-  data() {
-    return {
-      filters: {}
-    }
-  },
-
-  methods: {
-    toggleFilterApproved(checked) {
-      if (checked) {
-        this.$set(this.filters, 'approved', false);
-        return
-      }
-
-      this.$delete(this.filters, 'approved');
+    components: {
+      EntityTable,
+      CSwitch,
+      CSelect
     },
 
-    setFilterType(value) {
-      if (value !== 'all') {
-        this.$set(this.filters, 'type', value);
-        return
+    data () {
+      return {
+        filters: {}
       }
+    },
 
-      this.$delete(this.filters, 'type');
-    }
-  },
+    methods: {
+      toggleFilterApproved (checked) {
+        if (checked) {
+          this.$set(this.filters, 'approved', false);
+          return
+        }
 
-  computed: {
-    columns() {
-      return [
-        {
-          name:    'type',
-          type:    'string',
-          title:   'Type',
-          classes: ['col-2', 'col-md-2']
-        },
-        {
-          name:         'title',
-          type:         'string',
-          title:        'Title',
-          classes:      ['col-4', 'col-md-3']
-        },
-        {
-          name:    'created_at_dt',
-          type:    'date',
-          title:   'Created At',
-          classes: ['d-none', 'd-md-flex', 'col-md-1']
-        },
-      ]
+        this.$delete(this.filters, 'approved');
+      },
+
+      setFilterType (value) {
+        if (value !== 'all') {
+          this.$set(this.filters, 'type', value);
+          return
+        }
+
+        this.$delete(this.filters, 'type');
+      }
+    },
+
+    computed: {
+      columns () {
+        return [
+          {
+            name: 'type',
+            type: 'string',
+            title: 'Type',
+            classes: ['col-2', 'col-md-2']
+          },
+          {
+            name: 'title',
+            type: 'string',
+            title: 'Title',
+            classes: ['col-4', 'col-md-3']
+          },
+          {
+            name: 'created_at_dt',
+            type: 'date',
+            title: 'Created At',
+            classes: ['d-none', 'd-md-flex', 'col-md-1']
+          },
+        ]
+      }
     }
   }
-}
 </script>
 ```
 
@@ -331,8 +331,7 @@ export default {
 
 ## Replacements
 
-Whenever the option `replacements` occurs, it maps placeholders in a
-string to entity property names:
+Whenever the option `replacements` occurs, it maps placeholders in a string to entity property names:
 
 ```javascript
 const column = {
@@ -343,6 +342,7 @@ const column = {
   ])
 }
 ```
+
 Replacement maps must have the signature `Map<String|RegExp, String>`.
 
 The column will then replace `__ID__` with the value of `entity['id']`
@@ -363,6 +363,7 @@ Define columns as simple objects following a specific schema.
 | `title`   | `String`   | Required         | Titles that shows in the table header.               |
 | `classes` | `String[]` | `[]`             | Additional classes for both header and data columns. By default, each column gets the class `col`, which uses flex-box to automatically size columns. |
 | `align`   | `String`   | No alignment     | One of `'start'`, `'center'` or `'end'`. Aligns both header and column. |
+
 </details>
 
 <br/>
@@ -436,7 +437,7 @@ Displays a concatenated string from multiple property values.
 | Name        | Type     | Required/Default | Description                                                                                |
 |:------------|:---------|:-----------------|:-------------------------------------------------------------------------------------------|
 | `names`     | `String` | Required         | Entity property names.                                                                     |
-| `separator` | `String` | Required         | Separator between the property values. Cannot contain HTML, except entities like `'&nsbp;'` or `'&rarr;'`.  Use `'\n'` for line breaks. |
+| `separator` | `String` | `', '`           | Separator between the property values. Cannot contain HTML, except entities like `'&nsbp;'` or `'&rarr;'`. Use `'\n'` for line breaks. |
 
 </details>
 
@@ -462,8 +463,7 @@ Displays a string mapped by a property value.
     <summary>Example</summary>
 
 If your entity has a property called `status`, that can be one of
-`APPROVED`, `DENIED`, `PENDING`, you can instead show eloquent messages
-using the `map` column:
+`APPROVED`, `DENIED`, `PENDING`, you can instead show eloquent messages using the `map` column:
 
 ```javascript
 const column = {
@@ -485,7 +485,6 @@ const column = {
 
 `type: 'date'`
 
-
 Displays a formatted date.
 
 <details>
@@ -503,7 +502,6 @@ Displays a formatted date.
 ### Image Column
 
 `type: 'image'`
-
 
 Displays an image.
 
@@ -525,8 +523,7 @@ Displays an image.
 
 `type: 'input'`
 
-Displays an editable input field, that shows a button on change and
-sends a request when pressing it.
+Displays an editable input field, that shows a button on change and sends a request when pressing it.
 
 <details>
     <summary>Options</summary>
@@ -574,9 +571,8 @@ sends a request when pressing it.
 |:---------|:---------|:-----------------|:---------------------------------------------------------------------------|
 | `status` | `String` | Required         | `'success'` if all went well, anything else to trigger the error callback. |
 
-*NOTE: You can send any number of additional data in case something went
-wrong. Typically along the lines of "reason" or "message". The entire
-response body will be passed to the error callback.*
+*NOTE: You can send any number of additional data in case something went wrong. Typically along the lines of "reason"
+or "message". The entire response body will be passed to the error callback.*
 
 </details>
 
@@ -631,10 +627,8 @@ Displays a toggle button that sends a request on change.
 | `status`  | `String`  | Required         | `'success'` if all went well, anything else to trigger the error callback. |
 | `checked` | `Boolean` | Required         | Boolean value indicating the new state.                                    |
 
-
-*NOTE: You can send any number of additional data in case something went
-wrong, typically along the lines of "reason" or "message". The entire
-response body will be passed to the error callback.*
+*NOTE: You can send any number of additional data in case something went wrong, typically along the lines of "reason"
+or "message". The entire response body will be passed to the error callback.*
 
 </details>
 
@@ -642,22 +636,12 @@ response body will be passed to the error callback.*
 
 ### Custom Column
 
-Use your own Vue.js component as a column. Make sure to add the
-appropriate props described below.
+`type: [Vue.js component, either a globally registered component name, or a component object]`
 
-<details>
-    <summary>Options</summary>
+Use your own Vue.js component as a column. Make sure to add the appropriate props described below.
 
-<br/>
-
-| Name        | Type     | Required/Default | Description                                                                           |
-|:------------|:---------|:-----------------|:--------------------------------------------------------------------------------------|
-| `component` | `Object` | Required         | Vue.js component, either a globally registered component name, or a component object. |
-
-*NOTE: You can pass any amount of additional options. These will be
-passed as a prop to each instance of your column component.*
-
-</details>
+*NOTE: You can pass any amount of additional options. These will be passed as a prop to each instance of your column
+component.*
 
 <details>
     <summary>Component Props</summary>
@@ -666,7 +650,7 @@ passed as a prop to each instance of your column component.*
 
 | Name     | Type     | Description                                                                     |
 |:---------|:---------|:--------------------------------------------------------------------------------|
-| `column` | `Object` | Column declaration. This holds any option you passed in the column declaration. |
+| `...`    | `Any`    | Add any props you want. Pass their values to the column definition.             |
 | `entity` | `Object` | A result row/entity object. Use it to display data.                             |
 
 </details>

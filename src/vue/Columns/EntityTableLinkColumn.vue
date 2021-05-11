@@ -3,10 +3,10 @@
   functional
 >
   <a
-    :href="$options.methods.replaceAll(props.column['path'], props.column['replacements'], props.entity)"
+    :href="$options.methods.replaceAll(props.path, props.replacements, props.entity)"
     target="_blank"
   >
-    {{ props.entity[props.column['name']] }}
+    {{ props.entity[props.name] }}
   </a>
 </template>
 
@@ -21,8 +21,16 @@
     ],
 
     props: {
-      column: {
-        type: Object,
+      name: {
+        type: String,
+        required: true
+      },
+      path: {
+        type: String,
+        required: true
+      },
+      replacements: {
+        type: Map,
         required: true
       },
       entity: {

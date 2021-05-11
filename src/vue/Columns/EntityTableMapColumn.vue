@@ -3,9 +3,9 @@
   functional
 >
   <div
-    v-if="props.entity[props.column['name']] && props.column['map'].has(props.entity[props.column['name']])"
+    v-if="props.entity[props.name] && props.map.has(props.entity[props.name])"
   >
-    {{ props.column['map'].get(props.entity[props.column['name']]) }}
+    {{ props.map.get(props.entity[props.name]) }}
   </div>
 </template>
 
@@ -14,8 +14,12 @@
     name: 'EntityTableMapColumn',
 
     props: {
-      column: {
-        type: Object,
+      map: {
+        type: Map,
+        required: true
+      },
+      name: {
+        type: String,
         required: true
       },
       entity: {

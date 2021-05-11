@@ -1,16 +1,19 @@
 <template>
   <div class="entity-table d-flex flex-column">
     <c-card>
-      <c-card-header class="position-sticky sticky-top mb-0 p-0">
-        <entity-table-search-form
-          v-model="search"
-          :label="searchLabel"
-          :placeholder="searchPlaceholder"
-          class="p-3"
-          @search="loadData"
-        >
-          <slot name="search-form"/>
-        </entity-table-search-form>
+      <c-card-header class="bg-white mb-0 p-0">
+        <template v-if="searchForm">
+          <slot name="search-form">
+            <entity-table-search-form
+              v-model="search"
+              :label="searchLabel"
+              :placeholder="searchPlaceholder"
+              :icon-clear="searchIconClear"
+              class="p-3"
+              @search="loadData"
+            />
+          </slot>
+        </template>
 
         <entity-table-header
           :columns="columns"
@@ -20,28 +23,43 @@
         />
       </c-card-header>
 
-      <entity-table-results
-        :columns="columns"
-        :entities="entities"
-        :entity-key="entityKey"
-        :loading="loading"
-        :select-all="selectAll"
-        :select-row="selectRow"
-        :selected="selected"
-        @toggle-select-row="onSelectRow"
-      />
+      <c-card-body class="position-relative entity-table-results px-gutter">
+        <transition
+          appear
+          name="fade"
+        >
+          <div class="spinner-container">
+            <c-spinner
+              v-if="loading"
+              class="spinner"
+            />
+          </div>
+        </transition>
 
-      <entity-table-pagination
-        :page="page"
-        :page-count="pageCount"
-        @search="loadPage"
-      />
+        <entity-table-results
+          :columns="columns"
+          :entities="entities"
+          :entity-key="entityKey"
+          :select-all="selectAll"
+          :select-row="selectRow"
+          :selected="selected"
+          @toggle-select-row="onSelectRow"
+        />
+      </c-card-body>
+
+      <c-card-footer>
+        <entity-table-pagination
+          :page="page"
+          :page-count="pageCount"
+          @search="loadPage"
+        />
+      </c-card-footer>
     </c-card>
   </div>
 </template>
 
 <script>
-  import { CCard, CCardHeader } from '@coreui/vue'
+  import { CCard, CCardBody, CCardFooter, CCardHeader, CSpinner } from '@coreui/vue'
   import EntityTableSearchForm from './EntityTableSearchForm.vue'
   import EntityTableHeader from './EntityTableHeader.vue'
   import EntityTableResults from './EntityTableResults.vue'
@@ -54,6 +72,9 @@
     components: {
       CCard,
       CCardHeader,
+      CCardBody,
+      CCardFooter,
+      CSpinner,
       EntityTableSearchForm,
       EntityTableHeader,
       EntityTableResults,
@@ -76,6 +97,11 @@
         required: true
       },
 
+      searchForm: {
+        type: Boolean,
+        default: true
+      },
+
       searchLabel: {
         type: String,
         required: false,
@@ -86,6 +112,16 @@
         type: String,
         required: false,
         default: 'Type here to search'
+      },
+
+      searchIconClear: {
+        type: String,
+        default: 'cil-x'
+      },
+
+      resultsPerPage: {
+        type: Number,
+        default: 10
       },
 
       defaultOrdering: {
@@ -168,7 +204,8 @@
           search: this.search,
           page: this.page,
           filters: this.filters,
-          orderings: this.orderings
+          orderings: this.orderings,
+          resultsPerPage: this.resultsPerPage
         }
 
         return serializeQueryString(queryData)
@@ -256,6 +293,7 @@
 
   .entity-table-results,
   .entity-table-header {
+
     .col {
       align-items: flex-start;
       display: flex;
@@ -285,6 +323,20 @@
         margin-bottom: 0;
       }
     }
+  }
+
+  .card-body {
+    min-height: 2 * $spinner-height;
+  }
+
+  .spinner-container {
+    height: $spinner-height;
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: $spinner-height;
+    z-index: 1000;
   }
 
   .px-gutter {

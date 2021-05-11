@@ -40,9 +40,29 @@
     ],
 
     props: {
-      column: {
-        type: Object,
+      name: {
+        type: String,
         required: true
+      },
+      action: {
+        type: String,
+        required: true
+      },
+      requestInit: {
+        type: Object,
+        default: null
+      },
+      replacements: {
+        type: Map,
+        required: true
+      },
+      error: {
+        type: Function,
+        default: null
+      },
+      critical: {
+        type: Function,
+        default: null
       },
       entity: {
         type: Object,
@@ -58,7 +78,7 @@
     },
 
     mounted () {
-      this.checked = this.entity[this.column.name]
+      this.checked = this.entity[this.name]
     },
 
     methods: {
@@ -69,9 +89,9 @@
       },
 
       async sendRequest () {
-        const url = this.replaceAll(this.column.action, this.column.replacements, this.entity)
+        const url = this.replaceAll(this.action, this.replacements, this.entity)
         const init = Object.assign(
-          this.column.requestInit || {},
+          this.requestInit || {},
           {
             method: 'post'
           }
@@ -79,19 +99,19 @@
 
         const response = await fetch(url, init)
         if (!response.ok) {
-          const criticalHandler = this.column.critical
-          if (typeof criticalHandler !== 'undefined') {
-            criticalHandler(response, this.column, this.entity)
+          if (this.critical) {
+            this.critical(response, this.entity)
           }
+
           return
         }
 
         const body = await response.json()
         if (body.status !== 'success') {
-          const errorHandler = this.column.error
-          if (typeof errorHandler !== 'undefined') {
-            errorHandler(body, this.column, this.entity)
+          if (this.error) {
+            this.error(body, this.entity)
           }
+
           return
         }
 
@@ -115,10 +135,11 @@
     position: absolute;
     top: 50%;
     transform: translate(0, -50%);
-    transition: transform 0.15s ease-out;
+    transition: transform .15s ease-out;
   }
 
   .checked {
+
     .spinner-wrapper {
       transform: translate(18px, -50%);
     }

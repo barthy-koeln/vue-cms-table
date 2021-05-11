@@ -112,7 +112,7 @@
 
   .icon-wrapper {
     height: 24px;
-    left: -0.7rem;
+    left: -.7rem;
     position: absolute;
     top: 50%;
     transform: translateY(-50%);

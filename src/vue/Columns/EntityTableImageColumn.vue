@@ -3,14 +3,14 @@
   functional
 >
   <div
-    v-if="props.entity[props.column['name']] || props.column['fallback']"
+    v-if="props.entity[props.name] || props.fallback"
     class="avatar my-3"
   >
     <img
-      :src="$options.methods.getImageUrl(props.column, props.entity)"
+      :src="$options.methods.getImageUrl(props.path, props.replacements, props.fallback, props.entity)"
       alt="entity image"
       class="object-center object-cover"
-      @error="event => event.target.src = props.column.fallback"
+      @error="event => event.target.src = props.fallback"
     >
   </div>
 </template>
@@ -22,8 +22,20 @@
     name: 'EntityTableImageColumn',
 
     props: {
-      column: {
-        type: Object,
+      name: {
+        type: String,
+        required: true
+      },
+      fallback: {
+        type: String,
+        default: null
+      },
+      path: {
+        type: String,
+        required: true
+      },
+      replacements: {
+        type: Map,
         required: true
       },
       entity: {
@@ -33,30 +45,31 @@
     },
 
     methods: {
-      getImageUrl (column, entity) {
+      getImageUrl (path, replacements, fallback, entity) {
         try {
-          return replacementMixin.methods.replaceAll(column.path, column.replacements, entity)
+          return replacementMixin.methods.replaceAll(path, replacements, entity)
         } catch (error) {
-          return column.fallback
+          return fallback
         }
       }
     }
   }
 </script>
 
-<style lang="scss"
-       scoped
+<style
+  lang="scss"
+  scoped
 >
   @import '../../scss/base';
 
   .avatar {
-    @include border-radius();
-
     height: 0;
     overflow: hidden;
     padding-bottom: 100%;
     position: relative;
     width: 100%;
+
+    @include border-radius();
 
     .object-cover {
       left: 0;

@@ -1,17 +1,5 @@
 <template>
-  <c-card-body class="position-relative entity-table-results px-gutter">
-    <transition
-      appear
-      name="fade"
-    >
-      <div class="spinner-container">
-        <c-spinner
-          v-if="loading"
-          class="spinner"
-        />
-      </div>
-    </transition>
-
+  <div>
     <template v-for="entity in entities">
       <div
         :key="entity[entityKey]"
@@ -36,15 +24,15 @@
             class="col"
           >
             <component
-              :is="column['type'] === 'custom' ? column['component'] : `entity-table-${column['type']}-column`"
-              :column="column"
+              :is="typeof column['type'] === 'string' ? `entity-table-${column['type']}-column` : column['type']"
+              v-bind="column"
               :entity="entity"
             />
           </div>
         </template>
       </div>
     </template>
-  </c-card-body>
+  </div>
 </template>
 
 <script>
@@ -79,11 +67,6 @@
     },
 
     props: {
-      loading: {
-        type: Boolean,
-        required: true
-      },
-
       columns: {
         type: Array,
         required: true
@@ -131,33 +114,3 @@
     }
   }
 </script>
-
-<style lang="scss"
-       scoped
->
-  @import '../scss/base';
-
-  .row {
-    &:nth-child(even) {
-      background-color: $white;
-    }
-
-    &:nth-child(odd) {
-      background-color: $gray-100;
-    }
-  }
-
-  .card-body {
-    min-height: 2 * $spinner-height;
-  }
-
-  .spinner-container {
-    height: $spinner-height;
-    left: 50%;
-    position: absolute;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: $spinner-height;
-    z-index: 1000;
-  }
-</style>

@@ -4,20 +4,21 @@
 >
   <div class="action d-inline-flex ml-2">
     <button
-      :href="$options.methods.replaceAll(props.action['path'], props.action['replacements'], props.entity)"
+      :href="$options.methods.replaceAll(props.path, props.replacements, props.entity)"
       class="btn btn-primary"
       type="button"
-      @click="event => props.action['click'](props.entity, event)"
+      @click="event => props.click(props.entity, event)"
     >
       <!-- Icons are imported globally -->
       <!--suppress HtmlUnknownTag -->
       <c-icon
-        v-if="props.action['icon']"
-        :name="props.action['icon']"
+        v-if="props.icon"
+        :name="props.icon"
         class="mr-2"
         fill="white"
       />
-      <span class="d-none d-md-inline">{{ props.action['title'] }}</span>
+
+      <span class="d-none d-md-inline">{{ props.title }}</span>
     </button>
   </div>
 </template>
@@ -33,8 +34,20 @@
     ],
 
     props: {
-      action: {
-        type: Object,
+      path: {
+        type: String,
+        required: true
+      },
+      title: {
+        type: String,
+        required: true
+      },
+      icon: {
+        type: String,
+        required: true
+      },
+      replacements: {
+        type: Map,
         required: true
       },
       entity: {

@@ -2,8 +2,8 @@
   <div class="input-group">
     <input
       v-model="value"
-      :placeholder="column['title']"
-      :title="column['title']"
+      :placeholder="title"
+      :title="title"
       autocomplete="off"
       class="form-control text-dark"
       type="text"
@@ -52,9 +52,33 @@
     ],
 
     props: {
-      column: {
-        type: Object,
+      name: {
+        type: String,
         required: true
+      },
+      title: {
+        type: String,
+        required: true
+      },
+      action: {
+        type: String,
+        required: true
+      },
+      requestInit: {
+        type: Object,
+        default: null
+      },
+      replacements: {
+        type: Map,
+        required: true
+      },
+      error: {
+        type: Function,
+        default: null
+      },
+      critical: {
+        type: Function,
+        default: null
       },
       entity: {
         type: Object,
@@ -78,7 +102,7 @@
     },
 
     mounted () {
-      this.initialValue = this.entity[this.column.name]
+      this.initialValue = this.entity[this.name]
       this.value = this.initialValue
     },
 
@@ -94,9 +118,9 @@
       },
 
       async sendRequest () {
-        const url = this.replaceAll(this.column.action, this.column.replacements, this.entity)
+        const url = this.replaceAll(this.action, this.replacements, this.entity)
         const init = Object.assign(
-          this.column.requestInit || {},
+          this.requestInit || {},
           {
             method: 'post',
             body: JSON.stringify({
@@ -107,19 +131,19 @@
 
         const response = await fetch(url, init)
         if (!response.ok) {
-          const criticalHandler = this.column.critical
-          if (typeof criticalHandler !== 'undefined') {
-            criticalHandler(response, this.column, this.entity)
+          if (this.critical) {
+            this.critical(response, this.entity)
           }
+
           return
         }
 
         const body = await response.json()
         if (body.status !== 'success') {
-          const errorHandler = this.column.error
-          if (typeof errorHandler !== 'undefined') {
-            errorHandler(body, this.column, this.entity)
+          if (this.error) {
+            this.error(body, this.entity)
           }
+
           return
         }
 
