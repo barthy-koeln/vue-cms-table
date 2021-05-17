@@ -5,7 +5,7 @@
   <div class="py-2">
     <template v-for="action in props.actions">
       <component
-        :is="$options.components[`entity-table-${action['type']}-action`]"
+        :is="typeof action['type'] === 'string' ? $options.components[`entity-table-${action['type']}-action`] : action['type']"
         v-if="!action['condition'] || (typeof action['condition'] === 'function' && action['condition'](props.entity))"
         :key="action['title']"
         v-bind="action"
