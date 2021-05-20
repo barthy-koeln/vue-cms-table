@@ -1,32 +1,30 @@
 <template>
-  <div class="row justify-content-start">
-    <div class="form-group mb-0 mb-0 col-12 col-md-6">
-      <label for="entity-table-search-form">{{ label }}</label>
-      <div class="input-group">
-        <input
-          id="entity-table-search-form"
-          v-model="localState"
-          :placeholder="placeholder"
-          autocomplete="off"
-          class="form-control"
-          type="search"
-          @keyup.passive="debounceSearch"
+  <div class="form-group">
+    <label for="entity-table-search-form">{{ label }}</label>
+    <div class="input-group">
+      <input
+        id="entity-table-search-form"
+        v-model="localState"
+        :placeholder="placeholder"
+        autocomplete="off"
+        class="form-control"
+        type="text"
+        @keyup.passive="debounceSearch"
+      >
+      <div class="input-group-append">
+        <button
+          class="btn btn-primary input-group-addon"
+          type="button"
+          @click="$emit('button-action')"
         >
-        <div class="input-group-append">
-          <button
-            class="btn btn-primary input-group-addon"
-            type="button"
-            @click="clear"
-          >
-            <!-- Icons are imported globally -->
-            <!--suppress HtmlUnknownTag -->
-            <c-icon
-              class="m-0"
-              fill="white"
-              :name="iconClear"
-            />
-          </button>
-        </div>
+          <!-- Icons are imported globally -->
+          <!--suppress HtmlUnknownTag -->
+          <c-icon
+            class="m-0"
+            fill="white"
+            :name="iconButton"
+          />
+        </button>
       </div>
     </div>
   </div>
@@ -41,15 +39,18 @@
         type: String,
         required: true
       },
+
       placeholder: {
         type: String,
-        required: true
+        default: null
       },
+
       value: {
         type: String,
         required: true
       },
-      iconClear: {
+
+      iconButton: {
         type: String,
         required: true
       }

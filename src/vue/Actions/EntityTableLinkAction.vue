@@ -4,7 +4,7 @@
 >
   <div class="action d-inline-flex ml-2">
     <a
-      v-c-tooltip="props.tooltip"
+      v-c-tooltip="props.tooltip ? { content: props.tooltip, appendToBody: true} : false"
       :href="$options.methods.replaceAll(props.path, props.replacements, props.entity)"
       class="btn btn-primary text-nowrap"
       target="_blank"

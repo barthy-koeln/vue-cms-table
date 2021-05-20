@@ -75,7 +75,13 @@
           return
         }
 
-        if (Object.prototype.hasOwnProperty.call(column, 'sortable') && column.sortable === false) {
+        if (Object.prototype.hasOwnProperty.call(column, 'sortable')) {
+          if (column.sortable === false) {
+            return
+          }
+
+          console.info(column.sortable)
+          this.emitHeaderClicked(column.sortable)
           return
         }
 
@@ -102,8 +108,9 @@
   }
 </script>
 
-<style lang="scss"
-       scoped
+<style
+  lang="scss"
+  scoped
 >
   .column-header {
     cursor: pointer;

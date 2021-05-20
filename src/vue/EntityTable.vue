@@ -2,18 +2,10 @@
   <div class="entity-table d-flex flex-column">
     <c-card>
       <c-card-header class="bg-white mb-0 p-0">
-        <template v-if="searchForm">
-          <slot name="search-form">
-            <entity-table-search-form
-              v-model="search"
-              :label="searchLabel"
-              :placeholder="searchPlaceholder"
-              :icon-clear="searchIconClear"
-              class="p-3"
-              @search="loadData"
-            />
-          </slot>
-        </template>
+        <slot
+          name="search-form"
+          v-bind="{loadData}"
+        />
 
         <entity-table-header
           :columns="columns"
@@ -60,7 +52,6 @@
 
 <script>
   import { CCard, CCardBody, CCardFooter, CCardHeader, CSpinner } from '@coreui/vue'
-  import EntityTableSearchForm from './EntityTableSearchForm.vue'
   import EntityTableHeader from './EntityTableHeader.vue'
   import EntityTableResults from './EntityTableResults.vue'
   import EntityTablePagination from './EntityTablePagination.vue'
@@ -75,7 +66,6 @@
       CCardBody,
       CCardFooter,
       CSpinner,
-      EntityTableSearchForm,
       EntityTableHeader,
       EntityTableResults,
       EntityTablePagination
@@ -95,28 +85,6 @@
       entityKey: {
         type: String,
         required: true
-      },
-
-      searchForm: {
-        type: Boolean,
-        default: true
-      },
-
-      searchLabel: {
-        type: String,
-        required: false,
-        default: 'Search'
-      },
-
-      searchPlaceholder: {
-        type: String,
-        required: false,
-        default: 'Type here to search'
-      },
-
-      searchIconClear: {
-        type: String,
-        default: 'cil-x'
       },
 
       resultsPerPage: {
@@ -156,6 +124,11 @@
       selectRow: {
         type: Boolean,
         default: true
+      },
+
+      search: {
+        type: String,
+        default: ''
       }
     },
 
@@ -163,7 +136,6 @@
       return {
         page: 1,
         pageCount: 0,
-        search: '',
         entities: [],
         selected: {},
         lastQueryString: '',
