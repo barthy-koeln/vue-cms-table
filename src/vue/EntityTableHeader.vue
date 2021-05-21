@@ -80,7 +80,6 @@
             return
           }
 
-          console.info(column.sortable)
           this.emitHeaderClicked(column.sortable)
           return
         }
