@@ -212,16 +212,26 @@
           }
 
           this.$delete(this.orderings, currentPropertyName)
+          this.setOrdering(currentPropertyName, null)
         }
 
         for (const propertyName of propertyNames) {
           if (Object.prototype.hasOwnProperty.call(this.orderings, propertyName)) {
-            this.$set(this.orderings, propertyName, this.orderings[propertyName] === 'asc' ? 'desc' : 'asc')
+            this.setOrdering(propertyName, this.orderings[propertyName] === 'asc' ? 'desc' : 'asc')
             continue
           }
 
-          this.$set(this.orderings, propertyName, 'asc')
+          this.setOrdering(propertyName, 'asc')
         }
+      },
+
+      setOrdering (name, ordering) {
+        if (ordering) {
+          this.$set(this.orderings, name, ordering)
+          return
+        }
+
+        this.$delete(this.orderings, name)
       },
 
       loadPage (page) {
