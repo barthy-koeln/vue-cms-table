@@ -12,34 +12,26 @@
         </label>
       </div>
     </template>
-    <template v-for="column in columns">
-      <div
-        :key="column['title']"
-        :class="[column['type'], ...column['classes'], column['align'] ? `justify-content-${column['align']}` : null]"
-        class="col column-header flex-row"
-        @click="headerClicked(column)"
-      >
-        <div
-          v-if="Object.prototype.hasOwnProperty.call(orderings, sortedColumnName(column))"
-          class="icon-wrapper"
-        >
-          <!-- Icons are imported globally -->
-          <!--suppress HtmlUnknownTag -->
-          <c-icon
-            :name="orderings[sortedColumnName(column)] === 'asc' ? 'cil-sort-ascending' : 'cil-sort-descending'"
-            class="icon icon-light"
-            size="sm"
-          />
-        </div>
-        <strong>{{ column['title'] }}</strong>
-      </div>
+    <template v-for="(column, index) in columns">
+      <entity-table-header-column
+        :key="index"
+        :order-icons="orderIcons"
+        :orderings="orderings"
+        :column="column"
+        @header-clicked="$emit('header-clicked', $event)"
+      />
     </template>
   </div>
 </template>
 
 <script>
+  import { CTooltip } from '@coreui/vue'
+  import EntityTableHeaderColumn from './EntityTableHeaderColumn'
+
   export default {
     name: 'EntityTableHeader',
+    components: { EntityTableHeaderColumn },
+    directives: { CTooltip },
 
     props: {
       columns: {
@@ -60,48 +52,19 @@
       selectRow: {
         type: Boolean,
         default: true
+      },
+
+      orderIcons: {
+        type: Object,
+        default () {
+          return undefined
+        }
       }
     },
 
     data () {
       return {
         allSelected: false
-      }
-    },
-
-    methods: {
-      headerClicked (column) {
-        if (['actions', 'image'].includes(column.type)) {
-          return
-        }
-
-        if (Object.prototype.hasOwnProperty.call(column, 'sortable')) {
-          if (column.sortable === false) {
-            return
-          }
-
-          this.emitHeaderClicked(column.sortable)
-          return
-        }
-
-        if (column.type === 'compound') {
-          this.emitHeaderClicked(column.names)
-          return
-        }
-
-        this.emitHeaderClicked([column.name])
-      },
-
-      emitHeaderClicked (columnNames) {
-        this.$emit('header-clicked', columnNames)
-      },
-
-      sortedColumnName (column) {
-        if (column.type === 'compound') {
-          return column.names[0]
-        }
-
-        return column.name
       }
     }
   }
@@ -112,8 +75,11 @@
   scoped
 >
   .column-header {
-    cursor: pointer;
     position: relative;
+
+    &.-sortable {
+      cursor: pointer;
+    }
   }
 
   .icon-wrapper {

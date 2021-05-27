@@ -10,6 +10,7 @@
         <entity-table-header
           :columns="columns"
           :orderings="orderings"
+          :order-icons="orderIcons"
           @header-clicked="headerClicked"
           @toggle-select-all="onSelectAll"
         />
@@ -90,6 +91,13 @@
       resultsPerPage: {
         type: Number,
         default: 10
+      },
+
+      orderIcons: {
+        type: Object,
+        default () {
+          return undefined
+        }
       },
 
       defaultOrdering: {
