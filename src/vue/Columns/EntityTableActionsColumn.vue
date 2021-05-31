@@ -2,7 +2,7 @@
   v-once
   functional
 >
-  <div class="py-2">
+  <div class="entityTableActionsColumn py-2">
     <template v-for="action in props.actions">
       <component
         :is="typeof action['type'] === 'string' ? $options.components[`entity-table-${action['type']}-action`] : action['type']"
@@ -44,3 +44,16 @@
     }
   }
 </script>
+
+<style lang="scss">
+  @import '../../scss/base';
+
+  .entityTableActionsColumn {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: map-get($spacers, 2);
+    justify-content: flex-end;
+  }
+</style>
