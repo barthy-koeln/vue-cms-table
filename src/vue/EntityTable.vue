@@ -4,7 +4,16 @@
       <c-card-header class="bg-white mb-0 p-0">
         <slot
           name="search-form"
-          v-bind="{loadData}"
+          v-bind="{
+            loadData,
+            reset,
+            setFilter,
+            setOrdering,
+            setTextSearch,
+            textSearch,
+            filters,
+            orderings
+          }"
         />
 
         <entity-table-header
@@ -108,13 +117,6 @@
         }
       },
 
-      filters: {
-        type: Object,
-        default () {
-          return {}
-        }
-      },
-
       requestInit: {
         validator (value) {
           return value instanceof Object || typeof value === 'undefined'
@@ -134,9 +136,9 @@
         default: true
       },
 
-      search: {
-        type: String,
-        default: ''
+      fetchOnMount: {
+        type: Boolean,
+        default: true
       }
     },
 
@@ -148,49 +150,37 @@
         selected: {},
         lastQueryString: '',
         loading: false,
-        orderings: {}
-      }
-    },
-
-    watch: {
-      filters: {
-        handler () {
-          this.loadData()
-        },
-        deep: true
-      },
-
-      orderings: {
-        handler () {
-          this.loadData()
-        },
-        deep: true
+        textSearch: '',
+        orderings: {},
+        filters: {}
       }
     },
 
     mounted () {
-      if (this.defaultOrdering.length === 2) {
-        // do not trigger watcher here
-        this.$set(this.orderings, this.defaultOrdering[0], this.defaultOrdering[1])
-        return
+      if (this.fetchOnMount) {
+        this.setDefaultOrdering()
+        this.loadData()
       }
-
-      this.loadData()
     },
 
     methods: {
       getQueryString () {
         const queryData = {
-          search: this.search,
+          search: this.textSearch,
           page: this.page,
           filters: this.filters,
           orderings: this.orderings,
           resultsPerPage: this.resultsPerPage
         }
 
+        this.$emit('pre-query', queryData)
+
         return serializeQueryString(queryData)
       },
 
+      /**
+       * @public
+       */
       async loadData () {
         const queryString = this.getQueryString()
 
@@ -219,7 +209,6 @@
             continue
           }
 
-          this.$delete(this.orderings, currentPropertyName)
           this.setOrdering(currentPropertyName, null)
         }
 
@@ -233,18 +222,76 @@
         }
       },
 
-      setOrdering (name, ordering) {
-        if (ordering) {
-          this.$set(this.orderings, name, ordering)
+      async setQueryPart (object, name, value, reactive) {
+        this.doSetQueryPart(object, name, value)
+
+        if (reactive) {
+          await this.loadData()
+        }
+      },
+
+      doSetQueryPart (object, name, value) {
+        if (value) {
+          this.$set(object, name, value)
           return
         }
 
-        this.$delete(this.orderings, name)
+        this.$delete(object, name)
       },
 
-      loadPage (page) {
+      /**
+       * @public
+       * @param {String} name
+       * @param {String} ordering
+       * @param {Boolean} reactive
+       */
+      async setOrdering (name, ordering, reactive = true) {
+        await this.setQueryPart(this.orderings, name, ordering, reactive)
+      },
+
+      /**
+       * @public
+       * @param {String} name
+       * @param {String} ordering
+       * @param {Boolean} reactive
+       */
+      async setFilter (name, ordering, reactive = true) {
+        await this.setQueryPart(this.filters, name, ordering, reactive)
+      },
+
+      /**
+       * @public
+       * @param {String} value
+       * @param {Boolean} reactive
+       */
+      async setTextSearch (value, reactive = true) {
+        this.textSearch = value
+
+        if (reactive) {
+          await this.loadData()
+        }
+      },
+
+      /**
+       * @public
+       * @param {Number} page
+       * @param {Boolean} reactive
+       */
+      async loadPage (page, reactive = true) {
         this.page = page
-        this.loadData()
+
+        if (reactive) {
+          await this.loadData()
+        }
+      },
+
+      async reset () {
+        this.textSearch = ''
+        this.filters = {}
+        this.orderings = {}
+
+        this.setDefaultOrdering()
+        await this.loadData()
       },
 
       toggleSelection (id) {
@@ -273,6 +320,14 @@
       onSelectRow (id) {
         this.toggleSelection(id)
         this.$emit('selection-changed', Object.keys(this.selected).length)
+      },
+
+      setDefaultOrdering () {
+        if (this.defaultOrdering.length !== 2) {
+          return
+        }
+
+        this.setOrdering(this.defaultOrdering[0], this.defaultOrdering[1], false)
       }
     }
   }
