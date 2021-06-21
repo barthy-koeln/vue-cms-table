@@ -20,6 +20,8 @@
           :columns="columns"
           :orderings="orderings"
           :order-icons="orderIcons"
+          :select-all="selectAll"
+          :select-row="selectRow"
           @header-clicked="headerClicked"
           @toggle-select-all="onSelectAll"
         />
@@ -46,7 +48,11 @@
           :select-row="selectRow"
           :selected="selected"
           @toggle-select-row="onSelectRow"
-        />
+        >
+          <template #no-results>
+            <slot name="no-results"/>
+          </template>
+        </entity-table-results>
       </c-card-body>
 
       <c-card-footer>

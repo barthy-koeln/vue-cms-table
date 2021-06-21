@@ -1,5 +1,8 @@
 <template>
   <div>
+    <template v-if="entities.length === 0">
+      <slot name="no-results"/>
+    </template>
     <template v-for="entity in entities">
       <div
         :key="entity[entityKey]"
